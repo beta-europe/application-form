@@ -1,0 +1,14 @@
+div(layout='row' layout-align="center center" layout-fill layout-padding)
+  md-whiteframe(layout='column', flex='50')
+    .md-warn(ng-show='rc.error')
+      small {{ rc.error }}
+    form(layout='column')
+      md-input-container
+        md-icon(md-font-set="material-icons") mail
+        input(type='text', ng-model='rc.credentials.email', placeholder='email', aria-label='email')
+      md-input-container
+        md-icon(md-font-set="material-icons") lock_open
+        input(type='password', ng-model='rc.credentials.password', placeholder='password', aria-label='password') 
+      md-button.md-raised.md-primary(ng-click='rc.register()') Create Account
+    div(layout='row', layout-align='end center')
+      md-button(href='/login') Login

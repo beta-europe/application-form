@@ -1,0 +1,17 @@
+div(layout='row' layout-align="center" layout-padding)
+  md-whiteframe(layout='column', flex='50')
+    .md-warn(ng-show='lc.error')
+      small {{ lc.error }}
+    form(layout='column')
+      md-input-container.md-icon-float.md-block
+        label email
+        md-icon(md-font-set="material-icons") mail
+        input(type='text' ng-model='lc.credentials.email')
+      md-input-container.md-icon-float.md-block
+        label password
+        md-icon(md-font-set="material-icons") lock_open
+        input(type='password', ng-model='lc.credentials.password')
+      md-button.md-raised.md-primary(ng-click='lc.login()', aria-label='login') Sign In
+    div(layout='row', layout-align='end center')
+      //- md-button(ui-sref='resetpw') Forgot password?     
+      md-button(ui-sref='register') Create an account

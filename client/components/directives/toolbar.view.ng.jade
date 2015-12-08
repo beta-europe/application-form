@@ -1,0 +1,24 @@
+md-toolbar
+  .md-toolbar-tools
+    h2
+      a(href='/') applicationFormt
+    span(flex)
+    md-button(ng-href="/login" ng-hide="$root.currentUser") Login
+    md-button(ng-href="/register" ng-hide="$root.currentUser") Sign Up
+    span(ng-show="$root.currentUser") {{ $root.currentUser | displayName }}
+    md-button(ng-href="/logout" ng-show="$root.currentUser") Logout
+
+
+//-
+  md-toolbar.toolbar(layout='row', layout-align='start center', layout-padding='')
+    .navbar-left(layout='row', layout-align='center center')
+      a(href='/') applicationFormtYoApp
+      md-button(ng-href='/about') About
+      md-button(ng-href='/test') Test
+      md-button(ng-href='/angular.module 'applicationFormt'') List
+    span(flex)
+    div.navbar-right.navbar-text
+      md-button(ng-href="/login" ng-hide="$root.currentUser") Login
+      md-button(ng-href="/register" ng-hide="$root.currentUser") Sign Up
+      div(ng-show="$root.currentUser") {{ $root.currentUser | displayName }}
+      md-button(ng-href="/logout" ng-show="$root.currentUser") Logout

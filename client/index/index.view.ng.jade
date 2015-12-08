@@ -1,0 +1,189 @@
+.menuBardemoBasicUsage(ng-cloak)
+  .menurBarDemoBasic.demo-content
+    md-toolbar.md-menu-toolbar
+      div(layout='row')
+        md-toolbar-filler(layout='', layout-align='center center')
+          md-icon(md-font-set="material-icons") content_paste
+        div
+          h2.md-toolbar-tools Model EU Strasbourg (MEUS) Application Form 2016
+          md-menu-bar
+            md-menu
+              button(ng-click='$mdOpenMenu()') Application   
+              md-menu-content
+                md-menu-item
+                  md-button(ng-click="ctrl.submit($event)") Submit
+                md-menu-item
+                  md-button(ng-click="ctrl.clear($event)") Clear
+                md-menu-divider
+                md-menu-item
+                  md-button(ng-click="ctrl.clear($event)") Print
+                md-menu-divider
+                md-menu-item
+                  md-menu
+                    md-button(ng-click='$mdOpenMenu()') New              
+                    md-menu-content
+                      md-menu-item
+                        md-button(ng-click="ctrl.sampleAction('New Document', $event)") Document
+                      md-menu-item
+                        md-button(ng-click="ctrl.sampleAction('New Spreadsheet', $event)") Spreadsheet
+                      md-menu-item
+                        md-button(ng-click="ctrl.sampleAction('New Presentation', $event)") Presentation
+                      md-menu-item
+                        md-button(ng-click="ctrl.sampleAction('New Form', $event)") Form
+                      md-menu-item
+                        md-button(ng-click="ctrl.sampleAction('New Drawing', $event)") Drawing
+                md-menu-item
+                  md-button(ng-click="ctrl.sampleAction('Open', $event)")
+                    span.md-alt-text  {{ &apos;M-O&apos; | keyboardShortcut }}
+                md-menu-item
+                  md-button(disabled='disabled', ng-click="ctrl.sampleAction('Rename', $event)") Rename
+                md-menu-divider
+                md-menu-item
+                  md-button(ng-click="ctrl.sampleAction('Print', $event)") Print
+                    span.md-alt-text {{ &apos;M-P&apos; | keyboardShortcut }}  
+            md-menu
+              button(ng-click='$mdOpenMenu()') Edit 
+              md-menu-content
+                md-menu-item.md-indent
+                  md-icon(md-svg-icon='content:undo')         
+                  md-button(ng-click="ctrl.sampleAction('undo', $event)") Undo
+                    span.md-alt-text {{ &apos;M-Z&apos; | keyboardShortcut }}
+                md-menu-item.md-indent
+                  md-icon(md-svg-icon='content:redo')
+                  md-button(ng-click="ctrl.sampleAction('redo', $event)") Redo
+                    span.md-alt-text {{ &apos;M-Y&apos; | keyboardShortcut }}          
+                md-menu-divider          
+                md-menu-item.md-indent
+                  md-icon(md-svg-icon='content:content_cut')      
+                  md-button(ng-click="ctrl.sampleAction('cut', $event)") Cut
+                    span.md-alt-text {{ &apos;M-X&apos; | keyboardShortcut }}
+                md-menu-item.md-indent
+                  md-icon(md-svg-icon='content:content_copy')
+                  md-button(ng-click="ctrl.sampleAction('copy', $event)") Copy
+                    span.md-alt-text {{ &apos;M-C&apos; | keyboardShortcut }}
+                md-menu-item.md-indent
+                  md-icon(md-svg-icon='content-paste')
+                  md-button(ng-click="ctrl.sampleAction('paste', $event)") Paste
+                    span.md-alt-text {{ &apos;M-P&apos; | keyboardShortcut }}         
+                md-menu-divider           
+                md-menu-item.md-indent
+                  md-button(ng-click="ctrl.sampleAction('Find and replace', $event)")
+                    | Find and replace...
+                    span.md-alt-text {{ &apos;M-S-H&apos; | keyboardShortcut }}
+            md-menu
+              button(ng-click='$mdOpenMenu()') View
+              md-menu-content
+                md-menu-item(type='checkbox', ng-model='ctrl.settings.printLayout') Print layout           
+                md-menu-item.md-indent
+                  md-menu
+                    md-button(ng-click='$mdOpenMenu()') Mode
+                    md-menu-content(width='3')
+                      md-menu-item(type='radio', ng-model='ctrl.settings.presentationMode', value="'presentation'") Presentation       
+                      md-menu-item(type='radio', ng-model='ctrl.settings.presentationMode', value="'edit'") Edit
+                      md-menu-item(type='radio', ng-model='ctrl.settings.presentationMode', value="'modifiable'") Modifiable
+                md-menu-divider
+                md-menu-item(type='checkbox', ng-model='ctrl.settings.showRuler') Show ruler
+                md-menu-item(type='checkbox', ng-model='ctrl.settings.showEquationToolbar') Show equation toolbar
+                md-menu-item(type='checkbox', ng-model='ctrl.settings.showSpellingSuggestions') Show spelling suggestions
+                md-menu-divider
+                md-menu-item(type='checkbox', ng-model='ctrl.settings.compactControls') Compact controls
+                md-menu-item(type='checkbox', ng-model='ctrl.settings.fullScreen') Full screen
+            md-menu
+              button(ng-click='$mdOpenMenu()') Format
+              md-menu-content
+                md-menu-item
+                  md-button(ng-click="ctrl.sampleAction('bold', $event)")
+                    | Bold
+                    span.md-alt-text  {{ &apos;M-B&apos; | keyboardShortcut }}
+                md-menu-item
+                  md-button(ng-click="ctrl.sampleAction('italic', $event)")
+                    | Italic
+                    span.md-alt-text {{ &apos;M-I&apos; | keyboardShortcut }}
+                md-menu-item
+                  md-button(ng-click="ctrl.sampleAction('underline', $event)")
+                    | Underline
+                    span.md-alt-text {{ &apos;M-U&apos; | keyboardShortcut }}
+                md-menu-item
+                  md-button(ng-click="ctrl.sampleAction('strikethrough', $event)")
+                    | Strikethrough
+                    span.md-alt-text {{ &apos;A-S-5&apos; | keyboardShortcut }}
+                md-menu-item
+                  md-button(ng-click="ctrl.sampleAction('superscript', $event)")
+                    | Superscript
+                    span.md-alt-text {{ &apos;M-.&apos; | keyboardShortcut }}
+                md-menu-item
+                  md-button(ng-click="ctrl.sampleAction('subscript', $event)")
+                    | Subscript
+                    span.md-alt-text {{ &apos;M-,&apos; | keyboardShortcut }}
+                md-menu-divider
+                md-menu-item
+                  md-button(ng-click="ctrl.toggleSetting('clearFormatting')") Clear Formatting
+    md-content(flex)
+      .page-container
+        .page
+          :markdown
+            # ![MEUS](assets/images/logo.png)
+            # Application
+            
+            - Please carefully read the [APPLICATION GUIDE](http://www.meu-strasbourg.org/apply/)
+              before starting your application.
+            - Please note that you will not be able to modify your application after submission.
+            - MEU Strasbourg wishes you good luck with your applicatioin!
+            - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
+            
+          form(name='userForm')
+            h3 Personal Information
+            
+            .md-inline-form(layout='column')
+              //-  md-theme='docs-dark'
+              div(layout='row' layout-sm='column')
+                md-input-container
+                  label First Name        
+                  input(ng-model='ctrl.model.firstname')
+                md-input-container
+                  label Last Name
+                  input(ng-model='ctrl.model.lastname')
+                md-datepicker(ng-model='user.birthdate', md-placeholder='Birth date')
+              div(layout-padding)          
+                md-input-container
+                  label Mail
+                  input(ng-model='ctrl.model.mail' type='email')
+                md-input-container.md-block(md-no-float)
+                  input(type="text" name="phone" placeholder="Phone Number" required ng-model="ctrl.model.phone" international-phone-number)
+                div(layout='', layout-sm='column')
+                  md-input-container(flex='')
+                    label Company (DisabledCompany)     
+                    input(ng-model='user.company', disabled='')
+                div(layout='', layout-sm='column')
+                  md-input-container(flex='')
+                    label First name
+                    input(ng-model='user.firstName')
+                  md-input-container(flex='')
+                    label Last Name
+                    input(ng-model='theMax')
+                md-input-container.md-block
+                  label Address
+                  input(ng-model='user.address')
+                md-input-container.md-block(md-no-float='')
+                  input(ng-model='user.address2', placeholder='Address 2')
+                div(layout='', layout-sm='column')
+                  md-input-container(flex='')
+                    label City
+                    input(ng-model='user.city')
+                  md-input-container(flex='')
+                    label State
+                    md-select(ng-model='user.state')
+                      md-option(ng-repeat='state in states', value='{{state.abbrev}}')
+                        | {{state.abbrev}}
+                  md-input-container(flex='')
+                    label Postal Code
+                    input(name='postalCode', ng-model='user.postalCode', placeholder='12345', required='', ng-pattern='/^[0-9]{5}$/', md-maxlength='5')
+                    div(ng-messages='userForm.postalCode.$error', role='alert', multiple='')
+                      .my-message(ng-message='required') You must supply a postal code.
+                      .my-message(ng-message='pattern')
+                        | That doesn&apos;t look like a valid postal code.
+                      .my-message(ng-message='md-maxlength')
+                        | Don&apos;t use the long version silly...we don&apos;t need to be that specific...
+                md-input-container.md-block
+                  label Biography
+                  textarea(ng-model='user.biography', columns='1', md-maxlength='150', rows='5')

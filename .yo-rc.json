@@ -1,0 +1,14 @@
+{
+  "generator-angular-meteor": {
+    "filters": {
+      "coffee": true,
+      "jade": true,
+      "scss": true,
+      "pagination": true,
+      "framework": "material",
+      "bower": true,
+      "auth": false
+    },
+    "appname": "applicationFormtYo"
+  }
+}
