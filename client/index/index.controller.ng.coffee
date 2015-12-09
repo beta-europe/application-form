@@ -91,5 +91,6 @@ angular.module 'applicationFormt'
   ]
 
   @model = $localStorage.model ||= {}
+  @model.birthdate = if @model.birthdate? then new Date(@model.birthdate) else undefined
 
   return
