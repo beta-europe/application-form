@@ -157,7 +157,7 @@
                   md-input-container(flex="25")
                     label Year of study
                     md-select(ng-model='ctrl.model.studyyear' name='studyyear' required)
-                      md-option(ng-repeat='year in ctrl.studyyear' value='{{year}}') {{year}}
+                      md-option(ng-repeat='year in ctrl.studyyears' value='{{year}}') {{year}}
                     div(ng-messages="userForm.studyyear.$error" role="alert")
                       div(ng-message="required") This field is required.      
                 
