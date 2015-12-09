@@ -1,5 +1,5 @@
 .menuBardemoBasicUsage(ng-cloak)
-  .menurBarDemoBasic.demo-content
+  .menurBarDemoBasic.demo-content(layout="column")
     md-toolbar.md-menu-toolbar
       div(layout='row')
         md-toolbar-filler(layout='', layout-align='center center')
@@ -58,160 +58,161 @@
                   md-icon(md-font-set="material-icons") info_outline
                   md-button Application Form Software
 
-    md-content(flex)
-      .page-container
-        .page
-          :markdown
-            # ![MEUS](assets/images/logo.png)
-            # Application
-            
-            - Please carefully read the [APPLICATION GUIDE](http://www.meu-strasbourg.org/apply/)
-              before starting your application.
-            - Please note that you will not be able to modify your application after submission.
-            - MEU Strasbourg wishes you good luck with your applicatioin!
-            - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
-            
-            
-          form(name='userForm')            
-            .md-inline-form(layout='column')
-              h3 Personal Information
-              //-  md-theme='docs-dark'
-              div(layout='row' layout-sm='column')
-                md-input-container(flex)
-                  label First Name        
-                  input(ng-model='ctrl.model.firstname' name="firstname" required)
-                  div(ng-messages="userForm.firstname.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex)
-                  label Last Name
-                  input(ng-model='ctrl.model.lastname' name='lastname' required)
-                  div(ng-messages="userForm.lastname.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex)
-                  label Sex
-                  md-select(ng-model='ctrl.model.gender')
-                    md-option(ng-repeat='gender in ctrl.genders' value='{{gender}}') {{gender}}
-              p Please provide your birthdate. ({{ctrl.birthMax | date:'mediumDate'}} - {{ctrl.birthMin | date:'mediumDate'}})
-              div(layout='column')
-                md-datepicker(ng-model='ctrl.model.birthdate' name="birthdate"  md-placeholder='Birth date' md-min-date="ctrl.birthMax" md-max-date="ctrl.birthMin" required)
-                div.validation-messages(ng-messages="userForm.birthdate.$error")
-                  div(ng-message="required") This birthdate is required!
-                  div(ng-message="mindate") Apparently you are too old to apply.
-                  div(ng-message="maxdate") Apprently you are too young to apply.
-              div(layout='row' layout-sm='column')
-                md-input-container(flex)
-                  label Country of Nationality 
-                  input(ng-model='ctrl.model.nationality' name="nationality")
-                  div(ng-messages="userForm.nationality.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex)
-                  label Country of Residency
-                  input(ng-model='ctrl.model.residency' name='residency')
-                  div(ng-messages="userForm.residency.$error" role="alert")
-                    div(ng-message="required") This field is required.
-              div(layout layout-sm='column')          
-                md-input-container(flex)
-                  label Mail
-                  input(ng-model='ctrl.model.email' name='email' type='email' required)
-                  div(ng-messages="userForm.email.$error" role="alert" multiple)
-                    div(ng-message="required") This field is required.
-                md-input-container.md-block(md-no-float flex)
-                  input(type="text" name="phone" placeholder="Phone Number" required ng-model="ctrl.model.phone" international-phone-number)
-                  div(ng-messages="userForm.phone.$error" role="alert" multiple)
-                    div(ng-message="required") This field is required.
-              p Please indicate which document you will be using as proof of identity and give its number.     
-              div(layout='row' layout-sm='column')
-                md-input-container(flex='25')
-                  label Document Type
-                  md-select(ng-model='ctrl.model.idtype' required)
-                    md-option(ng-repeat='id in ctrl.idtypes' value='{{id}}') {{id}}
-                  div(ng-messages="userForm.idtype.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex)
-                  label Number
-                  input(ng-model='ctrl.model.idnumber' name="idnumber" required)
-                  div(ng-messages="userForm.idnumber.$error" role="alert")
-                    div(ng-message="required") This field is required.
-  
-              h3 Educational Background
-              div(layout='row' layout-sm='column')
-                md-input-container(flex)
-                  label Educational Institute
-                  input(ng-model='ctrl.model.institute' name="institute" required)
-                  div(ng-messages="userForm.institute.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex="25")
-                  label Level of study
-                  md-select(ng-model='ctrl.model.degree' name='degree' required)
-                    md-option(ng-repeat='degree in ctrl.degrees' value='{{degree}}') {{degree}}
-                  div(ng-messages="userForm.degree.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                    
-              div(layout='row' layout-sm='column')
-                md-input-container(flex)
-                  label Field of study    
-                  input(ng-model='ctrl.model.studyfield' name="studyfield" required)
-                  div(ng-messages="userForm.studyfield.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex="25")
-                  label Year of study
-                  md-select(ng-model='ctrl.model.studyyear' name='studyyear' required)
-                    md-option(ng-repeat='year in ctrl.studyyear' value='{{year}}') {{year}}
-                  div(ng-messages="userForm.studyyear.$error" role="alert")
-                    div(ng-message="required") This field is required.      
+    div(flex layout="row")
+      md-content(flex)
+        .page-container
+          .page
+            :markdown
+              # ![MEUS](assets/images/logo.png)
+              # Application
               
-              h3 Languages
-              div(layout='row' layout-sm='column')  
-                md-input-container(flex="33")
-                  label English Reading
-                  md-select(ng-model='ctrl.model.englishreading' name='englishreading' required)
-                    md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
-                  div(ng-messages="userForm.englishreading.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex="33")
-                  label English Writing
-                  md-select(ng-model='ctrl.model.englishwriting' name='englishwriting' required)
-                    md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
-                  div(ng-messages="userForm.englishwriting.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex="33")
-                  label English Speaking
-                  md-select(ng-model='ctrl.model.englishspeaking' name='englishspeaking' required)
-                    md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
-                  div(ng-messages="userForm.englishspeaking.$error" role="alert")
-                    div(ng-message="required") This field is required.
-              div(layout='row' layout-sm='column')
-                md-input-container(flex)
-                  label Mother Tongue       
-                  input(ng-model='ctrl.model.mothertongue' name="mothertongue" required)
-                  div(ng-messages="userForm.mothertongue.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex)
-                  label Other Languages
-                  input(ng-model='ctrl.model.otherlanguages' name='otherlanguages' required)
-                  div(ng-messages="userForm.otherlanguages.$error" role="alert")
-                    div(ng-message="required") This field is required.                    
-              div(layout='row' layout-sm='column')    
-                  
-              h3 Motivation Letter and Essay
-              div(layout='row' layout-sm='column')  
-                md-input-container(flex)
-                  label Role 1st Priority
-                  md-select(ng-model='ctrl.model.role1' name='role1' required)
-                    md-option(ng-repeat='role in ctrl.roles' value='{{role}}') {{role}}
-                  div(ng-messages="userForm.role1.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                md-input-container(flex)
-                  label Role 2nd Priority
-                  md-select(ng-model='ctrl.model.role2' name='role2' required)
-                    md-option(ng-repeat='role in ctrl.roles' value='{{role}}') {{role}}
-                  div(ng-messages="userForm.role2.$error" role="alert")
-                    div(ng-message="required") This field is required.
-              div(layout)
-                md-input-container.md-block(flex)
-                  label Biography
-                  textarea(ng-model='user.biography', columns='1', md-maxlength='150', rows='5')                
+              - Please carefully read the [APPLICATION GUIDE](http://www.meu-strasbourg.org/apply/)
+                before starting your application.
+              - Please note that you will not be able to modify your application after submission.
+              - MEU Strasbourg wishes you good luck with your applicatioin!
+              - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
+              
+              
+            form(name='userForm')            
+              .md-inline-form(layout='column')
+                h3 Personal Information
+                //-  md-theme='docs-dark'
+                div(layout='row' layout-sm='column')
+                  md-input-container(flex)
+                    label First Name        
+                    input(ng-model='ctrl.model.firstname' name="firstname" required)
+                    div(ng-messages="userForm.firstname.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex)
+                    label Last Name
+                    input(ng-model='ctrl.model.lastname' name='lastname' required)
+                    div(ng-messages="userForm.lastname.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex)
+                    label Sex
+                    md-select(ng-model='ctrl.model.gender')
+                      md-option(ng-repeat='gender in ctrl.genders' value='{{gender}}') {{gender}}
+                p Please provide your birthdate. ({{ctrl.birthMax | date:'mediumDate'}} - {{ctrl.birthMin | date:'mediumDate'}})
+                div(layout='column')
+                  md-datepicker(ng-model='ctrl.model.birthdate' name="birthdate"  md-placeholder='Birth date' md-min-date="ctrl.birthMax" md-max-date="ctrl.birthMin" required)
+                  div.validation-messages(ng-messages="userForm.birthdate.$error")
+                    div(ng-message="required") This birthdate is required!
+                    div(ng-message="mindate") Apparently you are too old to apply.
+                    div(ng-message="maxdate") Apprently you are too young to apply.
+                div(layout='row' layout-sm='column')
+                  md-input-container(flex)
+                    label Country of Nationality 
+                    input(ng-model='ctrl.model.nationality' name="nationality")
+                    div(ng-messages="userForm.nationality.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex)
+                    label Country of Residency
+                    input(ng-model='ctrl.model.residency' name='residency')
+                    div(ng-messages="userForm.residency.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                div(layout layout-sm='column')          
+                  md-input-container(flex)
+                    label Mail
+                    input(ng-model='ctrl.model.email' name='email' type='email' required)
+                    div(ng-messages="userForm.email.$error" role="alert" multiple)
+                      div(ng-message="required") This field is required.
+                  md-input-container.md-block(md-no-float flex)
+                    input(type="text" name="phone" placeholder="Phone Number" required ng-model="ctrl.model.phone" international-phone-number)
+                    div(ng-messages="userForm.phone.$error" role="alert" multiple)
+                      div(ng-message="required") This field is required.
+                p Please indicate which document you will be using as proof of identity and give its number.     
+                div(layout='row' layout-sm='column')
+                  md-input-container(flex='25')
+                    label Document Type
+                    md-select(ng-model='ctrl.model.idtype' required)
+                      md-option(ng-repeat='id in ctrl.idtypes' value='{{id}}') {{id}}
+                    div(ng-messages="userForm.idtype.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex)
+                    label Number
+                    input(ng-model='ctrl.model.idnumber' name="idnumber" required)
+                    div(ng-messages="userForm.idnumber.$error" role="alert")
+                      div(ng-message="required") This field is required.
+    
+                h3 Educational Background
+                div(layout='row' layout-sm='column')
+                  md-input-container(flex)
+                    label Educational Institute
+                    input(ng-model='ctrl.model.institute' name="institute" required)
+                    div(ng-messages="userForm.institute.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex="25")
+                    label Level of study
+                    md-select(ng-model='ctrl.model.degree' name='degree' required)
+                      md-option(ng-repeat='degree in ctrl.degrees' value='{{degree}}') {{degree}}
+                    div(ng-messages="userForm.degree.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                      
+                div(layout='row' layout-sm='column')
+                  md-input-container(flex)
+                    label Field of study    
+                    input(ng-model='ctrl.model.studyfield' name="studyfield" required)
+                    div(ng-messages="userForm.studyfield.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex="25")
+                    label Year of study
+                    md-select(ng-model='ctrl.model.studyyear' name='studyyear' required)
+                      md-option(ng-repeat='year in ctrl.studyyear' value='{{year}}') {{year}}
+                    div(ng-messages="userForm.studyyear.$error" role="alert")
+                      div(ng-message="required") This field is required.      
                 
+                h3 Languages
+                div(layout='row' layout-sm='column')  
+                  md-input-container(flex="33")
+                    label English Reading
+                    md-select(ng-model='ctrl.model.englishreading' name='englishreading' required)
+                      md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+                    div(ng-messages="userForm.englishreading.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex="33")
+                    label English Writing
+                    md-select(ng-model='ctrl.model.englishwriting' name='englishwriting' required)
+                      md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+                    div(ng-messages="userForm.englishwriting.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex="33")
+                    label English Speaking
+                    md-select(ng-model='ctrl.model.englishspeaking' name='englishspeaking' required)
+                      md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+                    div(ng-messages="userForm.englishspeaking.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                div(layout='row' layout-sm='column')
+                  md-input-container(flex)
+                    label Mother Tongue       
+                    input(ng-model='ctrl.model.mothertongue' name="mothertongue" required)
+                    div(ng-messages="userForm.mothertongue.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex)
+                    label Other Languages
+                    input(ng-model='ctrl.model.otherlanguages' name='otherlanguages' required)
+                    div(ng-messages="userForm.otherlanguages.$error" role="alert")
+                      div(ng-message="required") This field is required.                    
+                div(layout='row' layout-sm='column')    
+                    
+                h3 Motivation Letter and Essay
+                div(layout='row' layout-sm='column')  
+                  md-input-container(flex)
+                    label Role 1st Priority
+                    md-select(ng-model='ctrl.model.role1' name='role1' required)
+                      md-option(ng-repeat='role in ctrl.roles' value='{{role}}') {{role}}
+                    div(ng-messages="userForm.role1.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                  md-input-container(flex)
+                    label Role 2nd Priority
+                    md-select(ng-model='ctrl.model.role2' name='role2' required)
+                      md-option(ng-repeat='role in ctrl.roles' value='{{role}}') {{role}}
+                    div(ng-messages="userForm.role2.$error" role="alert")
+                      div(ng-message="required") This field is required.
+                div(layout)
+                  md-input-container.md-block(flex)
+                    label Biography
+                    textarea(ng-model='user.biography', columns='1', md-maxlength='150', rows='5')                
+                  
                 //-    
                     div(layout='row' layout-sm='column')  
                       md-input-container(flex)
