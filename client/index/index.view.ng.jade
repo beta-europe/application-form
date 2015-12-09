@@ -10,114 +10,54 @@
             md-menu
               button(ng-click='$mdOpenMenu()') Application   
               md-menu-content
-                md-menu-item
+                md-menu-item.md-indent
+                  md-icon(md-font-set="material-icons") done
                   md-button(ng-click="ctrl.submit($event)") Submit
-                md-menu-item
+                md-menu-item.md-indent
+                  md-icon(md-font-set="material-icons") clear
                   md-button(ng-click="ctrl.clear($event)") Clear
                 md-menu-divider
-                md-menu-item
-                  md-button(ng-click="ctrl.clear($event)") Print
+                md-menu-item.md-indent                  
+                  //- md-icon(md-font-set="material-icons") brush
+                  md-icon(md-font-set="material-icons") autorenew
+                  md-button(ng-click="ctrl.autoFill($event)") Autofill
                 md-menu-divider
-                md-menu-item
-                  md-menu
-                    md-button(ng-click='$mdOpenMenu()') New              
-                    md-menu-content
-                      md-menu-item
-                        md-button(ng-click="ctrl.sampleAction('New Document', $event)") Document
-                      md-menu-item
-                        md-button(ng-click="ctrl.sampleAction('New Spreadsheet', $event)") Spreadsheet
-                      md-menu-item
-                        md-button(ng-click="ctrl.sampleAction('New Presentation', $event)") Presentation
-                      md-menu-item
-                        md-button(ng-click="ctrl.sampleAction('New Form', $event)") Form
-                      md-menu-item
-                        md-button(ng-click="ctrl.sampleAction('New Drawing', $event)") Drawing
-                md-menu-item
-                  md-button(ng-click="ctrl.sampleAction('Open', $event)")
-                    span.md-alt-text  {{ &apos;M-O&apos; | keyboardShortcut }}
-                md-menu-item
-                  md-button(disabled='disabled', ng-click="ctrl.sampleAction('Rename', $event)") Rename
-                md-menu-divider
-                md-menu-item
-                  md-button(ng-click="ctrl.sampleAction('Print', $event)") Print
-                    span.md-alt-text {{ &apos;M-P&apos; | keyboardShortcut }}  
+                md-menu-item.md-indent
+                  md-icon(md-font-set="material-icons") print
+                  md-button(ng-click="ctrl.print($event)") Print
             md-menu
-              button(ng-click='$mdOpenMenu()') Edit 
+              button(ng-click='$mdOpenMenu()') Contact 
               md-menu-content
                 md-menu-item.md-indent
-                  md-icon(md-svg-icon='content:undo')         
-                  md-button(ng-click="ctrl.sampleAction('undo', $event)") Undo
-                    span.md-alt-text {{ &apos;M-Z&apos; | keyboardShortcut }}
+                  md-icon(md-font-set="material-icons") email
+                  md-button(href="mailto:robert@riemann.cc") Participant Coordinator
+                md-menu-divider
                 md-menu-item.md-indent
-                  md-icon(md-svg-icon='content:redo')
-                  md-button(ng-click="ctrl.sampleAction('redo', $event)") Redo
-                    span.md-alt-text {{ &apos;M-Y&apos; | keyboardShortcut }}          
-                md-menu-divider          
+                  md-icon(md-font-set="material-icons") email
+                  md-button(ng-click="ctrl.sampleAction('redo', $event)") General Inquiry
                 md-menu-item.md-indent
-                  md-icon(md-svg-icon='content:content_cut')      
-                  md-button(ng-click="ctrl.sampleAction('cut', $event)") Cut
-                    span.md-alt-text {{ &apos;M-X&apos; | keyboardShortcut }}
-                md-menu-item.md-indent
-                  md-icon(md-svg-icon='content:content_copy')
-                  md-button(ng-click="ctrl.sampleAction('copy', $event)") Copy
-                    span.md-alt-text {{ &apos;M-C&apos; | keyboardShortcut }}
-                md-menu-item.md-indent
-                  md-icon(md-svg-icon='content-paste')
-                  md-button(ng-click="ctrl.sampleAction('paste', $event)") Paste
-                    span.md-alt-text {{ &apos;M-P&apos; | keyboardShortcut }}         
-                md-menu-divider           
-                md-menu-item.md-indent
-                  md-button(ng-click="ctrl.sampleAction('Find and replace', $event)")
-                    | Find and replace...
-                    span.md-alt-text {{ &apos;M-S-H&apos; | keyboardShortcut }}
+                  md-icon(md-font-set="material-icons") email
+                  md-button Technical Support
             md-menu
-              button(ng-click='$mdOpenMenu()') View
+              button(ng-click='$mdOpenMenu()') Help
               md-menu-content
-                md-menu-item(type='checkbox', ng-model='ctrl.settings.printLayout') Print layout           
                 md-menu-item.md-indent
-                  md-menu
-                    md-button(ng-click='$mdOpenMenu()') Mode
-                    md-menu-content(width='3')
-                      md-menu-item(type='radio', ng-model='ctrl.settings.presentationMode', value="'presentation'") Presentation       
-                      md-menu-item(type='radio', ng-model='ctrl.settings.presentationMode', value="'edit'") Edit
-                      md-menu-item(type='radio', ng-model='ctrl.settings.presentationMode', value="'modifiable'") Modifiable
+                  md-icon(md-font-set="material-icons") home
+                  md-button Model EU Strasbourg Website
+                md-menu-item.md-indent
+                  md-icon(md-font-set="material-icons") help_outline
+                  md-button Application Procedure
+                md-menu-item.md-indent
+                  md-icon(md-font-set="material-icons") open_in_new
+                  md-button Model EU Strasbourg Wikipedia Article
+                md-menu-item.md-indent
+                  md-icon(md-font-set="material-icons") open_in_new
+                  md-button Model EU Strasbourg on Facebook
                 md-menu-divider
-                md-menu-item(type='checkbox', ng-model='ctrl.settings.showRuler') Show ruler
-                md-menu-item(type='checkbox', ng-model='ctrl.settings.showEquationToolbar') Show equation toolbar
-                md-menu-item(type='checkbox', ng-model='ctrl.settings.showSpellingSuggestions') Show spelling suggestions
-                md-menu-divider
-                md-menu-item(type='checkbox', ng-model='ctrl.settings.compactControls') Compact controls
-                md-menu-item(type='checkbox', ng-model='ctrl.settings.fullScreen') Full screen
-            md-menu
-              button(ng-click='$mdOpenMenu()') Format
-              md-menu-content
-                md-menu-item
-                  md-button(ng-click="ctrl.sampleAction('bold', $event)")
-                    | Bold
-                    span.md-alt-text  {{ &apos;M-B&apos; | keyboardShortcut }}
-                md-menu-item
-                  md-button(ng-click="ctrl.sampleAction('italic', $event)")
-                    | Italic
-                    span.md-alt-text {{ &apos;M-I&apos; | keyboardShortcut }}
-                md-menu-item
-                  md-button(ng-click="ctrl.sampleAction('underline', $event)")
-                    | Underline
-                    span.md-alt-text {{ &apos;M-U&apos; | keyboardShortcut }}
-                md-menu-item
-                  md-button(ng-click="ctrl.sampleAction('strikethrough', $event)")
-                    | Strikethrough
-                    span.md-alt-text {{ &apos;A-S-5&apos; | keyboardShortcut }}
-                md-menu-item
-                  md-button(ng-click="ctrl.sampleAction('superscript', $event)")
-                    | Superscript
-                    span.md-alt-text {{ &apos;M-.&apos; | keyboardShortcut }}
-                md-menu-item
-                  md-button(ng-click="ctrl.sampleAction('subscript', $event)")
-                    | Subscript
-                    span.md-alt-text {{ &apos;M-,&apos; | keyboardShortcut }}
-                md-menu-divider
-                md-menu-item
-                  md-button(ng-click="ctrl.toggleSetting('clearFormatting')") Clear Formatting
+                md-menu-item.md-indent
+                  md-icon(md-font-set="material-icons") info_outline
+                  md-button Application Form Software
+
     md-content(flex)
       .page-container
         .page
@@ -131,59 +71,162 @@
             - MEU Strasbourg wishes you good luck with your applicatioin!
             - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
             
-          form(name='userForm')
-            h3 Personal Information
             
+          form(name='userForm')            
             .md-inline-form(layout='column')
+              h3 Personal Information
               //-  md-theme='docs-dark'
               div(layout='row' layout-sm='column')
-                md-input-container
+                md-input-container(flex)
                   label First Name        
-                  input(ng-model='ctrl.model.firstname')
-                md-input-container
+                  input(ng-model='ctrl.model.firstname' name="firstname" required)
+                  div(ng-messages="userForm.firstname.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex)
                   label Last Name
-                  input(ng-model='ctrl.model.lastname')
-                md-datepicker(ng-model='user.birthdate', md-placeholder='Birth date')
-              div(layout-padding)          
-                md-input-container
+                  input(ng-model='ctrl.model.lastname' name='lastname' required)
+                  div(ng-messages="userForm.lastname.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex)
+                  label Sex
+                  md-select(ng-model='ctrl.model.gender')
+                    md-option(ng-repeat='gender in ctrl.genders' value='{{gender}}') {{gender}}
+              p Please provide your birthdate. ({{ctrl.birthMax | date:'mediumDate'}} - {{ctrl.birthMin | date:'mediumDate'}})
+              div(layout='column')
+                md-datepicker(ng-model='ctrl.model.birthdate' name="birthdate"  md-placeholder='Birth date' md-min-date="ctrl.birthMax" md-max-date="ctrl.birthMin" required)
+                div.validation-messages(ng-messages="userForm.birthdate.$error")
+                  div(ng-message="required") This birthdate is required!
+                  div(ng-message="mindate") Apparently you are too old to apply.
+                  div(ng-message="maxdate") Apprently you are too young to apply.
+              div(layout='row' layout-sm='column')
+                md-input-container(flex)
+                  label Country of Nationality 
+                  input(ng-model='ctrl.model.nationality' name="nationality")
+                  div(ng-messages="userForm.nationality.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex)
+                  label Country of Residency
+                  input(ng-model='ctrl.model.residency' name='residency')
+                  div(ng-messages="userForm.residency.$error" role="alert")
+                    div(ng-message="required") This field is required.
+              div(layout layout-sm='column')          
+                md-input-container(flex)
                   label Mail
-                  input(ng-model='ctrl.model.mail' type='email')
-                md-input-container.md-block(md-no-float)
+                  input(ng-model='ctrl.model.email' name='email' type='email' required)
+                  div(ng-messages="userForm.email.$error" role="alert" multiple)
+                    div(ng-message="required") This field is required.
+                md-input-container.md-block(md-no-float flex)
                   input(type="text" name="phone" placeholder="Phone Number" required ng-model="ctrl.model.phone" international-phone-number)
-                div(layout='', layout-sm='column')
-                  md-input-container(flex='')
-                    label Company (DisabledCompany)     
-                    input(ng-model='user.company', disabled='')
-                div(layout='', layout-sm='column')
-                  md-input-container(flex='')
-                    label First name
-                    input(ng-model='user.firstName')
-                  md-input-container(flex='')
-                    label Last Name
-                    input(ng-model='theMax')
-                md-input-container.md-block
-                  label Address
-                  input(ng-model='user.address')
-                md-input-container.md-block(md-no-float='')
-                  input(ng-model='user.address2', placeholder='Address 2')
-                div(layout='', layout-sm='column')
-                  md-input-container(flex='')
-                    label City
-                    input(ng-model='user.city')
-                  md-input-container(flex='')
-                    label State
-                    md-select(ng-model='user.state')
-                      md-option(ng-repeat='state in states', value='{{state.abbrev}}')
-                        | {{state.abbrev}}
-                  md-input-container(flex='')
-                    label Postal Code
-                    input(name='postalCode', ng-model='user.postalCode', placeholder='12345', required='', ng-pattern='/^[0-9]{5}$/', md-maxlength='5')
-                    div(ng-messages='userForm.postalCode.$error', role='alert', multiple='')
-                      .my-message(ng-message='required') You must supply a postal code.
-                      .my-message(ng-message='pattern')
-                        | That doesn&apos;t look like a valid postal code.
-                      .my-message(ng-message='md-maxlength')
-                        | Don&apos;t use the long version silly...we don&apos;t need to be that specific...
-                md-input-container.md-block
+                  div(ng-messages="userForm.phone.$error" role="alert" multiple)
+                    div(ng-message="required") This field is required.
+              p Please indicate which document you will be using as proof of identity and give its number.     
+              div(layout='row' layout-sm='column')
+                md-input-container(flex='25')
+                  label Document Type
+                  md-select(ng-model='ctrl.model.idtype' required)
+                    md-option(ng-repeat='id in ctrl.idtypes' value='{{id}}') {{id}}
+                  div(ng-messages="userForm.idtype.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex)
+                  label Number
+                  input(ng-model='ctrl.model.idnumber' name="idnumber" required)
+                  div(ng-messages="userForm.idnumber.$error" role="alert")
+                    div(ng-message="required") This field is required.
+  
+              h3 Educational Background
+              div(layout='row' layout-sm='column')
+                md-input-container(flex)
+                  label Educational Institute
+                  input(ng-model='ctrl.model.institute' name="institute" required)
+                  div(ng-messages="userForm.institute.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex="25")
+                  label Level of study
+                  md-select(ng-model='ctrl.model.degree' name='degree' required)
+                    md-option(ng-repeat='degree in ctrl.degrees' value='{{degree}}') {{degree}}
+                  div(ng-messages="userForm.degree.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                    
+              div(layout='row' layout-sm='column')
+                md-input-container(flex)
+                  label Field of study    
+                  input(ng-model='ctrl.model.studyfield' name="studyfield" required)
+                  div(ng-messages="userForm.studyfield.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex="25")
+                  label Year of study
+                  md-select(ng-model='ctrl.model.studyyear' name='studyyear' required)
+                    md-option(ng-repeat='year in ctrl.studyyear' value='{{year}}') {{year}}
+                  div(ng-messages="userForm.studyyear.$error" role="alert")
+                    div(ng-message="required") This field is required.      
+              
+              h3 Languages
+              div(layout='row' layout-sm='column')  
+                md-input-container(flex="33")
+                  label English Reading
+                  md-select(ng-model='ctrl.model.englishreading' name='englishreading' required)
+                    md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+                  div(ng-messages="userForm.englishreading.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex="33")
+                  label English Writing
+                  md-select(ng-model='ctrl.model.englishwriting' name='englishwriting' required)
+                    md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+                  div(ng-messages="userForm.englishwriting.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex="33")
+                  label English Speaking
+                  md-select(ng-model='ctrl.model.englishspeaking' name='englishspeaking' required)
+                    md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+                  div(ng-messages="userForm.englishspeaking.$error" role="alert")
+                    div(ng-message="required") This field is required.
+              div(layout='row' layout-sm='column')
+                md-input-container(flex)
+                  label Mother Tongue       
+                  input(ng-model='ctrl.model.mothertongue' name="mothertongue" required)
+                  div(ng-messages="userForm.mothertongue.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex)
+                  label Other Languages
+                  input(ng-model='ctrl.model.otherlanguages' name='otherlanguages' required)
+                  div(ng-messages="userForm.otherlanguages.$error" role="alert")
+                    div(ng-message="required") This field is required.                    
+              div(layout='row' layout-sm='column')    
+                  
+              h3 Motivation Letter and Essay
+              div(layout='row' layout-sm='column')  
+                md-input-container(flex)
+                  label Role 1st Priority
+                  md-select(ng-model='ctrl.model.role1' name='role1' required)
+                    md-option(ng-repeat='role in ctrl.roles' value='{{role}}') {{role}}
+                  div(ng-messages="userForm.role1.$error" role="alert")
+                    div(ng-message="required") This field is required.
+                md-input-container(flex)
+                  label Role 2nd Priority
+                  md-select(ng-model='ctrl.model.role2' name='role2' required)
+                    md-option(ng-repeat='role in ctrl.roles' value='{{role}}') {{role}}
+                  div(ng-messages="userForm.role2.$error" role="alert")
+                    div(ng-message="required") This field is required.
+              div(layout)
+                md-input-container.md-block(flex)
                   label Biography
-                  textarea(ng-model='user.biography', columns='1', md-maxlength='150', rows='5')
+                  textarea(ng-model='user.biography', columns='1', md-maxlength='150', rows='5')                
+                
+                //-    
+                    div(layout='row' layout-sm='column')  
+                      md-input-container(flex)
+                        label Number
+                        input(ng-model='ctrl.model.idnumber' name="idnumber" required)
+                        div(ng-messages="userForm.idnumber.$error" role="alert")
+                          div(ng-message="required") This field is required.
+                          
+                    div(layout)
+                      md-input-container(flex='')
+                        label Postal Code
+                        input(name='postalCode', ng-model='user.postalCode', placeholder='12345', required='', ng-pattern='/^[0-9]{5}$/', md-maxlength='5')
+                        div(ng-messages='userForm.postalCode.$error', role='alert', multiple='')
+                          .my-message(ng-message='required') You must supply a postal code.
+                          .my-message(ng-message='pattern')
+                            | That doesn&apos;t look like a valid postal code.
+                          .my-message(ng-message='md-maxlength')
+                            | Don&apos;t use the long version silly...we don&apos;t need to be that specific...            

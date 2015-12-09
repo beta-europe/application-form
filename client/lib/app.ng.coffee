@@ -4,6 +4,8 @@ angular.module 'applicationFormt', [
   'ngMaterial'
   'ngMessages'
   'ngMdIcons'
+  'internationalPhoneNumber'
+  'ngStorage'
 ]
 
 onReady = () ->

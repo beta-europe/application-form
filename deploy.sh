@@ -1,11 +1,11 @@
 #!/bin/sh
 
 meteor build build
-scp build/applicationFormt-meteor.tar.gz riemann.cc:/home/rriemann/projects/uiaed
-scp settings-production.json riemann.cc:/home/rriemann/projects/uiaed/settings-production.json
+scp build/apply-meus.tar.gz europe@meu-strasbourg.org:/home/europe/projects/apply-meus/
+scp settings.json europe@meu-strasbourg.org:/home/europe/projects/apply-meus/settings.json
 
-ssh riemann.cc "\
-cd /home/rriemann/projects/uiaed && \
-svc -d ~/service/uiaed && \
-tar -xvf uiaed-meteor.tar.gz && \
-svc -u ~/service/uiaed"
+ssh europe@meu-strasbourg.org "\
+cd /home/europe/projects/apply-meus && \
+svc -d ~/service/apply-meus && \
+tar -xvf apply-meus.tar.gz && \
+svc -u ~/service/apply-meus"

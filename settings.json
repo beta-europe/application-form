@@ -1,0 +1,18 @@
+{
+  "public": {
+    "conference": {
+      "dates": {
+        "start": "2016-04-02T00:00:00.000Z",
+        "end": "2016-04-09T00:00:00.000Z"
+      }
+    },
+    "application": {
+      "criteria": {
+        "age": {
+          "min": 18,
+          "max": 26
+        }
+      }
+    }
+  }
+}
