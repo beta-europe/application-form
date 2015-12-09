@@ -1,11 +1,10 @@
 #!/bin/sh
 
-meteor build build
-scp build/apply-meus.tar.gz europe@meu-strasbourg.org:/home/europe/projects/apply-meus/
+TMPDIR=`mktemp -d` || exit 1
+meteor build --directory $TMPDIR
+rsync -va $TMPDIR/ europe@meu-strasbourg.org:/home/europe/projects/apply-meus/
 scp settings.json europe@meu-strasbourg.org:/home/europe/projects/apply-meus/settings.json
 
-ssh europe@meu-strasbourg.org "\
-cd /home/europe/projects/apply-meus && \
-svc -d ~/service/apply-meus && \
-tar -xvf apply-meus.tar.gz && \
-svc -u ~/service/apply-meus"
+ssh europe@meu-strasbourg.org "svc -du ~/service/apply-meus"
+
+rm -fr $TMPDIR
