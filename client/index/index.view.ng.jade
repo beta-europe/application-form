@@ -195,19 +195,20 @@ md-content(flex)
             md-input-container(flex)
               label Role 1st Priority
               md-select(ng-model='ctrl.model.role1' name='role1' required)
-                md-option(ng-repeat='role in ctrl.roles' value='{{role}}') {{role}}
+                md-option(ng-repeat='role in ctrl.roles' value='{{$index}}') {{role}}
               div(ng-messages="userForm.role1.$error" role="alert")
                 div(ng-message="required") This field is required.
             md-input-container(flex)
               label Role 2nd Priority
-              md-select(ng-model='ctrl.model.role2' name='role2' required)
-                md-option(ng-repeat='role in ctrl.roles' value='{{role}}') {{role}}
+              md-select(ng-model='ctrl.model.role2' name='role2' ng-disabled='ctrl.model.role1 == ctrl.Roles.Interpreter')
+                md-option(value='-1') none
+                md-option(ng-repeat='role in ctrl.roles.slice(0,-1)' value='{{$index}}') {{role}}
               div(ng-messages="userForm.role2.$error" role="alert")
                 div(ng-message="required") This field is required.
-          div(layout)
+          div(layout='column')
             md-input-container.md-block(flex)
-              label Biography
-              textarea(ng-model='user.biography', columns='1', md-maxlength='150', rows='5')                
+              label Motivation Letter for 1st Priority ({{ctrl.motivationMaxWords}}±10%)
+              textarea(ng-model='ctrl.model.motivation1', columns='1', md-maxwords='ctrl.motivationMaxWords*1.1', rows='5')         
             
           //-    
               div(layout='row' layout-sm='column')  

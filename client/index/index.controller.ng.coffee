@@ -81,6 +81,16 @@ angular.module 'applicationFormt'
     'Beginner'
   ]
 
+  @Roles =
+    None: "-1"
+    MEP: "0"
+    Minister: "1"
+    Journalist: "2"
+    JournalistMedia: "3"
+    Lobbyist: "4"
+    Interpreter: "5"
+
+  # titles for the Roles object
   @roles = [
     'Member of the Parliament (MEP)'
     'Minister'
@@ -89,6 +99,17 @@ angular.module 'applicationFormt'
     'Lobbyist'
     'Interpreter'
   ]
+
+  @motivationMaxWords = 250
+  @needEssay = true
+  $scope.$watch =>
+    @model.role1
+  , (newRole1) =>
+    if newRole1 is @Roles.Interpreter
+      @motivationMaxWords = 1000
+      @model.role2 = @Roles.None
+    else
+      @motivationMaxWords = 250
 
   @model = $localStorage.model ||= {}
   @model.birthdate = if @model.birthdate? then new Date(@model.birthdate) else undefined
