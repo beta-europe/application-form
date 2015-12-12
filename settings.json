@@ -12,6 +12,10 @@
           "min": 18,
           "max": 26
         }
+      },
+      "textsize": {
+        "essay": 500,
+        "motivationletter": 250
       }
     }
   }

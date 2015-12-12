@@ -1,21 +1,21 @@
 'use strict'
 
 angular.module 'applicationFormt'
-.filter 'keyboardShortcut', ($window) ->
-    return (str) ->
-      return unless str
-      keys = str.split('-')
-      isOSX = /Mac OS X/.test($window.navigator.userAgent)
-      seperator = (!isOSX || keys.length > 2) ? '+' : ''
-      abbreviations = {
-        M: isOSX ? '⌘' : 'Ctrl'
-        A: isOSX ? 'Option' : 'Alt'
-        S: 'Shift'
-      }
-      return keys.map( (key, index) ->
-        last = index == keys.length - 1;
-        return last ? key : abbreviations[key]
-      ).join(seperator)
+# .filter 'keyboardShortcut', ($window) ->
+#     return (str) ->
+#       return unless str
+#       keys = str.split('-')
+#       isOSX = /Mac OS X/.test($window.navigator.userAgent)
+#       seperator = (!isOSX || keys.length > 2) ? '+' : ''
+#       abbreviations = {
+#         M: isOSX ? '⌘' : 'Ctrl'
+#         A: isOSX ? 'Option' : 'Alt'
+#         S: 'Shift'
+#       }
+#       return keys.map( (key, index) ->
+#         last = index == keys.length - 1;
+#         return last ? key : abbreviations[key]
+#       ).join(seperator)
 
 .config (ipnConfig) ->
     # ipnConfig.defaultCountry = 'fr'
@@ -81,6 +81,12 @@ angular.module 'applicationFormt'
     'Beginner'
   ]
 
+  @essayQuestions = [
+    'Does the current refugee crisis demonstrate the failure or the success of dealing with the right to asylum at a European level?'
+    'Is it feasible and desirable for the European Union to rely exclusively on the use of renewable energy?'
+    'Is the process of European Integration driven by ideology or practical considerations? Discuss.'
+  ]
+
   @Roles =
     None: "-1"
     MEP: "0"
@@ -99,19 +105,39 @@ angular.module 'applicationFormt'
     'Lobbyist'
     'Interpreter'
   ]
+  @motivationMaxWords = Meteor.settings.public.application.textsize.motivationletter
+  @essayMaxWords = Meteor.settings.public.application.textsize.essay
 
-  @motivationMaxWords = 250
+  @needMotivation0 = true
+  @needMotivation1 = false
   @needEssay = true
   $scope.$watch =>
-    @model.role1
-  , (newRole1) =>
-    if newRole1 is @Roles.Interpreter
-      @motivationMaxWords = 1000
-      @model.role2 = @Roles.None
+    @model.role
+  , (role) =>
+    debugger
+    @needMotivation0 = _.contains [@Roles.MEP, @Roles.Minister, @Roles.Lobbyist], @model.role[0]
+    @needMotivation1 = _.contains [@Roles.MEP, @Roles.Minister, @Roles.Lobbyist], @model.role[1]
+    @needEssay = @needMotivation0 or @needMotivation1
+
+    if role[0] is @Roles.Interpreter
+      @motivationUpload = true
+      @model.role[1] = @Roles.None
     else
       @motivationMaxWords = 250
+      @motivationUpload = false
+  , true # objectEquality
 
   @model = $localStorage.model ||= {}
+  @model.role ||= []
   @model.birthdate = if @model.birthdate? then new Date(@model.birthdate) else undefined
+
+  @submit = () ->
+    unless @needMotivation0
+      @model.motivation0 = ''
+    unless @needMotivation1
+      @model.motivation1 = ''
+    unless @needEssay
+      @model.essay = ''
+
 
   return

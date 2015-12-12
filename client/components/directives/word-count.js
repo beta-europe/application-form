@@ -1,9 +1,7 @@
 // https://github.com/angular/material/blob/master/src/components/input/input.js#L323
 
 angular.module('applicationFormt')
-.directive('mdMaxwords', mdMaxwordsDirective);
-
-function mdMaxwordsDirective($animate) {
+.directive('mdMaxwords', ['$animate', function($animate) {
   return {
     restrict: 'A',
     require: ['ngModel', '^mdInputContainer'],
@@ -78,4 +76,4 @@ function mdMaxwordsDirective($animate) {
       return value;
     }
   }
-}
+}]);
