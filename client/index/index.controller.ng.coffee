@@ -29,7 +29,7 @@ angular.module 'applicationFormt'
       .primaryPalette('orange')
       .dark()
 
-.controller 'IndexCtrl', ($meteor, $mdDialog, $scope, $localStorage, $q) ->
+.controller 'IndexCtrl', ($meteor, $mdDialog, $scope, $localStorage) ->
 
   @showAlert = (event) ->
     $mdDialog.show(
@@ -114,7 +114,6 @@ angular.module 'applicationFormt'
   $scope.$watch =>
     @model.role
   , (role) =>
-    debugger
     @needMotivation0 = _.contains [@Roles.MEP, @Roles.Minister, @Roles.Lobbyist], @model.role[0]
     @needMotivation1 = _.contains [@Roles.MEP, @Roles.Minister, @Roles.Lobbyist], @model.role[1]
     @needEssay = @needMotivation0 or @needMotivation1
@@ -131,37 +130,50 @@ angular.module 'applicationFormt'
   @model.role ||= []
   @model.birthdate = if @model.birthdate? then new Date(@model.birthdate) else undefined
 
-  # returns Promise
-  @readFile = (file) ->
-    deferred = $q.defer()
-    reader = new FileReader
-    reader.onload = ->
-      deferred.resolve new Uint8Array(reader.result)
-    reader.onerror = (error) ->
-      deferred.reject error
-
-    reader.readAsArrayBuffer file
-
-    return deferred.promise;
+  @mFiles = []
 
   @addFiles = (files) ->
-    console.log 'add files', _.map(files, (file) ->
-      [file.name, file]
-    )
-    filePromises = _.map files, (file) =>
-      @readFile file
-    Promise.all filePromises
-    .then (data) ->
-      console.log 'then', data
-      $meteor.call 'submit', data
+    for file in files
+      mFile = new MeteorFile file
+      mFile.read file, (error, res) =>
+        throw error if error
+        @mFiles.push mFile
+
+  @isSaving = false
+
+  @reset = ->
+    @mFiles = []
+    $localStorage.$reset()
+    @model = $localStorage.model ||= {}
+    @model.role ||= []
 
   @submit = () ->
+    # cleanup input data
     unless @needMotivation0
       @model.motivation0 = ''
     unless @needMotivation1
       @model.motivation1 = ''
     unless @needEssay
       @model.essay = ''
+
+    @isSaving = true
+
+    $meteor.call 'submit', _.extend {files: @mFiles}, angular.copy(@model)
+    .then =>
+      @reset()
+    , (err) =>
+      console.log "couldn't submit: ", err
+      $mdDialog.show(
+        $mdDialog.alert()
+        # .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(true)
+        .title('Error')
+        .textContent(err.message)
+        .ariaLabel('Error Dialog')
+        .ok('Close')
+        # .targetEvent(ev)
+      ).then =>
+        @isSaving = false
 
 
   return

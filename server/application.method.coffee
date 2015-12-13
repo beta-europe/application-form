@@ -1,7 +1,7 @@
 'use strict'
 
 Meteor.methods
-  'submit': (files) ->
-    ff = for file in files
-      buffer = new Buffer(file)
-    console.log ff
+  'submit': (data) ->
+    console.log 'in submit', data
+    for file in data.files
+      console.log file.name

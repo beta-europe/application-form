@@ -72,7 +72,7 @@ md-content(flex)
         - MEU Strasbourg wishes you good luck with your application!
         - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
         
-      form(name='userForm')            
+      form(name='userForm' novalidate ng-submit="ctrl.submit()")            
         .md-inline-form(layout='column')
           h3 Personal Information
           //-  md-theme='docs-dark'
@@ -116,7 +116,7 @@ md-content(flex)
               div(ng-messages="userForm.email.$error" role="alert" multiple)
                 div(ng-message="required") This field is required.
             md-input-container.md-block(md-no-float flex)
-              input(type="text" name="phone" placeholder="Phone Number" required ng-model="ctrl.model.phone" international-phone-number)
+              input(type="text" name="phone" placeholder="Phone Number" ng-model="ctrl.model.phone" international-phone-number)
               div(ng-messages="userForm.phone.$error" role="alert" multiple)
                 div(ng-message="required") This field is required.
           p Please indicate which document you will be using as proof of identity and give its number.     
@@ -188,9 +188,7 @@ md-content(flex)
                 div(ng-message="required") This field is required.
             md-input-container(flex)
               label Other Languages
-              input(ng-model='ctrl.model.otherlanguages' name='otherlanguages' required)
-              div(ng-messages="userForm.otherlanguages.$error" role="alert")
-                div(ng-message="required") This field is required.                    
+              input(ng-model='ctrl.model.otherlanguages' name='otherlanguages')                   
           div(layout='row' layout-sm='column')    
               
           h3 Roles
@@ -213,12 +211,12 @@ md-content(flex)
             div(layout='column')
               md-input-container.md-block(flex ng-show='ctrl.needMotivation0')
                 label Motivation Letter for 1st Priority {{ctrl.roles[ctrl.model.role[0]]}} ({{ctrl.motivationMaxWords}}±10%)
-                textarea(ng-model='ctrl.model.motivation0', columns='1', md-maxwords='ctrl.motivationMaxWords*1.1', rows='5' required name='motivation0')
+                textarea(ng-model='ctrl.model.motivation0', columns='1', md-maxwords='ctrl.motivationMaxWords*1.1', rows='5' ng-required="ctrl.needMotivation0" name='motivation0')
                 div(ng-messages="userForm.motivation0.$error" role="alert")
                   div(ng-message="required") This field is required.
               md-input-container.md-block(flex ng-show='ctrl.needMotivation1')
                 label Motivation Letter for 2nd Priority {{ctrl.roles[ctrl.model.role[1]]}} ({{ctrl.motivationMaxWords}}±10%)
-                textarea(ng-model='ctrl.model.motivation1', columns='1', md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' required name='motivation1')
+                textarea(ng-model='ctrl.model.motivation1', columns='1', md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation1" name='motivation1')
                 div(ng-messages="userForm.motivation1.$error" role="alert")
                   div(ng-message="required") This field is required.
             div(layout='column')
@@ -228,7 +226,7 @@ md-content(flex)
               md-input-container
                 label Essay Question
                 md-select(ng-model='ctrl.model.essayQuestion' name='essayQuestion' required)
-                  md-option(ng-repeat='question in ctrl.essayQuestions' value='{{$index}}') {{$index+1}}. question
+                  md-option(ng-repeat='question in ctrl.essayQuestions' value='{{ctrl.essayQuestions[$index]}}') {{$index+1}}. question
                 div(ng-messages="userForm.essayQuestion.$error" role="alert")
                   div(ng-message="required") This field is required.
               md-input-container.md-block(flex)
@@ -243,6 +241,7 @@ md-content(flex)
             div
               strong OR
             | You can also drop files to here
+          md-button.md-primary.md-raised(type="submit" ng-disabled="userForm.$invalid || ctrl.isSaving") Submit
             
           ol
             li(ng-repeat="file in ctrl.files") {{file.name}}
