@@ -27,6 +27,13 @@ angular:angular-messages
 sebhero:angular-material-icons
 accounts-password
 
+# file upload
+cfs:standard-packages
+cfs:filesystem
+danialfarid:ng-file-upload
+peerlibrary:meteor-file
+
+
 # testing packages
 # sanjo:jasmine
 # velocity:html-reporter

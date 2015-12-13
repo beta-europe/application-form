@@ -237,6 +237,21 @@ md-content(flex)
                 div(ng-messages="userForm.essay.$error" role="alert")
                   div(ng-message="required") This field is required.
           h3 Document Upload
+          p You are required to provide the following documents:
+          .drop-box(ngf-drop ngf-select ngf-change='ctrl.addFiles($files)' ng-model='ctrl.files' ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}" ngf-multiple='true' ngf-keep='true' ngf-allow-dir='false', ngf-accept="'*/*'" ngf-drop-available='true')
+            div Click here to select files              
+            div
+              strong OR
+            | You can also drop files to here
+            
+          ol
+            li(ng-repeat="file in ctrl.files") {{file.name}}
+            
+          pre
+            {{ ctrl.files | json }}
+          pre
+            {{ ctrl.model | json }}
+         
           //-    
               div(layout='row' layout-sm='column')  
                 md-input-container(flex)

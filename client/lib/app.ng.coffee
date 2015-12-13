@@ -6,6 +6,7 @@ angular.module 'applicationFormt', [
   'ngMdIcons'
   'internationalPhoneNumber'
   'ngStorage'
+  'ngFileUpload'
 ]
 
 onReady = () ->

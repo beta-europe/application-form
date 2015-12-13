@@ -29,7 +29,7 @@ angular.module 'applicationFormt'
       .primaryPalette('orange')
       .dark()
 
-.controller 'IndexCtrl', ($meteor, $mdDialog, $scope, $localStorage) ->
+.controller 'IndexCtrl', ($meteor, $mdDialog, $scope, $localStorage, $q) ->
 
   @showAlert = (event) ->
     $mdDialog.show(
@@ -130,6 +130,30 @@ angular.module 'applicationFormt'
   @model = $localStorage.model ||= {}
   @model.role ||= []
   @model.birthdate = if @model.birthdate? then new Date(@model.birthdate) else undefined
+
+  # returns Promise
+  @readFile = (file) ->
+    deferred = $q.defer()
+    reader = new FileReader
+    reader.onload = ->
+      deferred.resolve new Uint8Array(reader.result)
+    reader.onerror = (error) ->
+      deferred.reject error
+
+    reader.readAsArrayBuffer file
+
+    return deferred.promise;
+
+  @addFiles = (files) ->
+    console.log 'add files', _.map(files, (file) ->
+      [file.name, file]
+    )
+    filePromises = _.map files, (file) =>
+      @readFile file
+    Promise.all filePromises
+    .then (data) ->
+      console.log 'then', data
+      $meteor.call 'submit', data
 
   @submit = () ->
     unless @needMotivation0
