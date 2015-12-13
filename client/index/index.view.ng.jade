@@ -72,6 +72,13 @@ md-content(flex)
         - MEU Strasbourg wishes you good luck with your application!
         - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
         
+        ### Terms and conditions
+
+        I declare that to the best of my knowledge the information provided is true
+        and correct. I understand that inaccurate, misleading and/or untrue statements
+        or knowingly withheld information may result in the termination of my
+        application to Model European Union Strasbourg.
+        
       form(name='userForm' novalidate ng-submit="ctrl.submit()")            
         .md-inline-form(layout='column')
           h3 Personal Information
@@ -123,7 +130,7 @@ md-content(flex)
           div(layout='row' layout-sm='column')
             md-input-container(flex='25')
               label Document Type
-              md-select(ng-model='ctrl.model.idtype' required)
+              md-select(ng-model='ctrl.model.idtype' name='idtype' required)
                 md-option(ng-repeat='id in ctrl.idtypes' value='{{id}}') {{id}}
               div(ng-messages="userForm.idtype.$error" role="alert")
                 div(ng-message="required") This field is required.
@@ -140,7 +147,7 @@ md-content(flex)
               input(ng-model='ctrl.model.institute' name="institute" required)
               div(ng-messages="userForm.institute.$error" role="alert")
                 div(ng-message="required") This field is required.
-            md-input-container(flex="25")
+            md-input-container(flex="25" flex-sm="100")
               label Level of study
               md-select(ng-model='ctrl.model.degree' name='degree' required)
                 md-option(ng-repeat='degree in ctrl.degrees' value='{{degree}}') {{degree}}
@@ -153,7 +160,7 @@ md-content(flex)
               input(ng-model='ctrl.model.studyfield' name="studyfield" required)
               div(ng-messages="userForm.studyfield.$error" role="alert")
                 div(ng-message="required") This field is required.
-            md-input-container(flex="25")
+            md-input-container(flex="25" flex-sm="100")
               label Year of study
               md-select(ng-model='ctrl.model.studyyear' name='studyyear' required)
                 md-option(ng-repeat='year in ctrl.studyyears' value='{{year}}') {{year}}
@@ -211,61 +218,63 @@ md-content(flex)
             div(layout='column')
               md-input-container.md-block(flex ng-show='ctrl.needMotivation0')
                 label Motivation Letter for 1st Priority {{ctrl.roles[ctrl.model.role[0]]}} ({{ctrl.motivationMaxWords}}±10%)
-                textarea(ng-model='ctrl.model.motivation0', columns='1', md-maxwords='ctrl.motivationMaxWords*1.1', rows='5' ng-required="ctrl.needMotivation0" name='motivation0')
-                div(ng-messages="userForm.motivation0.$error" role="alert")
-                  div(ng-message="required") This field is required.
+                textarea(ng-model='ctrl.model.motivation0', columns='1' md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation0" name='motivation0')
+                //-
+                  div(ng-messages="userForm.motivation0.$error" role="alert" multiple md-auto-hide="false")
+                    div(ng-message="required") This field is required.
               md-input-container.md-block(flex ng-show='ctrl.needMotivation1')
                 label Motivation Letter for 2nd Priority {{ctrl.roles[ctrl.model.role[1]]}} ({{ctrl.motivationMaxWords}}±10%)
-                textarea(ng-model='ctrl.model.motivation1', columns='1', md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation1" name='motivation1')
-                div(ng-messages="userForm.motivation1.$error" role="alert")
-                  div(ng-message="required") This field is required.
+                textarea(ng-model='ctrl.model.motivation1', columns='1' md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation1" name='motivation1')
+                //-
+                  div(ng-messages="userForm.motivation1.$error" role="alert" multiple md-auto-hide="false")
+                    div(ng-message="required") This field is required.
             div(layout='column')
               p Please pick one of the following questions for your essay:
               ol
                 li(ng-repeat='question in ctrl.essayQuestions') {{question}}
               md-input-container
                 label Essay Question
-                md-select(ng-model='ctrl.model.essayQuestion' name='essayQuestion' required)
+                md-select(ng-model='ctrl.model.essayQuestion' name='essayQuestion' ng-required="ctrl.needEssay")
                   md-option(ng-repeat='question in ctrl.essayQuestions' value='{{ctrl.essayQuestions[$index]}}') {{$index+1}}. question
                 div(ng-messages="userForm.essayQuestion.$error" role="alert")
                   div(ng-message="required") This field is required.
               md-input-container.md-block(flex)
                 label Essay ({{ctrl.essayMaxWords}}±10%)
-                textarea(ng-model='ctrl.model.essay' columns='1' md-maxwords='ctrl.essayMaxWords*1.1' required rows='5' name='essay')
-                div(ng-messages="userForm.essay.$error" role="alert")
-                  div(ng-message="required") This field is required.
+                textarea(ng-model='ctrl.model.essay' columns='1' md-maxwords='ctrl.essayMaxWords*1.1' ng-required="ctrl.needEssay" rows='5' name='essay')
+                //-
+                  div(ng-messages="userForm.essay.$error" role="alert")
+                    div(ng-message="required") This field is required.
           h3 Document Upload
-          p You are required to provide the following documents:
-          .drop-box(ngf-drop ngf-select ngf-change='ctrl.addFiles($files)' ng-model='ctrl.files' ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}" ngf-multiple='true' ngf-keep='true' ngf-allow-dir='false', ngf-accept="'*/*'" ngf-drop-available='true')
+          p You are required to provide the following documents. We accept *.odt, *.pdf *.doc *.docx and only for media media portfolios *.zip and *.jpeg.
+          ul
+            li your CV
+            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") motivation letter (500-1000 words)
+            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") reference letter about your interpreting skills
+            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") transcript of records from last two years of study
+            li(ng-show="(ctrl.model.role[0] == ctrl.Roles.JournalistMedia) || (ctrl.model.role[1] == ctrl.Roles.JournalistMedia)") portfolio for Photo/Videojournalists
+            li(ng-show="(ctrl.model.role[0] == ctrl.Roles.Journalist) || (ctrl.model.role[1] == ctrl.Roles.Journalist)") sample of journalistic work
+          //- image/jpeg,application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.oasis.opendocument.text
+          .drop-box(ngf-drop ngf-select ngf-change='ctrl.addFiles($files)' ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}" ngf-multiple='true' ngf-keep='false' ngf-allow-dir='false'  ngf-accept="'*/*'" ngf-drop-available='true')
             div Click here to select files              
             div
               strong OR
             | You can also drop files to here
-          md-button.md-primary.md-raised(type="submit" ng-disabled="userForm.$invalid || ctrl.isSaving") Submit
-            
-          ol
-            li(ng-repeat="file in ctrl.files") {{file.name}}
-            
-          pre
-            {{ ctrl.files | json }}
+          div(flex)
+            p Files schedules for upload:
+            md-list
+              md-list-item(ng-repeat="file in ctrl.mFiles track by file._id")
+                p {{file.name}}
+                md-button.md-secondary.md-icon-button(ng-click="ctrl.removeFile($event,$index)")
+                  md-icon(md-font-set="material-icons") clear
+                    
+          div(ng-show='userForm.$invalid')
+            p You are not done yet. These fields are missing:
+            ul
+              li(ng-repeat="error in userForm.$error.required") {{error.$name}}
+
+          md-button.md-primary.md-raised(type="submit" ng-disabled="userForm.$invalid || ctrl.isSaving")
+            md-icon(md-font-set="material-icons") done
+            | submit
+
           pre
             {{ ctrl.model | json }}
-         
-          //-    
-              div(layout='row' layout-sm='column')  
-                md-input-container(flex)
-                  label Number
-                  input(ng-model='ctrl.model.idnumber' name="idnumber" required)
-                  div(ng-messages="userForm.idnumber.$error" role="alert")
-                    div(ng-message="required") This field is required.
-                    
-              div(layout)
-                md-input-container(flex='')
-                  label Postal Code
-                  input(name='postalCode', ng-model='user.postalCode', placeholder='12345', required='', ng-pattern='/^[0-9]{5}$/', md-maxlength='5')
-                  div(ng-messages='userForm.postalCode.$error', role='alert', multiple='')
-                    .my-message(ng-message='required') You must supply a postal code.
-                    .my-message(ng-message='pattern')
-                      | That doesn&apos;t look like a valid postal code.
-                    .my-message(ng-message='md-maxlength')
-                      | Don&apos;t use the long version silly...we don&apos;t need to be that specific...            

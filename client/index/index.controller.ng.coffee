@@ -133,21 +133,31 @@ angular.module 'applicationFormt'
   @mFiles = []
 
   @addFiles = (files) ->
-    for file in files
+    console.log(files)
+    files.forEach (file) =>
       mFile = new MeteorFile file
+      console.log 'meteorFile', mFile.name
       mFile.read file, (error, res) =>
         throw error if error
-        @mFiles.push mFile
+        console.log 'reading done', mFile.name
+        $scope.$apply =>
+          @mFiles.push mFile
+          console.log 'process', mFile.name
+
+  @removeFile = (event, index) ->
+    event.preventDefault()
+    @mFiles.splice index, 1
 
   @isSaving = false
 
   @reset = ->
     @mFiles = []
-    $localStorage.$reset()
-    @model = $localStorage.model ||= {}
-    @model.role ||= []
+    # $localStorage.$reset()
+    # @model = $localStorage.model ||= {}
+    # @model.role ||= []
 
   @submit = () ->
+    # return false if $scope.userForm.$invalid
     # cleanup input data
     unless @needMotivation0
       @model.motivation0 = ''
@@ -160,6 +170,16 @@ angular.module 'applicationFormt'
 
     $meteor.call 'submit', _.extend {files: @mFiles}, angular.copy(@model)
     .then =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+        # .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(true)
+        .title('Application Successfully submitted')
+        .textContent('Your application was successfully submitted. You will receive as well an email with a confirmation.')
+        .ariaLabel('Application successfully submitted Dialog')
+        .ok('Close')
+        # .targetEvent(ev)
+      )
       @reset()
     , (err) =>
       console.log "couldn't submit: ", err
