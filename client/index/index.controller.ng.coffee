@@ -17,12 +17,6 @@ angular.module 'applicationFormt'
 #         return last ? key : abbreviations[key]
 #       ).join(seperator)
 
-.config (ipnConfig) ->
-    # ipnConfig.defaultCountry = 'fr'
-    # ipnConfig.preferredCountries = ['de', 'fr', 'uk', 'es']
-    ipnConfig.defaultCountry = ''
-    ipnConfig.preferredCountries = []
-
 .config ($mdThemingProvider) ->
     # Configure a dark theme with primary foreground yellow
     $mdThemingProvider.theme('docs-dark', 'default')
