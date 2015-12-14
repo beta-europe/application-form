@@ -144,11 +144,52 @@ angular.module 'applicationFormt'
 
   @isSaving = false
 
+  @print = ->
+    window.print()
+
+  @aboutForm = (event) ->
+    $mdDialog.show(
+      $mdDialog.alert()
+        .parent angular.element(document.body)
+        .clickOutsideToClose(true)
+        .title('About this Form')
+        .textContent('This application formulas has been developed by Robert Riemann <robert@riemann.cc>.')
+        .ariaLabel('Alert Dialog about form')
+        .ok("OK")
+        .targetEvent(event)
+    )
+
+  @autoFill = (event) ->
+    $mdDialog.show(
+      $mdDialog.alert()
+        .parent angular.element(document.body)
+        .clickOutsideToClose(true)
+        .title('Auto Fill')
+        .textContent('This feature is scheduled for 2100. Until then, you have to fill your application on your own.')
+        .ariaLabel('Alert Dialog auto fill easter-egg')
+        .ok("OK")
+        .targetEvent(event)
+    )
+
+  @clear = (event) ->
+    $mdDialog.show(
+      $mdDialog.confirm()
+        .parent angular.element(document.body)
+        .clickOutsideToClose(false)
+        .title('Clear Formular')
+        .textContent('Do you really want to clear the formular?')
+        .ariaLabel('Alert Dialog clear forumlar')
+        .ok("Yes, clear")
+        .cancel("Cancel")
+        .targetEvent(event)
+    ).then =>
+      @reset()
+
   @reset = ->
     @mFiles = []
-    # $localStorage.$reset()
-    # @model = $localStorage.model ||= {}
-    # @model.role ||= []
+    $localStorage.$reset()
+    @model = $localStorage.model ||= {}
+    @model.role ||= []
 
   @submit = () ->
     # return false if $scope.userForm.$invalid

@@ -10,7 +10,7 @@ md-toolbar.md-menu-toolbar.md-whiteframe-1dp
           md-menu-content
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") done
-              md-button(ng-click="ctrl.submit($event)") Submit
+              md-button(ng-click="ctrl.submit($event)" ng-disabled="userForm.$invalid || ctrl.isSaving") Submit
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") clear
               md-button(ng-click="ctrl.clear($event)") Clear
@@ -28,33 +28,33 @@ md-toolbar.md-menu-toolbar.md-whiteframe-1dp
           md-menu-content
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") email
-              md-button(href="mailto:robert@riemann.cc") Participant Coordinator
+              md-button(href="mailto:e.cofaru@beta-europe.org") Participant Coordinator
             md-menu-divider
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") email
-              md-button(ng-click="ctrl.sampleAction('redo', $event)") General Inquiry
+              md-button(href="mailto:contact@meu-strasbourg.org") General Inquiry
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") email
-              md-button Technical Support
+              md-button(href="mailto:r.riemann@beta-europe.org") Technical Support
         md-menu
           button(ng-click='$mdOpenMenu()') Help
           md-menu-content
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") home
-              md-button Model EU Strasbourg Website
+              md-button(href="http://www.meu-strasbourg.org" target="_blank") Model EU Strasbourg Website
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") help_outline
-              md-button Application Procedure
+              md-button(href="http://www.meu-strasbourg.org/apply" target="_blank") Application Procedure
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") open_in_new
-              md-button Model EU Strasbourg Wikipedia Article
+              md-button(href="https://en.wikipedia.org/wiki/Model_European_Union" target="_blank") Model EU Strasbourg Wikipedia Article
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") open_in_new
-              md-button Model EU Strasbourg on Facebook
+              md-button(href="https://www.facebook.com/meustrasbourg" target="_blank") Model EU Strasbourg on Facebook
             md-menu-divider
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") info_outline
-              md-button Application Form Software
+              md-button(ng-click="ctrl.aboutForm($event)") Application Form Software
 
 md-content(flex)
   .page-container
@@ -71,13 +71,6 @@ md-content(flex)
         - Please note that you will not be able to modify your application after submission.
         - MEU Strasbourg wishes you good luck with your application!
         - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
-        
-        ### Terms and conditions
-
-        I declare that to the best of my knowledge the information provided is true
-        and correct. I understand that inaccurate, misleading and/or untrue statements
-        or knowingly withheld information may result in the termination of my
-        application to Model European Union Strasbourg.
         
       form(name='userForm' novalidate ng-submit="ctrl.submit()")            
         .md-inline-form(layout='column')
@@ -108,25 +101,25 @@ md-content(flex)
           div(layout='row' layout-sm='column')
             md-input-container(flex)
               label Country of Nationality 
-              input(ng-model='ctrl.model.nationality' name="nationality")
+              input(ng-model='ctrl.model.nationality' name="nationality" required)
               div(ng-messages="userForm.nationality.$error" role="alert")
                 div(ng-message="required") This field is required.
             md-input-container(flex)
               label Country of Residency
-              input(ng-model='ctrl.model.residency' name='residency')
+              input(ng-model='ctrl.model.residency' name='residency' required)
               div(ng-messages="userForm.residency.$error" role="alert")
                 div(ng-message="required") This field is required.
           div(layout layout-sm='column')          
             md-input-container(flex)
               label Mail
               input(ng-model='ctrl.model.email' name='email' type='email' required)
-              div(ng-messages="userForm.email.$error" role="alert" multiple)
+              div(ng-messages="userForm.email.$error" role="alert")
                 div(ng-message="required") This field is required.
             md-input-container.md-block(md-no-float flex)
-              input(name="phone" placeholder="Phone Number" ng-model="ctrl.model.phone" required ng-pattern="/^(\+|\d)[0-9]{7,16}$/")
-              div(ng-messages="userForm.phone.$error" role="alert" multiple)
+              input(type="tel" name="phone" placeholder="Phone Number" ng-model="ctrl.model.phone" required ng-pattern="/^[\+]?[0-9 ]{5,}$/")
+              div(ng-messages="userForm.phone.$error" role="alert")
                 div(ng-message="required") This field is required.
-                div(ng-message="pattern") Your number doesn't look like a phone number. Maybe the prefix is missing.
+                div(ng-message="pattern") It doesn't look like a phone number. Maybe the prefix (e.g. +33) is missing.
           p Please indicate which document you will be using as proof of identity and give its number.     
           div(layout='row' layout-sm='column')
             md-input-container(flex='25')
@@ -256,10 +249,10 @@ md-content(flex)
             li(ng-show="(ctrl.model.role[0] == ctrl.Roles.Journalist) || (ctrl.model.role[1] == ctrl.Roles.Journalist)") sample of journalistic work
           //- image/jpeg,application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.oasis.opendocument.text
           .drop-box(ngf-drop ngf-select ngf-change='ctrl.addFiles($files)' ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}" ngf-multiple='true' ngf-keep='false' ngf-allow-dir='false'  ngf-accept="'*/*'" ngf-drop-available='true')
-            div Click here to select files              
+            div Click here to select files
             div
               strong OR
-            | You can also drop files to here
+            div You can also drop files to here
           div(flex)
             p Files schedules for upload:
             md-list
@@ -267,7 +260,12 @@ md-content(flex)
                 p {{file.name}}
                 md-button.md-secondary.md-icon-button(ng-click="ctrl.removeFile($event,$index)")
                   md-icon(md-font-set="material-icons") clear
-                    
+               
+          h3 Terms and conditions
+          p I declare that to the best of my knowledge the information provided is true and correct. I understand that inaccurate, misleading and/or untrue statements or knowingly withheld information may result in the termination of my application to Model European Union Strasbourg.
+
+          md-checkbox(ng-model="ctrl.model.confirmTerms" name="confirmterms" aria-label="Confirm Terms" required) I have read the terms and conditions and agree. (required)
+
           div(ng-show='userForm.$invalid')
             p You are not done yet. These fields are missing:
             ul
@@ -276,6 +274,3 @@ md-content(flex)
           md-button.md-primary.md-raised(type="submit" ng-disabled="userForm.$invalid || ctrl.isSaving")
             md-icon(md-font-set="material-icons") done
             | submit
-
-          pre
-            {{ ctrl.model | json }}
