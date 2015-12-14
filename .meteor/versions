@@ -93,6 +93,7 @@ reload@1.1.4
 retry@1.0.4
 routepolicy@1.0.6
 rriemann:angular-jade@0.0.3
+rriemann:charlatan@0.0.1
 rriemann:nodemailer@0.0.1
 sebhero:angular-material-icons@0.5.0
 service-configuration@1.0.5

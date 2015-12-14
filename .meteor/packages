@@ -40,3 +40,4 @@ peerlibrary:meteor-file
 # velocity:console-reporter
 
 rriemann:nodemailer
+rriemann:charlatan

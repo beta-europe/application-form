@@ -1,0 +1,1 @@
+Charlatan = Npm.require('charlatan');
