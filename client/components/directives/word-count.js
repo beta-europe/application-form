@@ -59,7 +59,11 @@ angular.module('applicationFormt')
     // http://jsfiddle.net/deepumohanp/jZeKu/
     var regex = /\s+/gi;
     function wordCount(value) {
-      return value.trim().replace(regex, ' ').split(' ').length;
+      var trimmed = value.trim();
+      if(trimmed.length == 0) {
+        return 0;
+      }
+      return trimmed.replace(regex, ' ').split(' ').length;
     }
 
     ngModelCtrl.$validators['md-maxwords'] = function(modelValue, viewValue) {

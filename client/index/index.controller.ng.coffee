@@ -91,14 +91,8 @@ angular.module 'applicationFormt'
     Interpreter: "5"
 
   # titles for the Roles object
-  @roles = [
-    'Member of the Parliament (MEP)'
-    'Minister'
-    'Print Journalist'
-    'Photo/Video Journalist'
-    'Lobbyist'
-    'Interpreter'
-  ]
+  @roles = Meteor.settings.public.application.roles
+
   @motivationMaxWords = Meteor.settings.public.application.textsize.motivationletter
   @essayMaxWords = Meteor.settings.public.application.textsize.essay
 
@@ -203,19 +197,21 @@ angular.module 'applicationFormt'
 
     @isSaving = true
 
-    $meteor.call 'submit', _.extend {files: @mFiles}, angular.copy(@model)
-    .then =>
+    console.log "about to send", angular.copy(@model), @mFiles
+
+    $meteor.call 'submit', angular.copy(@model), @mFiles
+    .then (data) =>
       $mdDialog.show(
         $mdDialog.confirm()
         # .parent(angular.element(document.querySelector('#popupContainer')))
         .clickOutsideToClose(true)
         .title('Application Successfully submitted')
-        .textContent('Your application was successfully submitted. You will receive as well an email with a confirmation.')
+        .textContent("Your application was successfully submitted. You will receive as well an email with a confirmation. Your dossier is called #{data.pseudo}.")
         .ariaLabel('Application successfully submitted Dialog')
         .ok('Close')
         # .targetEvent(ev)
       )
-      @reset()
+      # @reset()
     , (err) =>
       console.log "couldn't submit: ", err
       $mdDialog.show(

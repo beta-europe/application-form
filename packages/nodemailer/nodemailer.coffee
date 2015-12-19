@@ -1,5 +1,7 @@
 NodemailerAsync = Npm.require 'nodemailer'
 
+NodemailerStubTransport = Npm.require 'nodemailer-stub-transport'
+
 Nodemailer = {}
 
 Nodemailer.createTransport = (args...) ->

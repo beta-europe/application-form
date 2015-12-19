@@ -257,9 +257,17 @@ md-content(flex)
             p Files schedules for upload:
             md-list
               md-list-item(ng-repeat="file in ctrl.mFiles track by file._id")
+                md-icon(md-font-set="material-icons") insert_drive_file
                 p {{file.name}}
                 md-button.md-secondary.md-icon-button(ng-click="ctrl.removeFile($event,$index)")
                   md-icon(md-font-set="material-icons") clear
+                  
+          h3 Personal Remark
+          p If there is something you think we should take into consideration, please tell us!
+          div(layout='column')
+            md-input-container.md-block(flex)
+              label Remark
+              textarea(ng-model='ctrl.model.remark', columns='1' rows='5' name='remark')
                
           h3 Terms and conditions
           p I declare that to the best of my knowledge the information provided is true and correct. I understand that inaccurate, misleading and/or untrue statements or knowingly withheld information may result in the termination of my application to Model European Union Strasbourg.

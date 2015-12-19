@@ -11,7 +11,8 @@ Package.describe({
 });
 
 Npm.depends({
-  'nodemailer': '1.10.0'
+  'nodemailer': '1.10.0',
+  'nodemailer-stub-transport': '1.0.0'
 });
 
 Package.onUse(function(api) {
@@ -20,4 +21,5 @@ Package.onUse(function(api) {
   api.use('ecmascript');
   api.addFiles('nodemailer.coffee', 'server');
   api.export('Nodemailer', 'server');
+  api.export('NodemailerStubTransport','server');
 });

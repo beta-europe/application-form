@@ -16,7 +16,16 @@
       "textsize": {
         "essay": 500,
         "motivationletter": 250
-      }
+      },
+      "roles": [
+        "Member of the Parliament (MEP)",
+        "Minister",
+        "Print Journalist",
+        "Photo/Video Journalist",
+        "Lobbyist",
+        "Interpreter"
+      ]
     }
-  }
+  },
+  "maximumTotalAttachmentSizeMB": 8
 }
