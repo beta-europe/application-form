@@ -28,4 +28,9 @@
       ]
     }
   },
+  "mail": {
+    "fromNoreply": "noreply@meu-strasbourg.org",
+    "fromForumUser": "noreply@beta-europe.org",
+    "toForumCategory": "noreply@beta-europe.org"
+  }
 }
