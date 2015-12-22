@@ -6,30 +6,28 @@
 
 meteor-base             # Packages every Meteor app needs to have
 mobile-experience       # Packages for a great mobile UX
-mongo                   # The database Meteor supports right now
-blaze-html-templates    # Compile .html files into Meteor Blaze views
-session                 # Client-side reactive dictionary for your app
+# mongo                   # The database Meteor supports right now
+# blaze-html-templates    # Compile .html files into Meteor Blaze views
+# session                 # Client-side reactive dictionary for your app
 jquery                  # Helpful client-side library
 tracker                 # Meteor's client-side reactive programming library
 
 standard-minifiers      # JS/CSS minifiers run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 
-angular-with-blaze
+# angular-with-blaze
 ejson
 angularui:angular-ui-router
-urigo:angular-blaze-template
+# urigo:angular-blaze-template
 ndxbxrme:ng-coffeescript
 fourseven:scss
 rriemann:angular-jade
+angular
 angular:angular-material
 angular:angular-messages
 sebhero:angular-material-icons
-accounts-password
 
 # file upload
-cfs:standard-packages
-cfs:filesystem
 danialfarid:ng-file-upload
 peerlibrary:meteor-file
 
