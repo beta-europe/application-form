@@ -86,6 +86,7 @@ Meteor.methods
     # save files
     fs.mkdirSync directory
     dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
+    dataToFileSync path.join(directory, 'mail.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
     dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
     for file in files
       file.save directory
@@ -93,29 +94,41 @@ Meteor.methods
     strippedData = _.omit(data,hideFields,['motivation0', 'motivation1', 'essay','essayQuestion','roleNames','fileNames','files'])
 
     mail =
-      from: 'MEUS Application 2016 <noreply@meu-strasbourg.org>'
+      from: "MEUS Application 2016 <#{Meteor.settings.mail.fromForumUser}>"
       subject: "MEUS Application 2016: #{pseudo}"
-      to: "forum-meus-apply-2016@beta-europe.org"
+      to: Meteor.settings.mail.toForumCategory
       text: """
-            Pseudo: #{data.pseudo}
+            Pseudo: **#{data.pseudo}** [reveil mail](http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}", "mail.private")})
+
             Roles: #{data.roleNames.join(', ')}
 
-            Form Data:
+            ### Form Data
+
+            ```json
             #{JSON.stringify(strippedData, null, 2)}
+            ```
 
-            Files:
-            #{data['fileNames'].join('\n')}
+            ### Attachments
 
-            Motivation 1 (words: #{data['motivation0WordCount']}):
+            - #{data['fileNames'].join('\n- ')}
+
+            Application Data Folder: http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}")}
+
+            ### Motivation 1 (#{data['motivation0WordCount']} words)
+
             #{data['motivation0']}
 
 
-            Motivation 2 (words: #{data['motivation1WordCount']}):
+            ### Motivation 2 (#{data['motivation1WordCount']} words)
+
             #{data['motivation1']}
 
 
-            Essay Question: #{data['essayQuestion']}
-            Essay (words: #{data['essayWordCount']}):
+            ### Essay (#{data['essayWordCount']} words)
+
+            Essay Question:
+            > #{data['essayQuestion']}
+
             #{data['essay']}
             """
       # attachments: _.map files, (file) ->
@@ -125,10 +138,10 @@ Meteor.methods
 
     info = transporter.sendMail mail
     console.log "Mail status: id #{info.messageId} to #{info.envelope.to.join(' ')}"
-    dataToFileSync path.join(directory, 'mail.mbox'), info.response.toString()
+    dataToFileSync path.join(directory, 'mail.eml'), info.response.toString()
 
     confirmationMail =
-      from: 'MEUS Application 2016 <noreply@meu-strasbourg.org>'
+      from: "MEUS Application 2016 <Meteor.settings.mail.fromNoreply>"
       subject: "MEUS Application 2016 Confirmation"
       to: "#{data.firstname} #{data.lastname} <#{data.email}>"
       text: """
