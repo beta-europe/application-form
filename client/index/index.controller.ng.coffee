@@ -95,6 +95,7 @@ angular.module 'applicationFormt'
 
   @motivationMaxWords = Meteor.settings.public.application.textsize.motivationletter
   @essayMaxWords = Meteor.settings.public.application.textsize.essay
+  @maxFileMB = Meteor.settings.public.application.maximumTotalAttachmentSizeMB
 
   @needMotivation0 = true
   @needMotivation1 = false
@@ -125,9 +126,11 @@ angular.module 'applicationFormt'
     files.forEach (file) =>
       mFile = new MeteorFile file
       console.log 'meteorFile', mFile.name
-      mFile.read file, (error, res) =>
+      mFile.read file,
+        size: @maxFileMB*1024*1024
+      , (error, res) =>
         throw error if error
-        console.log 'reading done', mFile.name
+        console.log 'reading done', mFile, mFile.name, mFile.readProgress
         $scope.$apply =>
           @mFiles.push mFile
           console.log 'process', mFile.name

@@ -1,5 +1,3 @@
-'use strict'
-
 fs = Npm.require 'fs'
 path = Npm.require 'path'
 
@@ -20,7 +18,7 @@ else
 # setup application directory
 applicationDirectory = process.env.APPLICATION_DIR || "/tmp/applications/"
 
-maximumTotalAttachmentSize = Meteor.settings.maximumTotalAttachmentSizeMB*1024*1024
+maximumTotalAttachmentSize = Meteor.settings.public.application.maximumTotalAttachmentSizeMB*1024*1024
 
 hideFields = [
   'phone'
@@ -55,7 +53,7 @@ Meteor.methods
     , 0
 
     if totalAttachmentSize > maximumTotalAttachmentSize
-      throw new Meteor.Error(400, "Please reduce the filesize to fit the limit of #{Meteor.settings.maximumTotalAttachmentSizeMB}MiB.")
+      throw new Meteor.Error(400, "Please reduce the filesize to fit the limit of #{Meteor.settings.public.application.maximumTotalAttachmentSizeMB}MiB.")
 
     # find pseudo
     pseudo = ""
