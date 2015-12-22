@@ -141,7 +141,7 @@ Meteor.methods
     dataToFileSync path.join(directory, 'mail.eml'), info.response.toString()
 
     confirmationMail =
-      from: "MEUS Application 2016 <Meteor.settings.mail.fromNoreply>"
+      from: "MEUS Application 2016 <#{Meteor.settings.mail.fromNoreply}>"
       subject: "MEUS Application 2016 Confirmation"
       to: "#{data.firstname} #{data.lastname} <#{data.email}>"
       text: """
