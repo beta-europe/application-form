@@ -5,7 +5,13 @@ controller = require './application.controller'
 
 router = express.Router()
 
-router.post '/', controller.create
+config = require '../../config/environment'
+multer = require 'multer'
+upload = multer
+  limits:
+    fileSize: 1024 * 1024 * config.public.application.maximumTotalAttachmentSizeMB
+
+router.post '/', upload.any(), controller.create
 
 
 module.exports = router

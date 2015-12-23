@@ -11,7 +11,6 @@ compression = require 'compression'
 bodyParser = require 'body-parser'
 methodOverride = require 'method-override'
 cookieParser = require 'cookie-parser'
-busboy = require 'connect-busboy'
 errorHandler = require 'errorhandler'
 path = require 'path'
 config = require './environment'
@@ -28,10 +27,6 @@ module.exports = (app) ->
   app.use bodyParser.json()
   app.use methodOverride()
   app.use cookieParser()
-  app.use busyboy(
-    limits:
-      fileSize: 1024 * 1024 * config.public.application.maximumTotalAttachmentSizeMB
-  )
 
 
   if 'production' is env

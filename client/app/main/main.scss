@@ -55,3 +55,11 @@ md-toolbar {
     border: 5px dashed red;
   }
 }
+
+
+.spinner {
+  background: rgba(0,0,0,0.3);
+  z-index: 10;
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+}

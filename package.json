@@ -4,6 +4,7 @@
   "main": "server/app.js",
   "dependencies": {
     "body-parser": "~1.14.1",
+    "charlatan": "^1.0.0",
     "composable-middleware": "~0.3.0",
     "compression": "~1.6.0",
     "cookie-parser": "~1.4.0",
@@ -12,9 +13,13 @@
     "express": "~4.13.3",
     "express-session": "~1.12.1",
     "jade": "~1.11.0",
+    "jstransformer-markdown-it": "^0.2.2",
     "lodash": "~3.10.1",
     "method-override": "~2.3.3",
     "morgan": "~1.6.1",
+    "multer": "^1.1.0",
+    "nodemailer": "^1.10.0",
+    "nodemailer-stub-transport": "^1.0.0",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {

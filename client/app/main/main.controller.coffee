@@ -8,7 +8,7 @@ angular.module 'applicationFormApp'
       .primaryPalette('orange')
       .dark()
 
-.controller 'MainCtrl', ($mdDialog, $scope, $localStorage, $location, settings) ->
+.controller 'MainCtrl', ($mdDialog, $scope, $localStorage, $location, settings, Upload) ->
 
   @showAlert = (event) ->
     $mdDialog.show(
@@ -104,25 +104,14 @@ angular.module 'applicationFormApp'
   @model.role ||= []
   @model.birthdate = if @model.birthdate? then new Date(@model.birthdate) else undefined
 
-  @mFiles = []
 
-  @addFiles = (files) ->
-    console.log(files)
-    files.forEach (file) =>
-      mFile = new MeteorFile file
-      console.log 'meteorFile', mFile.name
-      mFile.read file,
-        size: @maxFileMB*1024*1024
-      , (error, res) =>
-        throw error if error
-        console.log 'reading done', mFile, mFile.name, mFile.readProgress
-        $scope.$apply =>
-          @mFiles.push mFile
-          console.log 'process', mFile.name
+  # size: @maxFileMB*1024*1024
+
+  @files = []
 
   @removeFile = (event, index) ->
     event.preventDefault()
-    @mFiles.splice index, 1
+    @files.splice index, 1
 
   @isSaving = false
 
@@ -168,7 +157,7 @@ angular.module 'applicationFormApp'
       @reset()
 
   @reset = ->
-    @mFiles = []
+    @files = []
     $localStorage.$reset()
     @model = $localStorage.model ||= {}
     @model.role ||= []
@@ -185,10 +174,19 @@ angular.module 'applicationFormApp'
 
     @isSaving = true
 
-    console.log "about to send", angular.copy(@model), @mFiles
+    console.log "about to send", angular.copy(@model), @files
 
-    $meteor.call 'submit', angular.copy(@model), @mFiles
-    .then (data) =>
+    upload = Upload.upload
+      url: '/api/application'
+      data:
+        data: angular.copy(@model)
+        file: @files
+      disableProgress: false
+      # resumeChunkSize: '10KB'
+
+    upload.then (resp) =>
+      console.log "resp", resp
+      data = resp.data
       $mdDialog.show(
         $mdDialog.confirm()
         # .parent(angular.element(document.querySelector('#popupContainer')))
@@ -200,8 +198,9 @@ angular.module 'applicationFormApp'
         # .targetEvent(ev)
       )
       # @reset()
+      @isSaving = false
     , (err) =>
-      console.log "couldn't submit: ", err
+      console.log 'catch error', err
       $mdDialog.show(
         $mdDialog.alert()
         # .parent(angular.element(document.querySelector('#popupContainer')))
@@ -211,8 +210,9 @@ angular.module 'applicationFormApp'
         .ariaLabel('Error Dialog')
         .ok('Close')
         # .targetEvent(ev)
-      ).then =>
-        @isSaving = false
-
+      )
+    , (event) ->
+      console.log event
+      console.log('progress: ' + parseInt(100.0 * event.loaded / event.total) + '% file :'+ event.config.data.file.name);
 
   return
