@@ -1,0 +1,49 @@
+{
+  "generator-coffee-fullstack": {
+    "insertRoutes": true,
+    "registerRoutesFile": "server/routes.coffee",
+    "routesNeedle": "# Insert routes below",
+    "routesBase": "/api/",
+    "pluralizeRoutes": true,
+    "insertSockets": true,
+    "registerSocketsFile": "server/config/socketio.coffee",
+    "socketsNeedle": "# Insert sockets below",
+    "filters": {
+      "coffee": true,
+      "html": true,
+      "jade": true,
+      "sass": true,
+      "ngroute": true,
+      "useclient": true,
+      "bootstrap": false,
+      "uibootstrap": false
+    }
+  },
+  "generator-ng-component": {
+    "routeDirectory": "client/app/",
+    "directiveDirectory": "client/app/",
+    "filterDirectory": "client/app/",
+    "serviceDirectory": "client/app/",
+    "basePath": "client",
+    "moduleName": "",
+    "filters": [
+      "ngroute"
+    ],
+    "extensions": [
+      "coffee",
+      "html",
+      "jade",
+      "scss",
+      "useclient"
+    ],
+    "directiveSimpleTemplates": "",
+    "directiveComplexTemplates": "",
+    "filterTemplates": "",
+    "serviceTemplates": "",
+    "factoryTemplates": "",
+    "controllerTemplates": "",
+    "decoratorTemplates": "",
+    "providerTemplates": "",
+    "routeTemplates": ""
+  }
+}
