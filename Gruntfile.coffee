@@ -36,7 +36,7 @@ module.exports = (grunt) ->
     ngconstant:
       options:
         name: 'settings'
-        dest: 'client/settings.js'
+        dest: 'client/app/settings.js'
         constants:
           settings: require('./server/config/environment').public
       build: {}

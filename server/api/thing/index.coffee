@@ -1,7 +1,7 @@
 'use strict'
 
 express = require 'express'
-controller = require './thing.controller'
+controller = require './application.controller'
 
 router = express.Router()
 

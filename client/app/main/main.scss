@@ -1,8 +1,24 @@
 // index.scss
-
+md-toolbar {
+  position: fixed !important;
+  top: 0px;
+}
 .page-container {
   background-color: #f1f1f1;
-  padding: 32px; }
+  padding: 32px;
+  margin-top: 88px;
+}
+
+@media print {
+  md-toolbar {
+    display: none;
+  }
+  .page-container {
+    margin-top: 0;
+    padding: 0;
+  }
+}
+
 .page {
   margin: 0 auto;
   background-color: white;
