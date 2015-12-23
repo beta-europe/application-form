@@ -18,25 +18,32 @@ all =
   # Server port
   port: process.env.PORT or 9000
 
-  # Should we populate the DB with sample data?
-  seedDB: false
-
-  # Secret for session, you will want to change this and make it an environment variable
-  secrets:
-    session: 'application-form-secret'
-
-  # List of user roles
-  userRoles: [
-    'guest'
-    'user'
-    'admin'
-  ]
-
-  # MongoDB connection options
-  mongo:
-    options:
-      db:
-        safe: true
+  public:
+    conference:
+      dates:
+        start: '2016-04-02T00:00:00.000Z'
+        end: '2016-04-09T00:00:00.000Z'
+    application:
+      maximumTotalAttachmentSizeMB: 8
+      criteria:
+        age:
+          min: 18
+          max: 26
+      textsize:
+        essay: 500
+        motivationletter: 250
+      roles: [
+        'Member of the Parliament (MEP)'
+        'Minister'
+        'Print Journalist'
+        'Photo/Video Journalist'
+        'Lobbyist'
+        'Interpreter'
+      ]
+  mail:
+    fromNoreply: 'noreply@meu-strasbourg.org'
+    fromForumUser: 'system@beta-europe.org'
+    toForumCategory: 'forum-meus-apply-2016@beta-europe.org'
 
 
 

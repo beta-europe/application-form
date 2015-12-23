@@ -7,6 +7,7 @@ angular.module 'applicationFormApp', [
   'ngMdIcons'
   'ngStorage'
   'ngFileUpload'
+  'settings'
 ]
 .config ($routeProvider, $locationProvider) ->
   $routeProvider

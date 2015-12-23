@@ -5,6 +5,9 @@ public
 .sass-cache
 .idea
 client/bower_components
+client/settings.js
 dist
 /server/config/local.env.js
 npm-debug.log
+
+.directory

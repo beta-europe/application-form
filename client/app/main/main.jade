@@ -1,25 +1,284 @@
-div(ng-include='"components/navbar/navbar.html"')
+md-toolbar.md-menu-toolbar.md-whiteframe-1dp
+  div(layout='row')
+    md-toolbar-filler(layout='', layout-align='center center')
+      md-icon(md-font-set="material-icons") content_paste
+    div
+      h2.md-toolbar-tools Model EU Strasbourg (MEUS) Application Form 2016
+      md-menu-bar
+        md-menu
+          button(ng-click='$mdOpenMenu()') Application   
+          md-menu-content
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") done
+              md-button(ng-click="ctrl.submit($event)" ng-disabled="userForm.$invalid || ctrl.isSaving") Submit
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") clear
+              md-button(ng-click="ctrl.clear($event)") Clear
+            md-menu-divider
+            md-menu-item.md-indent                  
+              //- md-icon(md-font-set="material-icons") brush
+              md-icon(md-font-set="material-icons") autorenew
+              md-button(ng-click="ctrl.autoFill($event)") Autofill
+            md-menu-divider
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") print
+              md-button(ng-click="ctrl.print($event)") Print
+        md-menu
+          button(ng-click='$mdOpenMenu()') Contact 
+          md-menu-content
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") email
+              md-button(href="mailto:e.cofaru@beta-europe.org") Participant Coordinator
+            md-menu-divider
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") email
+              md-button(href="mailto:contact@meu-strasbourg.org") General Inquiry
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") email
+              md-button(href="mailto:r.riemann@beta-europe.org") Technical Support
+        md-menu
+          button(ng-click='$mdOpenMenu()') Help
+          md-menu-content
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") home
+              md-button(href="http://www.meu-strasbourg.org" target="_blank") Model EU Strasbourg Website
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") help_outline
+              md-button(href="http://www.meu-strasbourg.org/apply" target="_blank") Application Procedure
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") open_in_new
+              md-button(href="https://en.wikipedia.org/wiki/Model_European_Union" target="_blank") Model EU Strasbourg Wikipedia Article
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") open_in_new
+              md-button(href="https://www.facebook.com/meustrasbourg" target="_blank") Model EU Strasbourg on Facebook
+            md-menu-divider
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") info_outline
+              md-button(ng-click="ctrl.aboutForm($event)") Application Form Software
 
-header#banner.hero-unit
-  .container
-    h1 'Allo, 'Allo!
-    p.lead Kick-start your next web app with Angular Fullstack
-    img(src='assets/images/yeoman.png', alt='I\'m Yeoman')
+md-content(flex)
+  .page-container
+    .page
+      :markdown-it
+        # ![MEUS](assets/images/logo.png)
+        # Application
+        
+        - Please carefully read the [APPLICATION GUIDE](http://www.meu-strasbourg.org/apply/)
+          before starting your application.
+        - All fields in the application form MUST BE filled in British English, the
+          official language of MEUS 2016. Once you have submitted your application,
+          you will receive an automatically generated confirmation.
+        - Please note that you will not be able to modify your application after submission.
+        - MEU Strasbourg wishes you good luck with your application!
+        - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
+        
+      form(name='userForm' novalidate ng-submit="ctrl.submit()")            
+        .md-inline-form(layout='column')
+          h3 Personal Information
+          //-  md-theme='docs-dark'
+          div(layout='row' layout-sm='column')
+            md-input-container(flex)
+              label First Name        
+              input(ng-model='ctrl.model.firstname' name="firstname" required)
+              div(ng-messages="userForm.firstname.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex)
+              label Last Name
+              input(ng-model='ctrl.model.lastname' name='lastname' required)
+              div(ng-messages="userForm.lastname.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex)
+              label Sex
+              md-select(ng-model='ctrl.model.gender')
+                md-option(ng-repeat='gender in ctrl.genders' value='{{gender}}') {{gender}}
+          p Please provide your birthdate. ({{ctrl.birthMax | date:'mediumDate'}} - {{ctrl.birthMin | date:'mediumDate'}})
+          div(layout='column')
+            md-datepicker(ng-model='ctrl.model.birthdate' name="birthdate"  md-placeholder='Birth date' md-min-date="ctrl.birthMax" md-max-date="ctrl.birthMin" required)
+            div.validation-messages(ng-messages="userForm.birthdate.$error")
+              div(ng-message="required") This birthdate is required!
+              div(ng-message="mindate") Apparently you are too old to apply.
+              div(ng-message="maxdate") Apprently you are too young to apply.
+          div(layout='row' layout-sm='column')
+            md-input-container(flex)
+              label Country of Nationality 
+              input(ng-model='ctrl.model.nationality' name="nationality" required)
+              div(ng-messages="userForm.nationality.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex)
+              label Country of Residency
+              input(ng-model='ctrl.model.residency' name='residency' required)
+              div(ng-messages="userForm.residency.$error" role="alert")
+                div(ng-message="required") This field is required.
+          div(layout layout-sm='column')          
+            md-input-container(flex)
+              label Mail
+              input(ng-model='ctrl.model.email' name='email' type='email' required)
+              div(ng-messages="userForm.email.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container.md-block(md-no-float flex)
+              input(type="tel" name="phone" placeholder="Phone Number" ng-model="ctrl.model.phone" required ng-pattern="/^[\+]?[0-9 ]{5,}$/")
+              div(ng-messages="userForm.phone.$error" role="alert")
+                div(ng-message="required") This field is required.
+                div(ng-message="pattern") It doesn't look like a phone number. Maybe the prefix (e.g. +33) is missing.
+          p Please indicate which document you will be using as proof of identity and give its number.     
+          div(layout='row' layout-sm='column')
+            md-input-container(flex='25')
+              label Document Type
+              md-select(ng-model='ctrl.model.idtype' name='idtype' required)
+                md-option(ng-repeat='id in ctrl.idtypes' value='{{id}}') {{id}}
+              div(ng-messages="userForm.idtype.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex)
+              label Number
+              input(ng-model='ctrl.model.idnumber' name="idnumber" required)
+              div(ng-messages="userForm.idnumber.$error" role="alert")
+                div(ng-message="required") This field is required.
 
-.container
-  .row
-    .col-lg-12
-      h1.page-header Features:
-      ul.nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
-        li
-          a(href='#', tooltip='{{thing.info}}')
-            | {{thing.name}}
+          h3 Educational Background
+          div(layout='row' layout-sm='column')
+            md-input-container(flex)
+              label Educational Institute
+              input(ng-model='ctrl.model.institute' name="institute" required)
+              div(ng-messages="userForm.institute.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex="25" flex-sm="100")
+              label Level of study
+              md-select(ng-model='ctrl.model.degree' name='degree' required)
+                md-option(ng-repeat='degree in ctrl.degrees' value='{{degree}}') {{degree}}
+              div(ng-messages="userForm.degree.$error" role="alert")
+                div(ng-message="required") This field is required.
+                
+          div(layout='row' layout-sm='column')
+            md-input-container(flex)
+              label Field of study    
+              input(ng-model='ctrl.model.studyfield' name="studyfield" required)
+              div(ng-messages="userForm.studyfield.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex="25" flex-sm="100")
+              label Year of study
+              md-select(ng-model='ctrl.model.studyyear' name='studyyear' required)
+                md-option(ng-repeat='year in ctrl.studyyears' value='{{year}}') {{year}}
+              div(ng-messages="userForm.studyyear.$error" role="alert")
+                div(ng-message="required") This field is required.      
+          
+          h3 Languages
+          div(layout='row' layout-sm='column')  
+            md-input-container(flex="33")
+              label English Reading
+              md-select(ng-model='ctrl.model.englishreading' name='englishreading' required)
+                md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+              div(ng-messages="userForm.englishreading.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex="33")
+              label English Writing
+              md-select(ng-model='ctrl.model.englishwriting' name='englishwriting' required)
+                md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+              div(ng-messages="userForm.englishwriting.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex="33")
+              label English Speaking
+              md-select(ng-model='ctrl.model.englishspeaking' name='englishspeaking' required)
+                md-option(ng-repeat='level in ctrl.languagelevels' value='{{level}}') {{level}}
+              div(ng-messages="userForm.englishspeaking.$error" role="alert")
+                div(ng-message="required") This field is required.
+          div(layout='row' layout-sm='column')
+            md-input-container(flex)
+              label Mother Tongue       
+              input(ng-model='ctrl.model.mothertongue' name="mothertongue" required)
+              div(ng-messages="userForm.mothertongue.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex)
+              label Other Languages
+              input(ng-model='ctrl.model.otherlanguages' name='otherlanguages')                   
+          div(layout='row' layout-sm='column')    
+              
+          h3 Roles
+          div(layout='row' layout-sm='column')  
+            md-input-container(flex)
+              label Role 1st Priority
+              md-select(ng-model='ctrl.model.role[0]' name='role0' required)
+                md-option(ng-repeat='role in ctrl.roles' value='{{$index}}') {{role}}
+              div(ng-messages="userForm.role0.$error" role="alert")
+                div(ng-message="required") This field is required.
+            md-input-container(flex)
+              label Role 2nd Priority
+              md-select(ng-model='ctrl.model.role[1]' name='role1' ng-disabled='ctrl.model.role[0] == ctrl.Roles.Interpreter')
+                md-option(value='-1') none
+                md-option(ng-repeat='role in ctrl.roles.slice(0,-1)' value='{{$index}}') {{role}}
+              div(ng-messages="userForm.role1.$error" role="alert")
+                div(ng-message="required") This field is required.
+          div(ng-show='ctrl.needEssay')
+            h3 Motivation Letter and Essay
+            div(layout='column')
+              md-input-container.md-block(flex ng-show='ctrl.needMotivation0')
+                label Motivation Letter for 1st Priority {{ctrl.roles[ctrl.model.role[0]]}} ({{ctrl.motivationMaxWords}}±10%)
+                textarea(ng-model='ctrl.model.motivation0', columns='1' md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation0" name='motivation0')
+                //-
+                  div(ng-messages="userForm.motivation0.$error" role="alert" multiple md-auto-hide="false")
+                    div(ng-message="required") This field is required.
+              md-input-container.md-block(flex ng-show='ctrl.needMotivation1')
+                label Motivation Letter for 2nd Priority {{ctrl.roles[ctrl.model.role[1]]}} ({{ctrl.motivationMaxWords}}±10%)
+                textarea(ng-model='ctrl.model.motivation1', columns='1' md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation1" name='motivation1')
+                //-
+                  div(ng-messages="userForm.motivation1.$error" role="alert" multiple md-auto-hide="false")
+                    div(ng-message="required") This field is required.
+            div(layout='column')
+              p Please pick one of the following questions for your essay:
+              ol
+                li(ng-repeat='question in ctrl.essayQuestions') {{question}}
+              md-input-container
+                label Essay Question
+                md-select(ng-model='ctrl.model.essayQuestion' name='essayQuestion' ng-required="ctrl.needEssay")
+                  md-option(ng-repeat='question in ctrl.essayQuestions' value='{{ctrl.essayQuestions[$index]}}') {{$index+1}}. question
+                div(ng-messages="userForm.essayQuestion.$error" role="alert")
+                  div(ng-message="required") This field is required.
+              md-input-container.md-block(flex)
+                label Essay ({{ctrl.essayMaxWords}}±10%)
+                textarea(ng-model='ctrl.model.essay' columns='1' md-maxwords='ctrl.essayMaxWords*1.1' ng-required="ctrl.needEssay" rows='5' name='essay')
+                //-
+                  div(ng-messages="userForm.essay.$error" role="alert")
+                    div(ng-message="required") This field is required.
+          h3 Document Upload
+          p You are required to provide the following documents. We accept *.odt, *.pdf *.doc *.docx and only for media media portfolios *.zip and *.jpeg.
+          ul
+            li your CV
+            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") motivation letter (500-1000 words)
+            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") reference letter about your interpreting skills
+            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") transcript of records from last two years of study
+            li(ng-show="(ctrl.model.role[0] == ctrl.Roles.JournalistMedia) || (ctrl.model.role[1] == ctrl.Roles.JournalistMedia)") portfolio for Photo/Videojournalists
+            li(ng-show="(ctrl.model.role[0] == ctrl.Roles.Journalist) || (ctrl.model.role[1] == ctrl.Roles.Journalist)") sample of journalistic work
+          //- image/jpeg,application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.oasis.opendocument.text
+          .drop-box(ngf-drop ngf-select ngf-change='ctrl.addFiles($files)' ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}" ngf-multiple='true' ngf-keep='false' ngf-allow-dir='false'  ngf-accept="'*/*'" ngf-drop-available='true' ngf-max-size="ctrl.maxFileMB*1024*1024")
+            div Click here to select files
+            div
+              strong OR
+            div You can also drop files to here
+          div(flex)
+            p Files schedules for upload:
+            md-list
+              md-list-item(ng-repeat="file in ctrl.mFiles track by file._id")
+                md-icon(md-font-set="material-icons") insert_drive_file
+                p {{file.name}}
+                md-button.md-secondary.md-icon-button(ng-click="ctrl.removeFile($event,$index)")
+                  md-icon(md-font-set="material-icons") clear
+                  
+          h3 Personal Remark
+          p If there is something you think we should take into consideration, please tell us!
+          div(layout='column')
+            md-input-container.md-block(flex)
+              label Remark
+              textarea(ng-model='ctrl.model.remark', columns='1' rows='5' name='remark')
+               
+          h3 Terms and conditions
+          p I declare that to the best of my knowledge the information provided is true and correct. I understand that inaccurate, misleading and/or untrue statements or knowingly withheld information may result in the termination of my application to Model European Union Strasbourg.
 
-footer.footer
-  .container
-    p
-      | Angular Fullstack v0.1.4
-      = ' | '
-      a(href='https://twitter.com/tyhenkel') @tyhenkel
-      = ' | '
-      a(href='https://github.com/harryoh/generator-coffee-fullstack/issues?state=open') Issues
+          md-checkbox(ng-model="ctrl.model.confirmTerms" name="confirmterms" aria-label="Confirm Terms" required) I have read the terms and conditions and agree. (required)
+
+          div(ng-show='userForm.$invalid')
+            p You are not done yet. These fields are missing:
+            ul
+              li(ng-repeat="error in userForm.$error.required") {{error.$name}}
+
+          md-button.md-primary.md-raised(type="submit" ng-disabled="userForm.$invalid || ctrl.isSaving")
+            md-icon(md-font-set="material-icons") done
+            | submit

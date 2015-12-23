@@ -17,6 +17,7 @@ module.exports = (grunt) ->
     protractor: 'grunt-protractor-runner'
     injector: 'grunt-asset-injector'
     buildcontrol: 'grunt-build-control'
+    ngconstant: 'grunt-ng-constant'
 
   # Time how long tasks take. Can help when optimizing build times
   require('time-grunt') grunt
@@ -28,9 +29,17 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON 'package.json'
     yeoman:
       # configurable paths
-      
+
       client: require('./bower.json').appPath or 'client'
       dist: 'dist'
+
+    ngconstant:
+      options:
+        name: 'settings'
+        dest: 'client/settings.js'
+        constants:
+          settings: require('./server/config/environment').public
+      build: {}
 
     express:
       options:
@@ -107,6 +116,7 @@ module.exports = (grunt) ->
           '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js'
           '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js'
           '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
+          '{.tmp,<%= yeoman.client %>}/settings.js'
         ]
         options:
           livereload: true
@@ -239,10 +249,10 @@ module.exports = (grunt) ->
           /bootstrap.js/
           '/json3/'
           '/es5-shim/'
-          
+
           /bootstrap.css/
           /font-awesome.css/
-          
+
         ]
 
     # Renames files for browser caching purposes
@@ -614,6 +624,7 @@ module.exports = (grunt) ->
       return grunt.task.run [
         'clean:server'
         'env:all'
+        'ngconstant'
         'injector:sass'
         'concurrent:server'
         'injector'
@@ -625,6 +636,7 @@ module.exports = (grunt) ->
     grunt.task.run [
       'clean:server'
       'env:all'
+      'ngconstant'
       'injector:sass'
       'concurrent:server'
       'injector'
@@ -681,6 +693,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'build', [
     'clean:dist'
+    'ngconstant'
     'injector:sass'
     'concurrent:dist'
     'injector'
@@ -704,4 +717,3 @@ module.exports = (grunt) ->
     'test'
     'build'
   ])
-

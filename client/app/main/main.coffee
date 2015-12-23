@@ -6,3 +6,4 @@ angular.module 'applicationFormApp'
   .when '/',
     templateUrl: 'app/main/main.html'
     controller: 'MainCtrl'
+    controllerAs: 'ctrl'
