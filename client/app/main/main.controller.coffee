@@ -8,6 +8,24 @@ angular.module 'applicationFormApp'
       .primaryPalette('orange')
       .dark()
 
+.controller 'DialogCtrl', ($scope, $mdDialog, upload) ->
+  @upload = upload.promise
+  @progress = 0
+
+  @upload.then (resp) =>
+    $mdDialog.hide(resp)
+    # @reset()
+  , (err) =>
+    $mdDialog.cancel(err)
+  , (event) =>
+    @progress = parseInt(100.0 * event.loaded / event.total)
+
+  @abort = ($event) ->
+    preventDefault($event)
+    @upload.abort()
+
+  return
+
 .controller 'MainCtrl', ($mdDialog, $scope, $localStorage, $location, settings, Upload) ->
 
   @showAlert = (event) ->
@@ -113,8 +131,6 @@ angular.module 'applicationFormApp'
     event.preventDefault()
     @files.splice index, 1
 
-  @isSaving = false
-
   @print = ->
     window.print()
 
@@ -172,23 +188,32 @@ angular.module 'applicationFormApp'
     unless @needEssay
       @model.essay = ''
 
-    @isSaving = true
 
     console.log "about to send", angular.copy(@model), @files
 
+    @progress = 0
     upload = Upload.upload
       url: '/api/application'
       data:
         data: angular.copy(@model)
         file: @files
       disableProgress: false
-      # resumeChunkSize: '10KB'
 
-    upload.then (resp) =>
-      console.log "resp", resp
+    # progress window
+    dialog = $mdDialog.show
+      parent: angular.element(document.body)
+      templateUrl: '/app/main/loading-dialog.html'
+      locals:
+        # workaround to get the unresolved promise
+        upload: promise: upload
+      controller: 'DialogCtrl'
+      controllerAs: 'ctrl'
+      escapeToClose: false
+
+    dialog.then (resp) =>
       data = resp.data
       $mdDialog.show(
-        $mdDialog.confirm()
+        $mdDialog.alert()
         # .parent(angular.element(document.querySelector('#popupContainer')))
         .clickOutsideToClose(true)
         .title('Application Successfully submitted')
@@ -197,22 +222,16 @@ angular.module 'applicationFormApp'
         .ok('Close')
         # .targetEvent(ev)
       )
-      # @reset()
-      @isSaving = false
     , (err) =>
-      console.log 'catch error', err
       $mdDialog.show(
         $mdDialog.alert()
         # .parent(angular.element(document.querySelector('#popupContainer')))
         .clickOutsideToClose(true)
-        .title('Error')
+        .title('Aborted')
         .textContent(err.message)
         .ariaLabel('Error Dialog')
         .ok('Close')
         # .targetEvent(ev)
       )
-    , (event) ->
-      console.log event
-      console.log('progress: ' + parseInt(100.0 * event.loaded / event.total) + '% file :'+ event.config.data.file.name);
 
   return

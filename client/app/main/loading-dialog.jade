@@ -1,0 +1,7 @@
+md-dialog(aria-label="Uploading" ng-cloak)
+  md-dialog-content
+    .md-dialog-content
+      h4 Uploading
+      md-progress-linear(md-mode="determinate" value="{{ctrl.progress}}")
+  md-dialog-actions(layout)
+    md-button.md-warn(ng-click='ctrl.abort($event)') Abort
