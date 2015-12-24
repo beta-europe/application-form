@@ -21,7 +21,7 @@ angular.module 'applicationFormApp'
     @progress = parseInt(100.0 * event.loaded / event.total)
 
   @abort = ($event) ->
-    preventDefault($event)
+    $event.preventDefault()
     @upload.abort()
 
   return
@@ -199,10 +199,13 @@ angular.module 'applicationFormApp'
         file: @files
       disableProgress: false
 
+    upload.catch (err) ->
+      console.log 'upload err', err
+
     # progress window
     dialog = $mdDialog.show
       parent: angular.element(document.body)
-      templateUrl: '/app/main/loading-dialog.html'
+      templateUrl: 'app/main/loading-dialog.html'
       locals:
         # workaround to get the unresolved promise
         upload: promise: upload
@@ -223,6 +226,7 @@ angular.module 'applicationFormApp'
         # .targetEvent(ev)
       )
     , (err) =>
+      console.log "error from dialog:", err
       $mdDialog.show(
         $mdDialog.alert()
         # .parent(angular.element(document.querySelector('#popupContainer')))

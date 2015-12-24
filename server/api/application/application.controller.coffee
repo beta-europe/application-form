@@ -66,9 +66,11 @@ wordCount = (value) ->
 # Get list of things
 exports.create = (req, res) ->
   unless req.files instanceof Array and req.files.length > 0
-    throw new Error("Please attach files to your application.")
+    return res.status(400).send 'Please attach files to your application.'
 
   data = req.body.data
+  unless data?
+    return res.status(400).send 'Please provide application data.'
 
   # find pseudo
   pseudo = ""
@@ -126,7 +128,7 @@ exports.create = (req, res) ->
 
           ### Attachments
 
-          - #{data['fileNames'].join('\n- ')}
+          - <#{data['fileNames'].join('\n- ')}>
 
           Application Data Folder: http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}")}
 

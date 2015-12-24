@@ -8,6 +8,7 @@ router = express.Router()
 config = require '../../config/environment'
 multer = require 'multer'
 upload = multer
+  # dest: '/home/europe/tmp'
   limits:
     fileSize: 1024 * 1024 * config.public.application.maximumTotalAttachmentSizeMB
 

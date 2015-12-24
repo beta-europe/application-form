@@ -42,7 +42,7 @@ all =
       ]
   mail:
     fromNoreply: 'noreply@meu-strasbourg.org'
-    fromForumUser: 'system@beta-europe.org'
+    fromForumUser: 'r.riemann@beta-europe.org'
     toForumCategory: 'forum-meus-apply-2016@beta-europe.org'
 
 

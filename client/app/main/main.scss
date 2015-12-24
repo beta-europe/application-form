@@ -38,9 +38,9 @@ md-toolbar {
     color: red;
     margin: 10px 0 0 25px; }
 
-.page md-input-container textarea {
-  overflow-y: auto;
-}
+// .page md-input-container textarea {
+//   overflow-y: auto;
+// }
 
 .page {
   .drop-box {
@@ -54,4 +54,8 @@ md-toolbar {
   .drop-box.dragover-err {
     border: 5px dashed red;
   }
+}
+md-input-container textarea[md-no-autogrow].md-input {
+    height: inherit;
+    overflow-y: auto;
 }

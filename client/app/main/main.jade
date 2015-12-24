@@ -212,13 +212,13 @@ md-content(flex)
             div(layout='column')
               md-input-container.md-block(flex ng-show='ctrl.needMotivation0')
                 label Motivation Letter for 1st Priority {{ctrl.roles[ctrl.model.role[0]]}} ({{ctrl.motivationMaxWords}}±10%)
-                textarea(ng-model='ctrl.model.motivation0', columns='1' md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation0" name='motivation0')
+                textarea(ng-model='ctrl.model.motivation0', columns='1' md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation0" name='motivation0' md-no-autogrow)
                 //-
                   div(ng-messages="userForm.motivation0.$error" role="alert" multiple md-auto-hide="false")
                     div(ng-message="required") This field is required.
               md-input-container.md-block(flex ng-show='ctrl.needMotivation1')
                 label Motivation Letter for 2nd Priority {{ctrl.roles[ctrl.model.role[1]]}} ({{ctrl.motivationMaxWords}}±10%)
-                textarea(ng-model='ctrl.model.motivation1', columns='1' md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation1" name='motivation1')
+                textarea(ng-model='ctrl.model.motivation1', columns='1' md-maxwords='ctrl.motivationMaxWords*1.1' rows='5' ng-required="ctrl.needMotivation1" name='motivation1' md-no-autogrow)
                 //-
                   div(ng-messages="userForm.motivation1.$error" role="alert" multiple md-auto-hide="false")
                     div(ng-message="required") This field is required.
@@ -234,7 +234,7 @@ md-content(flex)
                   div(ng-message="required") This field is required.
               md-input-container.md-block(flex)
                 label Essay ({{ctrl.essayMaxWords}}±10%)
-                textarea(ng-model='ctrl.model.essay' columns='1' md-maxwords='ctrl.essayMaxWords*1.1' ng-required="ctrl.needEssay" rows='5' name='essay')
+                textarea(ng-model='ctrl.model.essay' columns='1' md-maxwords='ctrl.essayMaxWords*1.1' ng-required="ctrl.needEssay" rows='5' name='essay' md-no-autogrow)
                 //-
                   div(ng-messages="userForm.essay.$error" role="alert")
                     div(ng-message="required") This field is required.
