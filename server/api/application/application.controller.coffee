@@ -86,6 +86,10 @@ exports.create = (req, res) ->
 
   console.log "pseudo", pseudo
   data.pseudo = pseudo
+
+  for file in req.files
+    file.originalname = file.originalname.replace /\s/g, '_'
+
   data.files = _.map req.files, (file) ->
     file.originalname
   data.fileNames = _.map req.files, (file) ->
@@ -103,7 +107,7 @@ exports.create = (req, res) ->
   # save files
   fs.mkdirSync directory
   dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
-  dataToFileSync path.join(directory, 'mail.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
+  dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
   dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
   for file in req.files
     saveTo = path.join directory, file.originalname
@@ -112,11 +116,11 @@ exports.create = (req, res) ->
   strippedData = _.omit(data,hideFields,['motivation0', 'motivation1', 'essay','essayQuestion','roleNames','fileNames','files'])
 
   mail =
-    from: "MEUS Application 2016 <#{config.mail.fromForumUser}>"
+    from: "MEUS Application 2016 <#{config.mail.applicationSender}>"
     subject: "MEUS Application 2016: #{pseudo}"
-    to: config.mail.toForumCategory
+    to: config.mail.applicationReceiver
     text: """
-          Pseudo: **#{data.pseudo}** [reveil mail](http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}", "mail.private")})
+          Pseudo: **#{data.pseudo}** ([reveil mail](http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}", "mail.txt.private")}))
 
           Roles: #{data.roleNames.join(', ')}
 
@@ -128,7 +132,7 @@ exports.create = (req, res) ->
 
           ### Attachments
 
-          - <#{data['fileNames'].join('\n- ')}>
+          <#{data['fileNames'].join('>,\n\n<')}>
 
           Application Data Folder: http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}")}
 
@@ -156,19 +160,20 @@ exports.create = (req, res) ->
 
   transporter.sendMail mail, (err, info) ->
     throw new Error(err) if err?
-    console.log "Mail status: id #{info.messageId} to #{info.envelope.to.join(' ')}"
+    console.log "Mail status: id #{info.messageId} to #{info.envelope.to.join(' ')}: #{info.response.toString()}"
 
-
-    dataToFileSync path.join(directory, 'mail.eml'), info.response.toString()
+    unless config.env is 'production'
+      dataToFileSync path.join(directory, 'mail.eml'), info.response.toString()
 
     confirmationMail =
       from: "MEUS Application 2016 <#{config.mail.fromNoreply}>"
       subject: "MEUS Application 2016 Confirmation"
-      to: "#{data.firstname} #{data.lastname} <#{data.email}>"
+      to: "\"#{data.firstname} #{data.lastname}\" <#{data.email}>"
       text: """
             Dear #{data.firstname}!
 
             This message is just to let you know that we received your application.
+            Your dossier is called #{data.pseudo}.
 
             / The MEUS IT Dept.
             """

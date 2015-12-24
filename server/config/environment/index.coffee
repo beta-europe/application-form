@@ -42,8 +42,8 @@ all =
       ]
   mail:
     fromNoreply: 'noreply@meu-strasbourg.org'
-    fromForumUser: 'r.riemann@beta-europe.org'
-    toForumCategory: 'forum-meus-apply-2016@beta-europe.org'
+    applicationSender: 'meus@beta-europe.org'
+    applicationReceiver: 'forum-meus-apply-2016@beta-europe.org'
 
 
 

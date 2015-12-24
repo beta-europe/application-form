@@ -13,6 +13,7 @@ methodOverride = require 'method-override'
 cookieParser = require 'cookie-parser'
 errorHandler = require 'errorhandler'
 path = require 'path'
+mime = require 'mime-types'
 config = require './environment'
 
 module.exports = (app) ->
@@ -31,7 +32,13 @@ module.exports = (app) ->
 
   if 'production' is env
     app.use favicon(path.join(config.root, 'public', 'favicon.ico'))
-    app.use express.static(path.join(config.root, 'public'))
+    app.use express.static path.join(config.root, 'public'),
+      etag: false
+      maxAge: '7d'
+      setHeaders: (res, path) ->
+        if mime.lookup(path) is 'text/html'
+          res.set 'Cache-Control', 'public, max-age=0'
+
     app.set 'appPath', config.root + '/public'
     app.use morgan('dev')
 
