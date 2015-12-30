@@ -99,6 +99,7 @@ angular.module 'applicationFormApp'
   @motivationMaxWords = settings.application.textsize.motivationletter
   @essayMaxWords = settings.application.textsize.essay
   @maxFileMB = settings.application.maximumTotalAttachmentSizeMB
+  @maxFileB = @maxFileMB*1024*1024
 
   @needMotivation0 = true
   @needMotivation1 = false
