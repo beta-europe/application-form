@@ -56,7 +56,10 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-XXXXX-X');
+      ga('create', 'UA-70824910-1', 'auto', {'allowLinker': true});
+      ga('require', 'linker');
+      ga('linker:autoLink', ['www.meu-strasbourg.org'] );
+
       ga('send', 'pageview');
     </script>
 
@@ -79,7 +82,7 @@
       <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
-    
+
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
