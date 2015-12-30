@@ -89,7 +89,8 @@ hideFields = [
   'institute'
   'studyfield'
   'degree'
-  'studyyears'
+  'studyyear'
+  'remark'
 ]
 
 hideFieldsCSV = [
@@ -175,7 +176,7 @@ exports.create = (req, res) ->
   dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
   dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
   dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
-  dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: directory})
+  dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://apply.meu-strasbourg.org/files/applications/.#{pseudo}"})
   for file in req.files
     saveTo = path.join directory, file.originalname
     bufferToFileSync saveTo, file.buffer
