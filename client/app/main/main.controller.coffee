@@ -69,7 +69,7 @@ angular.module 'applicationFormApp'
     'Ph.D.'
     'other / prefer not to say'
   ]
-  @studyyears = ("#{i} year(s)" for i in [0...8])
+  @studyyears = ("#{i} year(s)" for i in [0..10])
 
   @languagelevels = [
     'Fluent'
