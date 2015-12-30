@@ -8,6 +8,7 @@
     "composable-middleware": "~0.3.0",
     "compression": "~1.6.0",
     "cookie-parser": "~1.4.0",
+    "csv-write-stream": "^1.0.0",
     "ejs": "~2.3.1",
     "errorhandler": "~1.4.2",
     "express": "~4.13.3",

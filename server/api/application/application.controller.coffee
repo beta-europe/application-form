@@ -18,6 +18,43 @@ path = require 'path'
 nodemailer = require 'nodemailer'
 stubTransport = require 'nodemailer-stub-transport'
 
+CSVWriter = require('csv-write-stream')
+csvWriter = CSVWriter
+  sendHeaders: false
+  headers: [
+    'essayQuestion'
+    'birthdate'
+    'firstname'
+    'lastname'
+    'residency'
+    'email'
+    'phone'
+    'gender'
+    'idtype'
+    'idnumber'
+    'institute'
+    'degree'
+    'studyfield'
+    'studyyear'
+    'englishreading'
+    'englishwriting'
+    'englishspeaking'
+    'mothertongue'
+    'otherlanguages'
+    'remark'
+    'confirmTerms'
+    'nationality'
+    'pseudo'
+    'files'
+    'submitted'
+    'motivation0WordCount'
+    'motivation1WordCount'
+    'essayWordCount'
+    'role0'
+    'role1'
+    'directory'
+  ]
+
 # setup mail
 transporter = if process.env.SMTP_HOST?
   nodemailer.createTransport
@@ -38,11 +75,30 @@ applicationDirectory = process.env.APPLICATION_DIR || "/tmp/applications/"
 maximumTotalAttachmentSize = config.public.application.maximumTotalAttachmentSizeMB*1024*1024
 
 hideFields = [
-  'phone'
-  'email'
+  'role' # we already have roleNames
   'firstname'
   'lastname'
+  'nationality'
+  'residency'
+  'birthdate'
+  'idtype'
+  'idnumber'
+  'phone'
+  'email'
+  'gender'
+  'institute'
+  'studyfield'
+  'degree'
+  'studyyears'
+]
+
+hideFieldsCSV = [
   'role'
+  'roleNames'
+  'motivation0'
+  'motivation1'
+  'essay'
+  'fileNames'
 ]
 
 
@@ -55,6 +111,16 @@ bufferToFileSync = (file, buffer) ->
   fd = fs.openSync file, 'w'
   fs.writeSync fd, buffer, 0, buffer.length
   fs.closeSync fd
+
+dataToCSV = (file, data) ->
+  stream = fs.createWriteStream file,
+    flags: 'a' # append
+  # csvWriter = CSVWriter()
+  csvWriter.pipe stream
+  csvWriter.write data
+  csvWriter.unpipe stream
+  stream.end()
+  # csvWriter.end()
 
 # http://jsfiddle.net/deepumohanp/jZeKu/
 regex = /\s+/gi
@@ -109,6 +175,7 @@ exports.create = (req, res) ->
   dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
   dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
   dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
+  dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: directory})
   for file in req.files
     saveTo = path.join directory, file.originalname
     bufferToFileSync saveTo, file.buffer
