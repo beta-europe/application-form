@@ -59,6 +59,10 @@ md-toolbar {
     max-width: 100%;
   }
 }
+
+.page-foot {
+  padding: 24px 48px;
+}
 md-input-container textarea[md-no-autogrow].md-input {
     height: inherit;
     overflow-y: auto;

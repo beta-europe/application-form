@@ -184,8 +184,8 @@ exports.create = (req, res) ->
   strippedData = _.omit(data,hideFields,['motivation0', 'motivation1', 'essay','essayQuestion','roleNames','fileNames','files'])
 
   mail =
-    from: "MEUS Application 2016 <#{config.mail.applicationSender}>"
-    subject: "MEUS Application 2016: #{pseudo}"
+    from: "Model EU Kiev Application 2016 <#{config.mail.applicationSender}>"
+    subject: "MEU Kiev Application 2016: #{pseudo}"
     to: config.mail.applicationReceiver
     text: """
           Pseudo: **#{data.pseudo}** ([reveil mail](http://meukyiv.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}", "mail.txt.private")}))
@@ -234,8 +234,8 @@ exports.create = (req, res) ->
       dataToFileSync path.join(directory, 'mail.eml'), info.response.toString()
 
     confirmationMail =
-      from: "MEUS Application 2016 <#{config.mail.fromNoreply}>"
-      subject: "MEUS Application 2016 Confirmation"
+      from: "Model EU Kiev Application 2016 <#{config.mail.fromNoreply}>"
+      subject: "Model EU Kiev Application 2016 Confirmation"
       to: "\"#{data.firstname} #{data.lastname}\" <#{data.email}>"
       text: """
             Dear #{data.firstname}!
@@ -243,7 +243,7 @@ exports.create = (req, res) ->
             This message is just to let you know that we received your application.
             Your dossier is called #{data.pseudo}.
 
-            / The MEUS IT Dept.
+            / The Model EU Kiev Team
             """
       attachments: [
         filename: "application-data.txt",
