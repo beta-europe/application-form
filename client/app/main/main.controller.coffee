@@ -33,7 +33,7 @@ angular.module 'applicationFormApp'
       $mdDialog.alert()
         .parent angular.element(document.body)
         .clickOutsideToClose(true)
-        .title('Attention! Beta-Software.')
+        .title('Attention!')
         .textContent('By accident, you have found the work-in-progress formular. Do not use it for a real application.')
         .ariaLabel('Alert Dialog Do not use this forumlar. It is work-in-progress.')
         .ok("I promise I won't use it. Let me see.")
@@ -79,19 +79,18 @@ angular.module 'applicationFormApp'
   ]
 
   @essayQuestions = [
-    'Does the current refugee crisis demonstrate the failure or the success of dealing with the right to asylum at a European level?'
-    'Is it feasible and desirable for the European Union to rely exclusively on the use of renewable energy?'
-    'Is the process of European Integration driven by ideology or practical considerations? Discuss.'
+    'David Cameron\'s conditions: political manipulations or a sincere will to reform the EU?'
+    'New members of the EU: expectations and the reality?'
   ]
 
   @Roles =
     None: "-1"
     MEP: "0"
-    Minister: "1"
-    Journalist: "2"
-    JournalistMedia: "3"
-    Lobbyist: "4"
-    Interpreter: "5"
+    MEC: "1"
+    Minister: "2"
+    Journalist: "3"
+    JournalistMedia: "4"
+    Lobbyist: "5"
 
   # titles for the Roles object
   @roles = settings.application.roles
@@ -107,16 +106,16 @@ angular.module 'applicationFormApp'
   $scope.$watch =>
     @model.role
   , (role) =>
-    @needMotivation0 = _.contains [@Roles.MEP, @Roles.Minister, @Roles.Lobbyist], @model.role[0]
-    @needMotivation1 = _.contains [@Roles.MEP, @Roles.Minister, @Roles.Lobbyist], @model.role[1]
-    @needEssay = @needMotivation0 or @needMotivation1
+    # @needMotivation0 = _.contains [@Roles.MEP, @Roles.Minister, @Roles.Lobbyist], @model.role[0]
+    @needMotivation1 = @model.role[1] isnt @Roles.None
+    # @needEssay = @needMotivation0 or @needMotivation1
 
-    if role[0] is @Roles.Interpreter
-      @motivationUpload = true
-      @model.role[1] = @Roles.None
-    else
-      @motivationMaxWords = 250
-      @motivationUpload = false
+    # if role[0] is @Roles.Interpreter
+    #   @motivationUpload = true
+    #   @model.role[1] = @Roles.None
+    # else
+    #   @motivationMaxWords = 250
+    #   @motivationUpload = false
   , true # objectEquality
 
   @model = $localStorage.model ||= {}

@@ -21,29 +21,29 @@ all =
   public:
     conference:
       dates:
-        start: '2016-04-02T00:00:00.000Z'
-        end: '2016-04-09T00:00:00.000Z'
+        start: '2016-03-25T00:00:00.000Z'
+        end: '2016-03-27T00:00:00.000Z'
     application:
       maximumTotalAttachmentSizeMB: 8
       criteria:
         age:
           min: 18
-          max: 26
+          max: 99
       textsize:
         essay: 500
         motivationletter: 250
       roles: [
         'Member of the Parliament (MEP)'
-        'Minister'
+        'Member of the European Commision (MEC)'
+        'Minister of the European Council'
         'Print Journalist'
         'Photo/Video Journalist'
         'Lobbyist'
-        'Interpreter'
       ]
   mail:
-    fromNoreply: 'noreply@meu-strasbourg.org'
+    fromNoreply: 'noreply@beta-europe.org'
     applicationSender: 'meus@beta-europe.org'
-    applicationReceiver: 'forum-meus-apply-2016@beta-europe.org'
+    applicationReceiver: 'forum-kiev-apply-2016@beta-europe.org'
 
 
 

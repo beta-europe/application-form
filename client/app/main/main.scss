@@ -54,6 +54,10 @@ md-toolbar {
   .drop-box.dragover-err {
     border: 5px dashed red;
   }
+
+  img {
+    max-width: 100%;
+  }
 }
 md-input-container textarea[md-no-autogrow].md-input {
     height: inherit;

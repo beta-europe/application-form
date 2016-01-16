@@ -3,7 +3,7 @@ md-toolbar.md-menu-toolbar.md-whiteframe-1dp
     md-toolbar-filler(layout='', layout-align='center center')
       md-icon(md-font-set="material-icons") content_paste
     div
-      h2.md-toolbar-tools Model EU Strasbourg (MEUS) Application Form 2016
+      h2.md-toolbar-tools Model EU Kiev Application Form 2016
       md-menu-bar
         md-menu
           button(ng-click='$mdOpenMenu()') Application   
@@ -26,31 +26,33 @@ md-toolbar.md-menu-toolbar.md-whiteframe-1dp
         md-menu
           button(ng-click='$mdOpenMenu()') Contact 
           md-menu-content
+            //-
+              md-menu-item.md-indent
+                md-icon(md-font-set="material-icons") email
+                md-button(href="mailto:e.cofaru@beta-europe.org") Participant Coordinator
+              md-menu-divider
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") email
-              md-button(href="mailto:e.cofaru@beta-europe.org") Participant Coordinator
-            md-menu-divider
-            md-menu-item.md-indent
-              md-icon(md-font-set="material-icons") email
-              md-button(href="mailto:contact@meu-strasbourg.org") General Inquiry
+              md-button(href="mailto:meukyiv@gmail.com") General Inquiry
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") email
               md-button(href="mailto:r.riemann@beta-europe.org") Technical Support
         md-menu
           button(ng-click='$mdOpenMenu()') Help
           md-menu-content
-            md-menu-item.md-indent
-              md-icon(md-font-set="material-icons") home
-              md-button(href="http://www.meu-strasbourg.org" target="_blank") Model EU Strasbourg Website
-            md-menu-item.md-indent
-              md-icon(md-font-set="material-icons") help_outline
-              md-button(href="http://www.meu-strasbourg.org/apply" target="_blank") Application Procedure
+            //-
+              md-menu-item.md-indent
+                md-icon(md-font-set="material-icons") home
+                md-button(href="http://www.meu-strasbourg.org" target="_blank") Model EU Strasbourg Website
+              md-menu-item.md-indent
+                md-icon(md-font-set="material-icons") help_outline
+                md-button(href="http://www.meu-strasbourg.org/apply" target="_blank") Application Procedure
+              md-menu-item.md-indent
+                md-icon(md-font-set="material-icons") open_in_new
+                md-button(href="https://en.wikipedia.org/wiki/Model_European_Union" target="_blank") Model EU Strasbourg Wikipedia Article
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") open_in_new
-              md-button(href="https://en.wikipedia.org/wiki/Model_European_Union" target="_blank") Model EU Strasbourg Wikipedia Article
-            md-menu-item.md-indent
-              md-icon(md-font-set="material-icons") open_in_new
-              md-button(href="https://www.facebook.com/meustrasbourg" target="_blank") Model EU Strasbourg on Facebook
+              md-button(href="https://www.facebook.com/events/874576112662494/" target="_blank") Model EU Kiev Event on Facebook
             md-menu-divider
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") info_outline
@@ -60,17 +62,20 @@ md-content(flex)
   .page-container
     .page
       :markdown-it
-        # ![MEUS](assets/images/logo.png)
+        ![MEUS](assets/images/logo.jpg)
+        
         # Application
         
-        - Please carefully read the [APPLICATION GUIDE](http://www.meu-strasbourg.org/apply/)
-          before starting your application.
-        - All fields in the application form MUST BE filled in British English, the
-          official language of MEUS 2016. Once you have submitted your application,
-          you will receive an automatically generated confirmation.
-        - Please note that you will not be able to modify your application after submission.
-        - MEU Strasbourg wishes you good luck with your application!
-        - Please contact Ms. Elena Cofaru on <e.cofaru@beta-europe.org> for any questions about registration.
+        - Please note that Model European Union will be held in English.
+        - In order to ensure fair applications, we ask you to **NOT reveil any information**
+          in your CV, motivation letter and essay that allow easily to conclude
+          on your **identity, gender or university**. CV without photo please.
+        - After submitting the application, please check your e-mail for a confirmation.
+        - The results will be available once the application period is over. Take
+          into account, that the application deadline is **February, 18**.
+        - In order to become a participant, you will be expected to pay a 50€ fee.
+        - MEU Kyiv Team wishes you good luck and looks forward to greeting you on March, 25.
+        - If questions occur, please, don't hesitate to contact <meukyiv@gmail.com>      
         
       form(name='userForm' novalidate ng-submit="ctrl.submit()")            
         .md-inline-form(layout='column')
@@ -204,7 +209,7 @@ md-content(flex)
               label Role 2nd Priority
               md-select(ng-model='ctrl.model.role[1]' name='role1' ng-disabled='ctrl.model.role[0] == ctrl.Roles.Interpreter')
                 md-option(value='-1') none
-                md-option(ng-repeat='role in ctrl.roles.slice(0,-1)' value='{{$index}}') {{role}}
+                md-option(ng-repeat='role in ctrl.roles' value='{{$index}}') {{role}}
               div(ng-messages="userForm.role1.$error" role="alert")
                 div(ng-message="required") This field is required.
           div(ng-show='ctrl.needEssay')
@@ -239,12 +244,13 @@ md-content(flex)
                   div(ng-messages="userForm.essay.$error" role="alert")
                     div(ng-message="required") This field is required.
           h3 Document Upload
-          p You are required to provide the following documents. We accept *.odt, *.pdf *.doc *.docx and only for media media portfolios *.zip and *.jpeg. The total file size must not exceed {{ ctrl.maxFileB | bytes }}.
+          p You are required to provide the following documents. We accept *.odt, *.pdf *.doc *.docx and only for multi media portfolios *.zip and *.jpeg. The total file size must not exceed {{ ctrl.maxFileB | bytes }}.
           ul
             li your CV
-            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") motivation letter (500-1000 words)
-            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") reference letter about your interpreting skills
-            li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") transcript of records from last two years of study
+            //-
+              li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") motivation letter (500-1000 words)
+              li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") reference letter about your interpreting skills
+              li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") transcript of records from last two years of study
             li(ng-show="(ctrl.model.role[0] == ctrl.Roles.JournalistMedia) || (ctrl.model.role[1] == ctrl.Roles.JournalistMedia)") portfolio for Photo/Videojournalists
             li(ng-show="(ctrl.model.role[0] == ctrl.Roles.Journalist) || (ctrl.model.role[1] == ctrl.Roles.Journalist)") sample of journalistic work
           //- image/jpeg,application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.oasis.opendocument.text
@@ -270,7 +276,7 @@ md-content(flex)
               textarea(ng-model='ctrl.model.remark', columns='1' rows='5' name='remark')
                
           h3 Terms and conditions
-          p I declare that to the best of my knowledge the information provided is true and correct. I understand that inaccurate, misleading and/or untrue statements or knowingly withheld information may result in the termination of my application to Model European Union Strasbourg.
+          p I declare that to the best of my knowledge the information provided is true and correct. I understand that inaccurate, misleading and/or untrue statements or knowingly withheld information may result in the termination of my application to Model European Union Kiev.
 
           md-checkbox(ng-model="ctrl.model.confirmTerms" name="confirmterms" aria-label="Confirm Terms" required) I have read the terms and conditions and agree. (required)
 

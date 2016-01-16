@@ -161,7 +161,7 @@ exports.create = (req, res) ->
     file.originalname
   data.fileNames = _.map req.files, (file) ->
     console.log file
-    "http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}", file.originalname)}"
+    "http://meukyiv.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}", file.originalname)}"
 
   # convert role IDs to names
   data.roleNames = _.map data.role, (role) ->
@@ -176,7 +176,7 @@ exports.create = (req, res) ->
   dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
   dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
   dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
-  dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://apply.meu-strasbourg.org/files/applications/.#{pseudo}"})
+  dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://meukyiv.apply.beta-europe.org/files/applications/.#{pseudo}"})
   for file in req.files
     saveTo = path.join directory, file.originalname
     bufferToFileSync saveTo, file.buffer
@@ -188,7 +188,7 @@ exports.create = (req, res) ->
     subject: "MEUS Application 2016: #{pseudo}"
     to: config.mail.applicationReceiver
     text: """
-          Pseudo: **#{data.pseudo}** ([reveil mail](http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}", "mail.txt.private")}))
+          Pseudo: **#{data.pseudo}** ([reveil mail](http://meukyiv.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}", "mail.txt.private")}))
 
           Roles: #{data.roleNames.join(', ')}
 
@@ -202,7 +202,7 @@ exports.create = (req, res) ->
 
           <#{data['fileNames'].join('>,\n\n<')}>
 
-          Application Data Folder: http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}")}
+          Application Data Folder: http://meukyiv.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}")}
 
           ### Motivation 1 (#{data['motivation0WordCount']} words)
 
