@@ -27,18 +27,17 @@ angular.module 'applicationFormApp'
   return
 
 .controller 'MainCtrl', ($mdDialog, $scope, $localStorage, $location, settings, Upload) ->
-
-  @showAlert = (event) ->
-    $mdDialog.show(
-      $mdDialog.alert()
-        .parent angular.element(document.body)
-        .clickOutsideToClose(true)
-        .title('Attention!')
-        .textContent('By accident, you have found the work-in-progress formular. Do not use it for a real application.')
-        .ariaLabel('Alert Dialog Do not use this forumlar. It is work-in-progress.')
-        .ok("I promise I won't use it. Let me see.")
-        .targetEvent(event)
-  )
+  # @showAlert = (event) ->
+  #   $mdDialog.show(
+  #     $mdDialog.alert()
+  #       .parent angular.element(document.body)
+  #       .clickOutsideToClose(true)
+  #       .title('Attention!')
+  #       .textContent('By accident, you have found the work-in-progress formular. Do not use it for a real application.')
+  #       .ariaLabel('Alert Dialog Do not use this forumlar. It is work-in-progress.')
+  #       .ok("I promise I won't use it. Let me see.")
+  #       .targetEvent(event)
+  # )
 
   @showAlert() unless $location.absUrl().match /localhost/
 
@@ -85,12 +84,11 @@ angular.module 'applicationFormApp'
 
   @Roles =
     None: "-1"
-    MEP: "0"
-    MEC: "1"
-    Minister: "2"
-    Journalist: "3"
-    JournalistMedia: "4"
-    Lobbyist: "5"
+    MemberComission: "0"
+    MemberCouncil: "1"
+    Journalist: "2"
+    JournalistMedia: "3"
+    Lobbyist: "4"
 
   # titles for the Roles object
   @roles = settings.application.roles
@@ -106,9 +104,9 @@ angular.module 'applicationFormApp'
   $scope.$watch =>
     @model.role
   , (role) =>
-    # @needMotivation0 = _.contains [@Roles.MEP, @Roles.Minister, @Roles.Lobbyist], @model.role[0]
-    @needMotivation1 = @model.role[1] isnt @Roles.None
-    # @needEssay = @needMotivation0 or @needMotivation1
+    @needMotivation0 = _.contains [@Roles.MemberComission, @Roles.MemberCouncil, @Roles.Journalist, @Roles.Lobbyist], @model.role[0]
+    @needMotivation1 = _.contains [@Roles.MemberComission, @Roles.MemberCouncil, @Roles.Journalist, @Roles.Lobbyist], @model.role[1]
+    @needEssay = @needMotivation0 or @needMotivation1
 
     # if role[0] is @Roles.Interpreter
     #   @motivationUpload = true

@@ -33,9 +33,8 @@ all =
         essay: 500
         motivationletter: 250
       roles: [
-        'Member of the Parliament (MEP)'
-        'Member of the European Commision (MEC)'
-        'Minister of the European Council'
+        'Member of the European Commision'
+        'Member of the European Council'
         'Print Journalist'
         'Photo/Video Journalist'
         'Lobbyist'
