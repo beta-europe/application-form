@@ -38,8 +38,8 @@ angular.module 'applicationFormApp'
   #       .ok("I promise I won't use it. Let me see.")
   #       .targetEvent(event)
   # )
-
-  @showAlert() unless $location.absUrl().match /localhost/
+  #
+  # @showAlert() unless $location.absUrl().match /localhost/
 
 
   # validation
