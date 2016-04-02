@@ -27,19 +27,19 @@ angular.module 'applicationFormApp'
   return
 
 .controller 'MainCtrl', ($mdDialog, $scope, $localStorage, $location, settings, Upload) ->
-  @showAlert = (event) ->
-    $mdDialog.show(
-      $mdDialog.alert()
-        .parent angular.element(document.body)
-        .clickOutsideToClose(true)
-        .title('Attention!')
-        .textContent('By accident, you have found the work-in-progress formular. Do not use it for a real application.')
-        .ariaLabel('Alert Dialog Do not use this forumlar. It is work-in-progress.')
-        .ok("I promise I won't use it. Let me see.")
-        .targetEvent(event)
-  )
-
-  @showAlert() unless $location.absUrl().match /localhost/
+  # @showAlert = (event) ->
+  #   $mdDialog.show(
+  #     $mdDialog.alert()
+  #       .parent angular.element(document.body)
+  #       .clickOutsideToClose(true)
+  #       .title('Attention!')
+  #       .textContent('By accident, you have found the work-in-progress formular. Do not use it for a real application.')
+  #       .ariaLabel('Alert Dialog Do not use this forumlar. It is work-in-progress.')
+  #       .ok("I promise I won't use it. Let me see.")
+  #       .targetEvent(event)
+  # )
+  #
+  # @showAlert() unless $location.absUrl().match /localhost/
 
 
   # validation
