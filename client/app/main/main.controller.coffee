@@ -47,10 +47,10 @@ angular.module 'applicationFormApp'
   @conferenceStart = new Date(settings.conference.dates.start)
   # @conferenceEnd = new Date(Meteor.settings.conference.dates.end)
   @birthMin = new Date(@conferenceStart)
-  @birthMin.setYear(@birthMin.getYear()-settings.application.criteria.age.min)
+  @birthMin.setYear(@birthMin.getFullYear()-settings.application.criteria.age.min)
   console.log "birthMin", @birthMin
   @birthMax = new Date(@conferenceStart)
-  @birthMax.setYear(@birthMax.getYear()-settings.application.criteria.age.max-1)
+  @birthMax.setYear(@birthMax.getFullYear()-settings.application.criteria.age.max-1)
   console.log "birthMax", @birthMax
 
   @genders = [
