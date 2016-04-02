@@ -174,12 +174,12 @@ exports.create = (req, res) ->
 
   mail =
     from: "BETA Symposium Application 2016 <#{config.mail.applicationSender}>"
-    subject: "BETA Symposium Application 2016: #{pseudo}"
+    subject: "BETA Symposium Application 2016: #{data.firstname} #{data.lastname}"
     to: config.mail.applicationReceiver
     text: """
-          Application From: **#{data.firstname} #{data.lastname} <#{data.email}>
+          Application From: #{data.firstname} #{data.lastname} (<#{data.email}>)
 
-          Application-Identifier (Pseudo): **#{data.pseudo}**
+          Application-Identifier (Pseudo): #{data.pseudo}
 
           Role: #{data.roleName}
 
