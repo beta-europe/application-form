@@ -219,7 +219,6 @@ exports.create = (req, res) ->
             Dear #{data.firstname}!
 
             This message is just to let you know that we received your application.
-            Your dossier is called #{data.pseudo}.
 
             / The BETA Symposium Team
             """
