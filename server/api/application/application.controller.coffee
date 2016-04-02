@@ -26,6 +26,7 @@ csvWriter = CSVWriter
     'firstname'
     'lastname'
     'residency'
+    'needvisa'
     'email'
     'phone'
     'gender'
@@ -38,6 +39,7 @@ csvWriter = CSVWriter
     'motivationWordCount'
     'essayWordCount'
     'role'
+    'workshopsEntered'
     'directory'
   ]
 
@@ -62,6 +64,7 @@ maximumTotalAttachmentSize = config.public.application.maximumTotalAttachmentSiz
 
 hideFields = [
   'role' # we already have roleNames
+  'workshopsEntered'
   # 'firstname'
   # 'lastname'
   # 'nationality'
@@ -80,6 +83,8 @@ hideFieldsCSV = [
   'motivation'
   'essay'
   'fileNames'
+  'workshops'
+  'workshop_proposal'
 ]
 
 
@@ -149,6 +154,13 @@ exports.create = (req, res) ->
   data.motivationWordCount = wordCount(data.motivation)
   data.essayWordCount = wordCount(data.essay)
 
+  data.workshopsEntered = []
+  if data.workshops
+    _.merge data.workshopsEntered, _.keys(data.workshops)
+  if data.workshop_proposal
+    data.workshopsEntered.push "own: #{data.workshop_proposal}"
+  data.workshopsEntered = data.workshopsEntered.join(' ')
+
   # save files
   fs.mkdirSync directory
   dataToFileSync path.join(directory, 'data.json'), JSON.stringify(data, null, 2)
@@ -165,6 +177,8 @@ exports.create = (req, res) ->
     subject: "BETA Symposium Application 2016: #{pseudo}"
     to: config.mail.applicationReceiver
     text: """
+          Application From: **#{data.firstname} #{data.lastname} <#{data.email}>
+
           Application-Identifier (Pseudo): **#{data.pseudo}**
 
           Role: #{data.roleName}
@@ -207,7 +221,7 @@ exports.create = (req, res) ->
             This message is just to let you know that we received your application.
             Your dossier is called #{data.pseudo}.
 
-            / The Model EU Kiev Team
+            / The BETA Symposium Team
             """
       attachments: [
         filename: "application-data.txt",
@@ -217,6 +231,6 @@ exports.create = (req, res) ->
 
     transporter.sendMail confirmationMail, (err, info) ->
       throw new Error(err) if err?
-      console.log "Mail Confirmation status: id #{info.messageId} to #{info.envelope.to.join(' ')}"
+      console.log "Mail Confirmation status: id #{info.messageId} to #{info.envelope.to.join(' ')}: #{info.response.toString()}"
 
       res.json _.pick data, 'pseudo'

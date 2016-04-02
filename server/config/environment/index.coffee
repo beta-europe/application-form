@@ -38,8 +38,8 @@ all =
       ]
   mail:
     fromNoreply: 'no-reply@forum.beta-europe.org'
-    applicationSender: 'meus@beta-europe.org'
-    applicationReceiver: 'forum-kiev-apply-2016@beta-europe.org'
+    applicationSender: 'applications@beta-europe.org'
+    applicationReceiver: 'beta-applications@forum.beta-europe.org'
 
 
 

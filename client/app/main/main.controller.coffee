@@ -178,7 +178,8 @@ angular.module 'applicationFormApp'
     # return false if $scope.userForm.$invalid
     # cleanup input data
     if @model.role is '0'
-      @model.workshops = null
+      @model.workshops = undefined
+      @model.workshop_proposal = undefined
 
     console.log "about to send", angular.copy(@model), @files
 
