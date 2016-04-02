@@ -215,6 +215,7 @@ angular.module 'applicationFormApp'
       escapeToClose: false
 
     dialog.then (resp) =>
+      @reset()
       data = resp.data
       $mdDialog.show(
         $mdDialog.alert()
