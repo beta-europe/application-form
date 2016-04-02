@@ -52,6 +52,41 @@ angular.module 'applicationFormApp'
   @birthMax.setYear(@birthMax.getYear()-settings.application.criteria.age.max-1)
   console.log "birthMax", @birthMax
 
+  @partners = [
+    'AECPOL (Associación de estudiantes de ciencas politicas) (Spain)'
+    'AEGEE Heraklion (Greece)'
+    'AEGEE Mainz/Wiesbaden, Department of Political Science @ University of Mainz (Germany)'
+    'AEGEE Yerevan (Armenia)'
+    'Ain Shams University (Egypt)'
+    'A.D.E.L. - Association for Development, Education and Labour (Slovakia)'
+    'BETA (Germany)'
+    'BETA España (Spain)'
+    'BETA Hungary (Hungary)'
+    'BETA Polska (Poland)'
+    'BEUM Student Association (Serbia)'
+    'Brussels MEU Student Association (Belgium)'
+    'Europe House (MTÜ Euroopa Maja) (Estonia)'
+    'IRTEA - Institute of Research and Training on European Affairs (Greece)'
+    'Istanbul Global Youth Association (Turkey)'
+    'HERMES (Croatia)'
+    'MEU_TN (Italy)'
+    'MEU Pisa (Italy)'
+    'ProYouth Albania (Albania)'
+  ]
+
+  @workshops =
+    from_scratch: 'Starting from scratch: how to start organising your own MEU'
+    project_management: 'Project management and volunteer leadership'
+    writing_applications: 'Writing a successful Erasmus+ application'
+    fundraising: 'How to raise funds beyond the E+ scheme, how to attract sponsors and donors'
+    public_relations: 'Public Relations: successful techniques for advertising your MEU'
+    scheduling: 'Timetabling for MEU and simulating the interplay between EP and Council'
+    content: 'Content: topics and legislative procedures, what makes a good topic'
+    chairing: 'Chairing: How to select and train good chairs'
+    interpreting: 'Interpreting and the value of multilingual MEUs'
+    lobbyists: 'How to better integrate Lobbyists into the simulation'
+    journalists: 'Journalists: how to run an exciting newsroom, which media possibilities do MEU journalists have today?'
+
   @genders = [
     'female'
     'male'
@@ -61,34 +96,12 @@ angular.module 'applicationFormApp'
     'National ID'
     'Passport'
   ]
-  @degrees = [
-    'high school'
-    'undergraduate'
-    'masters graduate'
-    'Ph.D.'
-    'other / prefer not to say'
-  ]
+
   @studyyears = ("#{i} year(s)" for i in [0..10])
 
-  @languagelevels = [
-    'Fluent'
-    'Advanced'
-    'Intermediate'
-    'Beginner'
-  ]
-
-  @essayQuestions = [
-    'David Cameron\'s conditions: political manipulations or a sincere will to reform the EU?'
-    'New members of the EU: expectations and the reality?'
-  ]
-
   @Roles =
-    None: "-1"
-    MemberComission: "0"
-    MemberCouncil: "1"
-    Journalist: "2"
-    JournalistMedia: "3"
-    Lobbyist: "4"
+    OrganiserTrainee: "0"
+    ExpertOrganiser: "1"
 
   # titles for the Roles object
   @roles = settings.application.roles
@@ -98,23 +111,8 @@ angular.module 'applicationFormApp'
   @maxFileMB = settings.application.maximumTotalAttachmentSizeMB
   @maxFileB = @maxFileMB*1024*1024
 
-  @needMotivation0 = true
-  @needMotivation1 = false
+  @needMotivation = true
   @needEssay = true
-  $scope.$watch =>
-    @model.role
-  , (role) =>
-    @needMotivation0 = _.contains [@Roles.MemberComission, @Roles.MemberCouncil, @Roles.Journalist, @Roles.Lobbyist], @model.role[0]
-    @needMotivation1 = _.contains [@Roles.MemberComission, @Roles.MemberCouncil, @Roles.Journalist, @Roles.Lobbyist], @model.role[1]
-    @needEssay = @needMotivation0 or @needMotivation1
-
-    # if role[0] is @Roles.Interpreter
-    #   @motivationUpload = true
-    #   @model.role[1] = @Roles.None
-    # else
-    #   @motivationMaxWords = 250
-    #   @motivationUpload = false
-  , true # objectEquality
 
   @model = $localStorage.model ||= {}
   @model.role ||= []

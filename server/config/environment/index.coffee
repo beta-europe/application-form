@@ -21,26 +21,23 @@ all =
   public:
     conference:
       dates:
-        start: '2016-03-25T00:00:00.000Z'
-        end: '2016-03-27T00:00:00.000Z'
+        start: '2016-05-12T00:00:00.000Z'
+        end: '2016-05-15T00:00:00.000Z'
     application:
       maximumTotalAttachmentSizeMB: 8
       criteria:
         age:
-          min: 18
+          min: 14
           max: 99
       textsize:
-        essay: 500
-        motivationletter: 250
+        essay: 100
+        motivationletter: 200
       roles: [
-        'Member of the European Commision'
-        'Member of the European Council'
-        'Print Journalist'
-        'Photo/Video Journalist'
-        'Lobbyist'
+        'Organiser Trainee'
+        'Expert Organiser'
       ]
   mail:
-    fromNoreply: 'noreply@beta-europe.org'
+    fromNoreply: 'no-reply@forum.beta-europe.org'
     applicationSender: 'meus@beta-europe.org'
     applicationReceiver: 'forum-kiev-apply-2016@beta-europe.org'
 

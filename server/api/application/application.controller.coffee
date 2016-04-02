@@ -65,7 +65,7 @@ transporter = if process.env.SMTP_HOST?
       user: process.env.SMTP_USER
       pass: process.env.SMTP_PASS
   ,
-    from: 'MEUS Application 2016 <noreply@meu-strasbourg.org>'
+    from: 'BETA Symposium Application 2016 <no-reply@forum.beta-europe.org>'
 else
   nodemailer.createTransport stubTransport()
 
@@ -76,28 +76,22 @@ maximumTotalAttachmentSize = config.public.application.maximumTotalAttachmentSiz
 
 hideFields = [
   'role' # we already have roleNames
-  'firstname'
-  'lastname'
-  'nationality'
-  'residency'
-  'birthdate'
-  'idtype'
-  'idnumber'
-  'phone'
-  'email'
-  'gender'
-  'institute'
-  'studyfield'
-  'degree'
-  'studyyear'
-  'remark'
+  # 'firstname'
+  # 'lastname'
+  # 'nationality'
+  # 'residency'
+  # 'birthdate'
+  # 'idtype'
+  # 'idnumber'
+  # 'phone'
+  # 'email'
+  # 'gender'
 ]
 
 hideFieldsCSV = [
   'role'
   'roleNames'
-  'motivation0'
-  'motivation1'
+  'motivation'
   'essay'
   'fileNames'
 ]
@@ -132,8 +126,8 @@ wordCount = (value) ->
 
 # Get list of things
 exports.create = (req, res) ->
-  unless req.files instanceof Array and req.files.length > 0
-    return res.status(400).send 'Please attach files to your application.'
+  # unless req.files instanceof Array and req.files.length > 0
+  #   return res.status(400).send 'Please attach files to your application.'
 
   data = req.body.data
   unless data?
@@ -164,33 +158,30 @@ exports.create = (req, res) ->
     "http://meukyiv.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}", file.originalname)}"
 
   # convert role IDs to names
-  data.roleNames = _.map data.role, (role) ->
-    config.public.application.roles[role]
+  data.roleName = _onfig.public.application.roles[data.role]
   data.submitted = new Date()
-  data.motivation0WordCount = wordCount(data.motivation0)
-  data.motivation1WordCount = wordCount(data.motivation1)
+  data.motivationWordCount = wordCount(data.motivation)
   data.essayWordCount = wordCount(data.essay)
 
   # save files
   fs.mkdirSync directory
-  dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
-  dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
+  dataToFileSync path.join(directory, 'data.json'), JSON.stringify(data, null, 2)
   dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
-  dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://meukyiv.apply.beta-europe.org/files/applications/.#{pseudo}"})
+  dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role: data.roleName, directory: "http://meukyiv.apply.beta-europe.org/files/applications/.#{pseudo}"})
   for file in req.files
     saveTo = path.join directory, file.originalname
     bufferToFileSync saveTo, file.buffer
 
-  strippedData = _.omit(data,hideFields,['motivation0', 'motivation1', 'essay','essayQuestion','roleNames','fileNames','files'])
+  strippedData = _.omit(data,hideFields,['motivation', 'essay', 'roleNames', 'fileNames', 'files'])
 
   mail =
-    from: "Model EU Kiev Application 2016 <#{config.mail.applicationSender}>"
-    subject: "MEU Kiev Application 2016: #{pseudo}"
+    from: "BETA Symposium Application 2016 <#{config.mail.applicationSender}>"
+    subject: "BETA Symposium Application 2016: #{pseudo}"
     to: config.mail.applicationReceiver
     text: """
-          Pseudo: **#{data.pseudo}** ([reveil mail](http://meukyiv.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}", "mail.txt.private")}))
+          Applictaion-Identifier (Pseudo): **#{data.pseudo}**
 
-          Roles: #{data.roleNames.join(', ')}
+          Role: #{data.roleName}
 
           ### Form Data
 
@@ -198,26 +189,13 @@ exports.create = (req, res) ->
           #{JSON.stringify(strippedData, null, 2)}
           ```
 
-          ### Attachments
+          Application Data Folder: http://symposium.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}")}
 
-          <#{data['fileNames'].join('>,\n\n<')}>
+          ### Motivation (#{data['motivationWordCount']} words)
 
-          Application Data Folder: http://meukyiv.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}")}
+          #{data['motivation']}
 
-          ### Motivation 1 (#{data['motivation0WordCount']} words)
-
-          #{data['motivation0']}
-
-
-          ### Motivation 2 (#{data['motivation1WordCount']} words)
-
-          #{data['motivation1']}
-
-
-          ### Essay (#{data['essayWordCount']} words)
-
-          Essay Question:
-          > #{data['essayQuestion']}
+          ### Experiences (#{data['essayWordCount']} words)
 
           #{data['essay']}
           """
@@ -234,8 +212,8 @@ exports.create = (req, res) ->
       dataToFileSync path.join(directory, 'mail.eml'), info.response.toString()
 
     confirmationMail =
-      from: "Model EU Kiev Application 2016 <#{config.mail.fromNoreply}>"
-      subject: "Model EU Kiev Application 2016 Confirmation"
+      from: "BETA Symposium Application 2016 <#{config.mail.fromNoreply}>"
+      subject: "BETA Symposium Application 2016 Confirmation"
       to: "\"#{data.firstname} #{data.lastname}\" <#{data.email}>"
       text: """
             Dear #{data.firstname}!
