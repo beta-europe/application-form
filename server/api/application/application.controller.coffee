@@ -22,7 +22,6 @@ CSVWriter = require('csv-write-stream')
 csvWriter = CSVWriter
   sendHeaders: false
   headers: [
-    'essayQuestion'
     'birthdate'
     'firstname'
     'lastname'
@@ -32,26 +31,13 @@ csvWriter = CSVWriter
     'gender'
     'idtype'
     'idnumber'
-    'institute'
-    'degree'
-    'studyfield'
-    'studyyear'
-    'englishreading'
-    'englishwriting'
-    'englishspeaking'
-    'mothertongue'
-    'otherlanguages'
-    'remark'
     'confirmTerms'
     'nationality'
     'pseudo'
-    'files'
     'submitted'
-    'motivation0WordCount'
-    'motivation1WordCount'
+    'motivationWordCount'
     'essayWordCount'
-    'role0'
-    'role1'
+    'role'
     'directory'
   ]
 
@@ -158,7 +144,7 @@ exports.create = (req, res) ->
     "http://meukyiv.apply.beta-europe.org#{path.join('/files/applications/', ".#{pseudo}", file.originalname)}"
 
   # convert role IDs to names
-  data.roleName = _onfig.public.application.roles[data.role]
+  data.roleName = config.public.application.roles[data.role]
   data.submitted = new Date()
   data.motivationWordCount = wordCount(data.motivation)
   data.essayWordCount = wordCount(data.essay)
@@ -166,7 +152,7 @@ exports.create = (req, res) ->
   # save files
   fs.mkdirSync directory
   dataToFileSync path.join(directory, 'data.json'), JSON.stringify(data, null, 2)
-  dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
+  # dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
   dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role: data.roleName, directory: "http://meukyiv.apply.beta-europe.org/files/applications/.#{pseudo}"})
   for file in req.files
     saveTo = path.join directory, file.originalname
@@ -179,7 +165,7 @@ exports.create = (req, res) ->
     subject: "BETA Symposium Application 2016: #{pseudo}"
     to: config.mail.applicationReceiver
     text: """
-          Applictaion-Identifier (Pseudo): **#{data.pseudo}**
+          Application-Identifier (Pseudo): **#{data.pseudo}**
 
           Role: #{data.roleName}
 
