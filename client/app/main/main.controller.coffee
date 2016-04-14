@@ -115,7 +115,6 @@ angular.module 'applicationFormApp'
   @needEssay = true
 
   @model = $localStorage.model ||= {}
-  @model.role ||= []
   @model.birthdate = if @model.birthdate? then new Date(@model.birthdate) else undefined
 
 
@@ -172,12 +171,11 @@ angular.module 'applicationFormApp'
     @files = []
     $localStorage.$reset()
     @model = $localStorage.model ||= {}
-    @model.role ||= []
 
   @submit = () ->
     # return false if $scope.userForm.$invalid
     # cleanup input data
-    if @model.role is '0'
+    if @model.role is @Roles.OrganiserTrainee
       @model.workshops = undefined
       @model.workshop_proposal = undefined
 
