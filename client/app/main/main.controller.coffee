@@ -120,6 +120,7 @@ angular.module 'applicationFormApp'
   , true # objectEquality
 
   @model = $localStorage.model ||= {}
+  @model.role ||= []
   @model.birthdate = if @model.birthdate? then new Date(@model.birthdate) else undefined
 
 
@@ -176,6 +177,7 @@ angular.module 'applicationFormApp'
     @files = []
     $localStorage.$reset()
     @model = $localStorage.model ||= {}
+    @model.role ||= []
 
   @submit = () ->
     # return false if $scope.userForm.$invalid
@@ -186,6 +188,7 @@ angular.module 'applicationFormApp'
       @model.motivation1 = ''
     unless @needEssay
       @model.essay = ''
+
 
     console.log "about to send", angular.copy(@model), @files
 
