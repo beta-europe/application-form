@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module 'applicationFormApp', [
-  'ngRoute'
+  'ui.router'
   'ngMaterial'
   'ngMessages'
   'ngMdIcons'
@@ -9,9 +9,8 @@ angular.module 'applicationFormApp', [
   'ngFileUpload'
   'settings'
 ]
-.config ($routeProvider, $locationProvider) ->
-  $routeProvider
-  .otherwise
-    redirectTo: '/'
+.config ($urlRouterProvider, $locationProvider) ->
+  $urlRouterProvider
+  .otherwise '/'
 
   $locationProvider.html5Mode true
