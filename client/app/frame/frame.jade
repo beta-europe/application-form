@@ -1,0 +1,74 @@
+md-toolbar.md-menu-toolbar.md-whiteframe-1dp
+  div(layout='row')
+    md-toolbar-filler(layout='', layout-align='center center')
+      md-icon(md-font-set="material-icons") content_paste
+    div
+      h2.md-toolbar-tools Model EU Strasbourg (MEUS) Application Form 2016
+      md-menu-bar
+        md-menu
+          button(ng-click='$mdOpenMenu()') Application   
+          md-menu-content
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") done
+              md-button(ng-click="ctrl.submit($event)" ng-disabled="userForm.$invalid") Submit
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") clear
+              md-button(ng-click="ctrl.clear($event)") Clear
+            md-menu-divider
+            md-menu-item.md-indent                  
+              //- md-icon(md-font-set="material-icons") brush
+              md-icon(md-font-set="material-icons") autorenew
+              md-button(ng-click="ctrl.autoFill($event)") Autofill
+            md-menu-divider
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") print
+              md-button(ng-click="ctrl.print($event)") Print
+        md-menu
+          button(ng-click='$mdOpenMenu()') Contact 
+          md-menu-content
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") email
+              md-button(href="mailto:e.cofaru@beta-europe.org") Participant Coordinator
+            md-menu-divider
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") email
+              md-button(href="mailto:contact@meu-strasbourg.org") General Inquiry
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") email
+              md-button(href="mailto:r.riemann@beta-europe.org") Technical Support
+        md-menu
+          button(ng-click='$mdOpenMenu()') Help
+          md-menu-content
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") home
+              md-button(href="http://www.meu-strasbourg.org" target="_blank") Model EU Strasbourg Website
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") help_outline
+              md-button(href="http://www.meu-strasbourg.org/apply" target="_blank") Application Procedure
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") help_outline
+              md-button(href="/guide") Application Guide (intern)
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") open_in_new
+              md-button(href="https://en.wikipedia.org/wiki/Model_European_Union" target="_blank") Model EU Strasbourg Wikipedia Article
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") open_in_new
+              md-button(href="https://www.facebook.com/meustrasbourg" target="_blank") Model EU Strasbourg on Facebook
+            md-menu-divider
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") info_outline
+              md-button(ng-click="ctrl.aboutForm($event)") Application Form Software
+
+md-content(flex)
+  .page-container
+    .page
+      div(ui-view="")
+            
+    div.page-foot(layout='row' layout-align='space-between')
+      div
+        :markdown-it
+          The application form is powered with support from [BETA], the Bringing Europeans Together Association e.V.
+          
+          [BETA]: http://www.beta-europe.org
+      div
+        img(src="assets/images/beta-logo-small.png")
