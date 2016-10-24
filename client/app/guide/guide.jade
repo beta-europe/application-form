@@ -1,0 +1,93 @@
+md-toolbar.md-menu-toolbar.md-whiteframe-1dp
+  div(layout='row')
+    md-toolbar-filler(layout='', layout-align='center center')
+      md-icon(md-font-set="material-icons") content_paste
+    div
+      h2.md-toolbar-tools BETA MEU Symposium 2016
+      md-menu-bar
+        //-
+          md-menu
+            button(ng-click='$mdOpenMenu()') Application   
+            md-menu-content
+              md-menu-item.md-indent
+                md-icon(md-font-set="material-icons") arrow_left
+                md-button(href="/") Back to Application Form
+        md-menu
+          button(ng-click='$mdOpenMenu()') Contact 
+          md-menu-content
+            //-
+              md-menu-item.md-indent
+                md-icon(md-font-set="material-icons") email
+                md-button(href="mailto:e.cofaru@beta-europe.org") Participant Coordinator
+              md-menu-divider
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") email
+              md-button(href="mailto:meukyiv@gmail.com") General Inquiry
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") email
+              md-button(href="mailto:r.riemann@beta-europe.org") Technical Support
+        md-menu
+          button(ng-click='$mdOpenMenu()') Help
+          md-menu-content
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") home
+              md-button(href="http://www.beta-europe.org" target="_blank") BETA Europe Website
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") help_outline
+              md-button(href="https://hackpad.com/Model-European-Union-08yr39SFHwA" target="_blank") Application Procedure
+            //-
+              md-menu-item.md-indent
+                md-icon(md-font-set="material-icons") open_in_new
+                md-button(href="https://en.wikipedia.org/wiki/Model_European_Union" target="_blank") Model EU Strasbourg Wikipedia Article
+              md-menu-item.md-indent
+                md-icon(md-font-set="material-icons") open_in_new
+                md-button(href="https://www.facebook.com/events/874576112662494/" target="_blank") Model EU Kiev Event on Facebook
+            md-menu-divider
+            md-menu-item.md-indent
+              md-icon(md-font-set="material-icons") info_outline
+              md-button(ng-click="ctrl.aboutForm($event)") Application Form Software
+
+md-content(flex)
+  .page-container
+    .page
+      :markdown-it
+        # APPLICATION GUIDE
+        
+        **Applications for the MEU Symposium are open April 1st to 8th 2016!**
+
+        _Please read the notes of guidance carefully before starting your application._
+
+        ### 1. GENERAL
+
+        In order to participate, you need to have your application submitted and accepted, be able to cover your travel costs both to and from Belgrade and pay the **50 € participation fee**. The participation fee covers the accommodation in Belgrade as well as breakfasts and lunches, social events and transportation within the city.
+        
+        Anyone officially residing on one of the following states is eligible to apply: **Albania, Armenia, Belgium, Croatia, Egypt, Estonia, Germany, Greece, Hungary, Italy, Poland, Serbia, Slovakia, Spain, Turkey**
+
+        Applicants must be **at least 18 years** of age throughout the duration of the conference.
+
+        All fields in the application form must be filled in English, the official language of the MEU Symposium 2016.
+
+        ### 2. ROLES
+        You may choose to apply either as a **Trainee** wishing to learn how to organize an MEU conference or as an **Expert** experienced in the organization process. Experts we ask to inform us about workshops they believe they have expertise and experience to share with other participants of the Symposium. We are particularly interested, also in additional suggestions for workshop topics! 
+
+        ### 3. TERMS AND CONDITIONS
+
+        By applying to be a participant at the MEU Symposium, you will automatically agree with the following statement:
+
+        _I declare that to the best of my knowledge the information provided is true and correct. I understand that inaccurate, misleading and/or untrue statements or knowingly withheld information may result in the cancellation of my application to the MEU Symposium 2016._
+
+        ### 4. AFTER THE APPLICATION
+        Once you have submitted your application, you will receive an automatically generated confirmation. We will inform you about the result of your application within few days after the end of the application period.
+
+      md-button.md-primary.md-raised(href="/")
+        md-icon(md-font-set="material-icons") arrow_left
+        | Back to Application Form
+            
+    div.page-foot(layout='row' layout-align='space-between')
+      div
+        :markdown-it
+          The application form is powered with support from [BETA], the Bringing Europeans Together Association e.V.
+          
+          [BETA]: http://www.beta-europe.org
+      div
+        img(src="assets/images/beta-logo-small.png")
