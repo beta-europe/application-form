@@ -45,7 +45,12 @@ all =
     applicationSender: 'meus@beta-europe.org'
     applicationReceiver: 'forum-meus-apply-2016@beta-europe.org'
 
-
+  auth:
+    discourse_sso:
+      enabled: true
+      discourse_secret: process.env.DISCOURSE_SECRET
+      discourse_url: 'https://forum.beta-europe.org'
+      debug: true
 
 # Export the config object based on the NODE_ENV
 # ==============================================

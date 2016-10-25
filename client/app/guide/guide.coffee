@@ -3,7 +3,7 @@
 angular.module 'applicationFormApp'
 .config ($stateProvider) ->
   $stateProvider
-  .state 'guide',
+  .state 'frame.guide',
     url: '/guide',
     templateUrl: 'app/guide/guide.html'
     controller: 'GuideCtrl'
