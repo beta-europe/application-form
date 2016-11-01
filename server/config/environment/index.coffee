@@ -50,7 +50,7 @@ all =
       enabled: true
       discourse_secret: process.env.DISCOURSE_SECRET
       discourse_url: 'https://forum.beta-europe.org'
-      debug: true
+      debug: false
 
 # Export the config object based on the NODE_ENV
 # ==============================================

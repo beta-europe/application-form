@@ -3,8 +3,8 @@
 angular.module 'applicationFormApp'
 .config ($stateProvider) ->
   $stateProvider
-  .state 'frame.main',
-    url: '/',
+  .state 'main',
+    url: '/form',
     templateUrl: 'app/main/main.html'
     controller: 'MainCtrl'
     controllerAs: 'ctrl'

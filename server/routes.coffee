@@ -7,41 +7,57 @@ Main application routes
 errors = require './components/errors'
 path = require 'path'
 
-passport = require 'passport'
-passportDiscourse = require('passport-discourse').Strategy
-session = require 'express-session'
 config = require './config/environment'
 
-
 module.exports = (app) ->
-
   # Insert routes below
   app.use '/api/application', require './api/application'
 
   # Insert Authentication
-  # app.use '/auth', require './auth'
-
-  app.use session
-    secret: 'wasdunichtweisstmachtdichnichtheiss' # session secret
-    saveUninitialized: true
-    resave: false
-  app.use passport.initialize()
-  app.use passport.session()
-
-  app.get '/auth/discourse_sso', passport.authenticate 'discourse'
-  app.get passportDiscourse.route_callback, passport.authenticate 'discourse',
-    successRedirect: '/assets/images/logo.png',
-    failureRedirect: '/assets/images/beta-logo-small.png'
-
+  # http://passportjs.org/docs/configure
   if config.auth.discourse_sso.enabled
+    passport = require 'passport'
+    passportDiscourse = require('passport-discourse').Strategy
+    session = require 'express-session'
+    flash = require('connect-flash')()
+
+    passport.serializeUser (user, done) ->
+      done(null, user)
+
+    passport.deserializeUser (user, done) ->
+      done(null, user)
+
+    app.use session
+      secret: 'wasdunichtweisstmachtdichnichtheiss' # session secret
+      saveUninitialized: true
+      resave: false
+    app.use flash
+    app.use passport.initialize()
+    app.use passport.session()
+
+    app.get '/auth/discourse_sso', passport.authenticate 'discourse',
+    app.get passportDiscourse.route_callback, passport.authenticate 'discourse',
+      session: true
+      successRedirect: '/form',
+      failureRedirect: '/'
+
     auth_discourse = new passportDiscourse
       secret: config.auth.discourse_sso.discourse_secret # my secret
       discourse_url: config.auth.discourse_sso.discourse_url # https://forum.beta-europe.org
       debug: config.auth.discourse_sso.debug
     , (accessToken, refreshToken, profile, done) ->
-      usedAuthentication 'discourse'
       done null, profile
+      console.log profile
     passport.use auth_discourse
+
+  ensureAuthenticated = (req, res, next) ->
+    if req.isAuthenticated()
+      return next()
+    else
+      res.redirect '/auth/discourse_sso'
+
+  app.get '/form', ensureAuthenticated, (req, res) ->
+    res.sendFile path.resolve(app.get('appPath') + '/index.html')
 
 
   # All undefined asset or api routes should return a 404

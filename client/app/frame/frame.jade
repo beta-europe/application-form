@@ -6,24 +6,6 @@ md-toolbar.md-menu-toolbar.md-whiteframe-1dp
       h2.md-toolbar-tools Model EU Strasbourg (MEUS) Application Form 2016
       md-menu-bar
         md-menu
-          button(ng-click='$mdOpenMenu()') Application   
-          md-menu-content
-            md-menu-item.md-indent
-              md-icon(md-font-set="material-icons") done
-              md-button(ng-click="ctrl.submit($event)" ng-disabled="userForm.$invalid") Submit
-            md-menu-item.md-indent
-              md-icon(md-font-set="material-icons") clear
-              md-button(ng-click="ctrl.clear($event)") Clear
-            md-menu-divider
-            md-menu-item.md-indent                  
-              //- md-icon(md-font-set="material-icons") brush
-              md-icon(md-font-set="material-icons") autorenew
-              md-button(ng-click="ctrl.autoFill($event)") Autofill
-            md-menu-divider
-            md-menu-item.md-indent
-              md-icon(md-font-set="material-icons") print
-              md-button(ng-click="ctrl.print($event)") Print
-        md-menu
           button(ng-click='$mdOpenMenu()') Contact 
           md-menu-content
             md-menu-item.md-indent
@@ -47,7 +29,7 @@ md-toolbar.md-menu-toolbar.md-whiteframe-1dp
               md-button(href="http://www.meu-strasbourg.org/apply" target="_blank") Application Procedure
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") help_outline
-              md-button(href="/guide") Application Guide (intern)
+              md-button(href="/" ng-disabled="$state.includes('frame.guide')") Application Guide
             md-menu-item.md-indent
               md-icon(md-font-set="material-icons") open_in_new
               md-button(href="https://en.wikipedia.org/wiki/Model_European_Union" target="_blank") Model EU Strasbourg Wikipedia Article
@@ -62,6 +44,8 @@ md-toolbar.md-menu-toolbar.md-whiteframe-1dp
 md-content(flex)
   .page-container
     .page
+      h1
+        img(src="/assets/images/logo.png" alt="Model EU Strasbourg")
       div(ui-view="")
             
     div.page-foot(layout='row' layout-align='space-between')

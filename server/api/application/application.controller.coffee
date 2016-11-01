@@ -132,6 +132,9 @@ wordCount = (value) ->
 
 # Get list of things
 exports.create = (req, res) ->
+  unless req.isAuthenticated()
+    return res.redirect('/');
+
   unless req.files instanceof Array and req.files.length > 0
     return res.status(400).send 'Please attach files to your application.'
 

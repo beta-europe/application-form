@@ -27,7 +27,7 @@
     "basePath": "client",
     "moduleName": "",
     "filters": [
-      "ngroute"
+      "ui-router"
     ],
     "extensions": [
       "coffee",
