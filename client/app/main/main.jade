@@ -239,9 +239,25 @@ md-content(flex)
                 md-input-container.md-block(flex)
                   label Essay ({{ctrl.essayMaxWords}}±10%)
                   textarea(ng-model='ctrl.model.essay' columns='1' md-maxwords='ctrl.essayMaxWords*1.1' ng-required="ctrl.needEssay" rows='5' name='essay' md-no-autogrow)
-                  //-
                     div(ng-messages="userForm.essay.$error" role="alert")
                       div(ng-message="required") This field is required.
+            h3 Social Fund
+            :markdown-it
+              The Organising Team of Model European Union 2016 would like all
+              bright individuals to attend the conference regardless of their
+              financial background. Therefore, the organising team has created
+              the Social Fund to make sure that all selected delegates can
+              participate in the conference. All applicants in need are
+              encouraged to apply!   
+                           
+              Financial aid is awarded on the basis of financial need.
+              Therefore, every applicant who wishes to apply for financial
+              assistance must provide details on personal, family, and external
+              finances. We would like to assure you that all the information
+              provided will be treated confidentially!
+                                              
+              Please find the formular here: <http://www.meu-strasbourg.org/financial_application_form.doc>
+            md-checkbox(ng-model="ctrl.model.applySocialFund" name="applySocialFund" aria-label="Apply to Social Fund") Yes, I fill the form and apply for the Social Fund.
             h3 Document Upload
             p You are required to provide the following documents. We accept *.odt, *.pdf *.doc *.docx and only for media media portfolios *.zip and *.jpeg. The total file size must not exceed {{ ctrl.maxFileB | bytes }}.
             ul
@@ -251,6 +267,7 @@ md-content(flex)
               li(ng-show="ctrl.model.role[0] == ctrl.Roles.Interpreter") transcript of records from last two years of study
               li(ng-show="(ctrl.model.role[0] == ctrl.Roles.JournalistMedia) || (ctrl.model.role[1] == ctrl.Roles.JournalistMedia)") portfolio for Photo/Videojournalists
               li(ng-show="(ctrl.model.role[0] == ctrl.Roles.Journalist) || (ctrl.model.role[1] == ctrl.Roles.Journalist)") sample of journalistic work
+              li(ng-show="ctrl.model.applySocialFund") Social Fund Application Formular
             //- image/jpeg,application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.oasis.opendocument.text
             .drop-box(ngf-drop ng-required="true" name="files" ngf-select ng-model="ctrl.files" ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}" ngf-multiple='true' ngf-keep="'distinct'" ngf-allow-dir='false'  ngf-accept="'*/*'" ngf-drop-available='true' ngf-max-total-size='ctrl.maxFileB')
               div Click here to select files
@@ -271,7 +288,7 @@ md-content(flex)
             div(layout='column')
               md-input-container.md-block(flex)
                 label Remark
-                textarea(ng-model='ctrl.model.remark', columns='1' rows='5' name='remark')
+                textarea(ng-model='ctrl.model.remark', columns='1' rows='5' name='remark')              
                  
             h3 Terms and conditions
             p I declare that to the best of my knowledge the information provided is true and correct. I understand that inaccurate, misleading and/or untrue statements or knowingly withheld information may result in the termination of my application to Model European Union Strasbourg.
