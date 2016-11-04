@@ -9,41 +9,41 @@ path = require 'path'
 
 config = require './config/environment'
 
+passport = require 'passport'
+passportDiscourse = require('passport-discourse').Strategy
+session = require 'express-session'
+flash = require('connect-flash')()
+
+passport.serializeUser (user, done) ->
+  done(null, user)
+
+passport.deserializeUser (user, done) ->
+  done(null, user)
+
 module.exports = (app) ->
+  app.use session
+    secret: 'wasdunichtweisstmachtdichnichtheiss' # session secret
+    saveUninitialized: true
+    resave: false
+  app.use flash
+  app.use passport.initialize()
+  app.use passport.session()
+
   # Insert routes below
   app.use '/api/application', require './api/application'
 
   # Insert Authentication
   # http://passportjs.org/docs/configure
   if config.auth.discourse_sso.enabled
-    passport = require 'passport'
-    passportDiscourse = require('passport-discourse').Strategy
-    session = require 'express-session'
-    flash = require('connect-flash')()
-
-    passport.serializeUser (user, done) ->
-      done(null, user)
-
-    passport.deserializeUser (user, done) ->
-      done(null, user)
-
-    app.use session
-      secret: 'wasdunichtweisstmachtdichnichtheiss' # session secret
-      saveUninitialized: true
-      resave: false
-    app.use flash
-    app.use passport.initialize()
-    app.use passport.session()
-
     app.get '/auth/discourse_sso', passport.authenticate 'discourse',
     app.get passportDiscourse.route_callback, passport.authenticate 'discourse',
       session: true
-      successRedirect: '/form',
-      failureRedirect: '/'
+      successRedirect: config.domain + '/form',
+      failureRedirect: config.domain + '/'
 
     auth_discourse = new passportDiscourse
-      secret: config.auth.discourse_sso.discourse_secret # my secret
-      discourse_url: config.auth.discourse_sso.discourse_url # https://forum.beta-europe.org
+      secret: config.discourse.sso_secret # my secret
+      discourse_url: config.discourse.url # https://forum.beta-europe.org
       debug: config.auth.discourse_sso.debug
     , (accessToken, refreshToken, profile, done) ->
       done null, profile

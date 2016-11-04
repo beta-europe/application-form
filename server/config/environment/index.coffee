@@ -48,9 +48,17 @@ all =
   auth:
     discourse_sso:
       enabled: true
-      discourse_secret: process.env.DISCOURSE_SECRET
-      discourse_url: 'https://forum.beta-europe.org'
       debug: false
+  discourse:
+    sso_secret: process.env.DISCOURSE_SECRET
+    url: 'https://forum.beta-europe.org'
+    key:   process.env.DISCOURSE_API_KEY
+    user:  process.env.DISCOURSE_API_USER
+    group: process.env.DISCOURSE_GROUP # 66 # https://forum.beta-europe.org/admin/groups.json?api_key=&api_username=system"
+    category: process.env.DISCOURSE_CATEGORY
+    PMGroup: process.env.DISCOURSE_PMGROUP
+
+  domain: process.env.DOMAIN
 
 # Export the config object based on the NODE_ENV
 # ==============================================

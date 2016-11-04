@@ -12,6 +12,8 @@ DELETE  /things/:id          ->  destroy
 _ = require 'lodash'
 config = require '../../config/environment'
 
+request = require 'request'
+
 Charlatan = require 'charlatan'
 fs = require 'fs'
 path = require 'path'
@@ -22,10 +24,10 @@ CSVWriter = require('csv-write-stream')
 csvWriter = CSVWriter
   sendHeaders: false
   headers: [
-    'essayQuestion'
+    'pseudo'
     'birthdate'
-    'firstname'
     'lastname'
+    'firstname'
     'residency'
     'email'
     'phone'
@@ -42,17 +44,21 @@ csvWriter = CSVWriter
     'mothertongue'
     'otherlanguages'
     'remark'
+    'applySocialFund'
     'confirmTerms'
     'nationality'
-    'pseudo'
     'files'
     'submitted'
+    'essayQuestion'
     'motivation0WordCount'
     'motivation1WordCount'
     'essayWordCount'
     'role0'
     'role1'
     'directory'
+    'account'
+    'topic'
+    'pm'
   ]
 
 # setup mail
@@ -93,6 +99,12 @@ hideFields = [
   'remark'
 ]
 
+revealFields = [
+  'mothertongue'
+  'pseudo'
+  'submitted'
+]
+
 hideFieldsCSV = [
   'role'
   'roleNames'
@@ -100,6 +112,7 @@ hideFieldsCSV = [
   'motivation1'
   'essay'
   'fileNames'
+  'files'
 ]
 
 
@@ -135,6 +148,12 @@ exports.create = (req, res) ->
   unless req.isAuthenticated()
     return res.redirect('/');
 
+  # req.user example:
+  # username: 'r.riemann',
+  # email: 'robert@riemann.cc'
+  # displayName: 'Robert Riemann'
+
+
   unless req.files instanceof Array and req.files.length > 0
     return res.status(400).send 'Please attach files to your application.'
 
@@ -163,7 +182,6 @@ exports.create = (req, res) ->
   data.files = _.map req.files, (file) ->
     file.originalname
   data.fileNames = _.map req.files, (file) ->
-    console.log file
     "http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}", file.originalname)}"
 
   # convert role IDs to names
@@ -174,88 +192,128 @@ exports.create = (req, res) ->
   data.motivation1WordCount = wordCount(data.motivation1)
   data.essayWordCount = wordCount(data.essay)
 
-  # save files
-  fs.mkdirSync directory
-  dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
-  dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
-  dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.omit(data,hideFields), null, 2)
-  dataToCSV path.join(applicationDirectory, 'applications.csv.private'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://apply.meu-strasbourg.org/files/applications/.#{pseudo}"})
-  for file in req.files
-    saveTo = path.join directory, file.originalname
-    bufferToFileSync saveTo, file.buffer
+  strippedData = _.pick(data,revealFields)
+  extendedData = _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://apply.meu-strasbourg.org/files/applications/.#{pseudo}"})
 
-  strippedData = _.omit(data,hideFields,['motivation0', 'motivation1', 'essay','essayQuestion','roleNames','fileNames','files'])
+  mailContent = (forMarkers, url) ->
+    str =
+    """
+    Identifier: **#{if forMarkers then "#{data.pseudo}" else "[#{data.pseudo}](#{url})"}** #{if forMarkers then "" else "(#{data.lastname}, #{data.firstname} @#{req.user.username}, <#{data.email}>)"}
 
-  mail =
-    from: "MEUS Application 2016 <#{config.mail.applicationSender}>"
-    subject: "MEUS Application 2016: #{pseudo}"
-    to: config.mail.applicationReceiver
-    text: """
-          Pseudo: **#{data.pseudo}** ([reveil mail](http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}", "mail.txt.private")}))
+    Roles: #{data.roleNames.join(', ')}
 
-          Roles: #{data.roleNames.join(', ')}
+    ### Motivation 1 (#{data['motivation0WordCount']} words)
 
-          ### Form Data
-
-          ```json
-          #{JSON.stringify(strippedData, null, 2)}
-          ```
-
-          ### Attachments
-
-          <#{data['fileNames'].join('>,\n\n<')}>
-
-          Application Data Folder: http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}")}
-
-          ### Motivation 1 (#{data['motivation0WordCount']} words)
-
-          #{data['motivation0']}
+    #{data['motivation0']}
 
 
-          ### Motivation 2 (#{data['motivation1WordCount']} words)
+    ### Motivation 2 (#{data['motivation1WordCount']} words)
 
-          #{data['motivation1']}
+    #{data['motivation1']}
 
 
-          ### Essay (#{data['essayWordCount']} words)
+    ### Essay (#{data['essayWordCount']} words)
 
-          Essay Question:
-          > #{data['essayQuestion']}
+    Essay Question:
+    > #{data['essayQuestion']}
 
-          #{data['essay']}
-          """
-    # attachments: _.map files, (file) ->
-    #   filename: file.originalname
-    #   content: new Buffer(file.data)
-    #   type: file.contentType
+    #{data['essay']}
 
-  transporter.sendMail mail, (err, info) ->
-    throw new Error(err) if err?
-    console.log "Mail status: id #{info.messageId} to #{info.envelope.to.join(' ')}: #{info.response.toString()}"
+    ### Form Data
 
-    unless config.env is 'production'
-      dataToFileSync path.join(directory, 'mail.eml'), info.response.toString()
+    ```json
+    #{JSON.stringify((if forMarkers then strippedData else extendedData), null, 2)}
+    ```
+    """
+    if not forMarkers
+      str +=
+      """
 
-    confirmationMail =
-      from: "MEUS Application 2016 <#{config.mail.fromNoreply}>"
-      subject: "MEUS Application 2016 Confirmation"
-      to: "\"#{data.firstname} #{data.lastname}\" <#{data.email}>"
-      text: """
-            Dear #{data.firstname}!
+      ### Attachments
 
-            This message is just to let you know that we received your application.
-            Your dossier is called #{data.pseudo}.
+      <#{data['fileNames'].join('>,\n\n<')}>
 
-            / The MEUS IT Dept.
-            """
-      attachments: [
-        filename: "application-data.txt",
-        content: JSON.stringify(_.omit(data,['fileNames']), null, 2)
-        type: "text/plain"
-      ]
+      Application Data Folder: http://apply.meu-strasbourg.org#{path.join('/files/applications/', ".#{pseudo}")}
+      """
+    return str
 
-    transporter.sendMail confirmationMail, (err, info) ->
-      throw new Error(err) if err?
-      console.log "Mail Confirmation status: id #{info.messageId} to #{info.envelope.to.join(' ')}"
+  postUrl = config.discourse.url + '/posts' + '?api_key=' + config.discourse.key + '&api_username=' + config.discourse.user
 
-      res.json _.pick data, 'pseudo'
+  # create discourse pm
+  request
+    uri: postUrl,
+    method: 'POST',
+    form:
+      title: "MEUS Application 2016: #{pseudo}"
+      raw: mailContent(true, null)
+      category: config.discourse.category
+      archetype: 'regular'
+  , (error, response, body) ->
+    if (!error && !!body.status && body.status != 'OK')
+      # throw new Error(body.description || body.error_message)
+      return res.status(500).send 'The application could not be processed. (Internal API error #1)'
+    jp = JSON.parse(body)
+    topic_url = "/t/#{jp.topic_slug}/#{jp.topic_id}"
+
+    # create discourse topic
+    request
+      uri: postUrl,
+      method: 'POST'
+      form:
+        title: "MEUS Application 2016: #{pseudo} (#{data.lastname}, #{data.firstname})"
+        raw: mailContent(false, topic_url)
+        category: ""
+        archetype: 'private_message'
+        target_usernames: config.discourse.PMGroup
+    , (error, response, body) ->
+      if (!error && !!body.status && body.status != 'OK')
+        # throw new Error(body.description || body.error_message)
+        return res.status(500).send 'The application could not be processed. (Internal API error #2)'
+      jp = JSON.parse(body)
+      pm_url = "/t/#{jp.topic_slug}/#{jp.topic_id}"
+
+      # save files
+      fs.mkdirSync directory
+      dataToFileSync path.join(directory, 'topic.json.private'), body
+      dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
+      dataToFileSync path.join(directory, 'user.json.private'), JSON.stringify(req.user, null, 2)
+      dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
+      dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.pick(data,revealFields), null, 2)
+      dataToCSV path.join(applicationDirectory, 'applications.csv'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://apply.meu-strasbourg.org/files/applications/.#{pseudo}", account: "https://forum.beta-europe.org/users/#{req.user.username}"}, topic: "https://forum.beta-europe.org#{topic_url}", pm: "https://forum.beta-europe.org#{pm_url}")
+      for file in req.files
+        saveTo = path.join directory, file.originalname
+        bufferToFileSync saveTo, file.buffer
+
+      # add user to discourse group
+      groupUrl = config.discourse.url + '/admin/groups/' + config.discourse.group + '/members.json' + '?api_key=' + config.discourse.key + '&api_username=' + config.discourse.user
+      request
+        uri: groupUrl
+        method: 'PUT'
+        form:
+          usernames: req.user.username
+      , (error, response, body) ->
+        if (!error && !!body.status && body.status != 'OK')
+          return res.status(500).send 'The application is stored, but access rights could not be configured proberly. Please contact r.riemann@beta-europe.org.'
+
+        confirmationMail =
+          from: "MEUS Application 2016 <#{config.mail.fromNoreply}>"
+          subject: "MEUS Application 2016 Confirmation"
+          to: "\"#{data.firstname} #{data.lastname}\" <#{data.email}>"
+          text: """
+                Dear #{data.firstname}!
+
+                This message is just to let you know that we received your application.
+                Your dossier is called #{data.pseudo}.
+
+                / The MEUS IT Dept.
+                """
+          attachments: [
+            filename: "application-data.txt",
+            content: JSON.stringify(_.omit(data,['fileNames']), null, 2)
+            type: "text/plain"
+          ]
+
+        transporter.sendMail confirmationMail, (err, info) ->
+          throw new Error(err) if err?
+          console.log "Mail Confirmation status: id #{info.messageId} to #{info.envelope.to.join(' ')}"
+          res.json _.pick(data, 'pseudo')
