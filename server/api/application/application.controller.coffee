@@ -236,83 +236,27 @@ exports.create = (req, res) ->
       """
     return str
 
-  postUrl = config.discourse.url + '/posts' + '?api_key=' + config.discourse.key + '&api_username=' + config.discourse.user
 
-  # create discourse topic in category for markers with reduced data
-  request
-    uri: postUrl,
-    method: 'POST',
-    form:
-      title: "MEUS Application 2016: #{pseudo}"
-      raw: mailContent(true, null)
-      category: config.discourse.category
-      archetype: 'regular'
-  , (error, response, body) ->
-    if (!error && !!body.status && body.status != 'OK')
-      # throw new Error(body.description || body.error_message)
-      return res.status(500).send 'The application could not be processed. (Internal API error #1)'
-    jp = JSON.parse(body)
-    topic_url = "/t/#{jp.topic_slug}/#{jp.topic_id}"
 
-    # create discourse PM with full data
-    request
-      uri: postUrl,
-      method: 'POST'
-      form:
-        title: "MEUS Application 2016: #{pseudo} (#{data.lastname}, #{data.firstname})"
-        raw: mailContent(false, topic_url)
-        category: ""
-        archetype: 'private_message'
-        target_usernames: config.discourse.PMGroup
-    , (error, response, body) ->
-      if (!error && !!body.status && body.status != 'OK')
-        # throw new Error(body.description || body.error_message)
-        return res.status(500).send 'The application could not be processed. (Internal API error #2)'
-      jp = JSON.parse(body)
-      pm_url = "/t/#{jp.topic_slug}/#{jp.topic_id}"
+  confirmationMail =
+  from: "MEUS Application 2016 <#{config.mail.fromNoreply}>"
+  subject: "MEUS Application 2016 Confirmation"
+  to: "\"#{data.firstname} #{data.lastname}\" <#{data.email}>"
+  text: """
+        Dear #{data.firstname}!
 
-      # save files
-      fs.mkdirSync directory
-      dataToFileSync path.join(directory, 'topic.json.private'), body
-      dataToFileSync path.join(directory, 'data.json.private'), JSON.stringify(data, null, 2)
-      dataToFileSync path.join(directory, 'user.json.private'), JSON.stringify(req.user, null, 2)
-      dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
-      dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.pick(data,revealFields), null, 2)
-      dataToCSV path.join(applicationDirectory, 'applications.csv'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://apply.meu-strasbourg.org/files/applications/.#{pseudo}", account: "https://forum.beta-europe.org/users/#{req.user.username}"}, topic: "https://forum.beta-europe.org#{topic_url}", topicAdmin: "https://forum.beta-europe.org#{pm_url}")
-      for file in req.files
-        saveTo = path.join directory, file.originalname
-        bufferToFileSync saveTo, file.buffer
+        This message is just to let you know that we received your application.
+        Your dossier is called #{data.pseudo}.
 
-      # add user to discourse group
-      groupUrl = config.discourse.url + '/admin/groups/' + config.discourse.group + '/members.json' + '?api_key=' + config.discourse.key + '&api_username=' + config.discourse.user
-      request
-        uri: groupUrl
-        method: 'PUT'
-        form:
-          usernames: req.user.username
-      , (error, response, body) ->
-        if (!error && !!body.status && body.status != 'OK')
-          return res.status(500).send 'The application is stored, but access rights could not be configured proberly. Please contact r.riemann@beta-europe.org.'
+        / The MEUS IT Dept.
+        """
+  attachments: [
+    filename: "application-data.txt",
+    content: JSON.stringify(_.omit(data,['fileNames']), null, 2)
+    type: "text/plain"
+  ]
 
-        confirmationMail =
-          from: "MEUS Application 2016 <#{config.mail.fromNoreply}>"
-          subject: "MEUS Application 2016 Confirmation"
-          to: "\"#{data.firstname} #{data.lastname}\" <#{data.email}>"
-          text: """
-                Dear #{data.firstname}!
-
-                This message is just to let you know that we received your application.
-                Your dossier is called #{data.pseudo}.
-
-                / The MEUS IT Dept.
-                """
-          attachments: [
-            filename: "application-data.txt",
-            content: JSON.stringify(_.omit(data,['fileNames']), null, 2)
-            type: "text/plain"
-          ]
-
-        transporter.sendMail confirmationMail, (err, info) ->
-          throw new Error(err) if err?
-          console.log "Mail Confirmation status: id #{info.messageId} to #{info.envelope.to.join(' ')}"
-          res.json _.pick(data, 'pseudo')
+  transporter.sendMail confirmationMail, (err, info) ->
+  throw new Error(err) if err?
+  console.log "Mail Confirmation status: id #{info.messageId} to #{info.envelope.to.join(' ')}"
+  res.json _.pick(data, 'pseudo')
