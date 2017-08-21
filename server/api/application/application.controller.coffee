@@ -238,7 +238,7 @@ exports.create = (req, res) ->
 
   postUrl = config.discourse.url + '/posts' + '?api_key=' + config.discourse.key + '&api_username=' + config.discourse.user
 
-  # create discourse pm
+  # create discourse topic in category for markers with reduced data
   request
     uri: postUrl,
     method: 'POST',
@@ -254,7 +254,7 @@ exports.create = (req, res) ->
     jp = JSON.parse(body)
     topic_url = "/t/#{jp.topic_slug}/#{jp.topic_id}"
 
-    # create discourse topic
+    # create discourse PM with full data
     request
       uri: postUrl,
       method: 'POST'
