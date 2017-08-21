@@ -47,7 +47,6 @@ csvWriter = CSVWriter
     'applySocialFund'
     'confirmTerms'
     'nationality'
-    'files'
     'submitted'
     'essayQuestion'
     'motivation0WordCount'
@@ -58,7 +57,7 @@ csvWriter = CSVWriter
     'directory'
     'account'
     'topic'
-    'pm'
+    'topicAdmin'
   ]
 
 # setup mail
@@ -279,7 +278,7 @@ exports.create = (req, res) ->
       dataToFileSync path.join(directory, 'user.json.private'), JSON.stringify(req.user, null, 2)
       dataToFileSync path.join(directory, 'mail.txt.private'), "#{data.firstname} #{data.lastname} <#{data.email}>"
       dataToFileSync path.join(directory, 'data.json'), JSON.stringify(_.pick(data,revealFields), null, 2)
-      dataToCSV path.join(applicationDirectory, 'applications.csv'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://apply.meu-strasbourg.org/files/applications/.#{pseudo}", account: "https://forum.beta-europe.org/users/#{req.user.username}"}, topic: "https://forum.beta-europe.org#{topic_url}", pm: "https://forum.beta-europe.org#{pm_url}")
+      dataToCSV path.join(applicationDirectory, 'applications.csv'), _.merge(_.omit(data, hideFieldsCSV), {role0: data.roleNames[0], role1: data.roleNames[1], directory: "http://apply.meu-strasbourg.org/files/applications/.#{pseudo}", account: "https://forum.beta-europe.org/users/#{req.user.username}"}, topic: "https://forum.beta-europe.org#{topic_url}", topicAdmin: "https://forum.beta-europe.org#{pm_url}")
       for file in req.files
         saveTo = path.join directory, file.originalname
         bufferToFileSync saveTo, file.buffer
