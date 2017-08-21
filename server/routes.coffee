@@ -12,6 +12,8 @@ config = require './config/environment'
 passport = require 'passport'
 passportDiscourse = require('passport-discourse').Strategy
 session = require 'express-session'
+MemoryStore = require('session-memory-store')(session)
+
 flash = require('connect-flash')()
 
 passport.serializeUser (user, done) ->
@@ -22,9 +24,11 @@ passport.deserializeUser (user, done) ->
 
 module.exports = (app) ->
   app.use session
+    name: 'JSESSION'
     secret: 'wasdunichtweisstmachtdichnichtheiss' # session secret
-    saveUninitialized: true
     resave: false
+    saveUninitialized: true
+    store: new MemoryStore({})
   app.use flash
   app.use passport.initialize()
   app.use passport.session()
